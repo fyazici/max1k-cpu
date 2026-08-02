@@ -68,7 +68,7 @@ architecture rtl of top is
 
 begin
 
-  led <= d_dout(7 downto 0);
+  led <= d_dout(23 downto 16);
 
   U_PLL1 : pll1
   port map
@@ -155,7 +155,7 @@ begin
     );
 
   mem : entity work.mem
-    generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex")
+    generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif")
     port map
     (
       clk  => clk,

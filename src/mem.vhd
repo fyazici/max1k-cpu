@@ -28,49 +28,33 @@ architecture rtl of mem is
   signal ack_r1 : std_logic := '0';
 begin
 
-  U_MEM : altsyncram
+  altsyncram_component : altsyncram
   generic map(
-		address_reg_b => "CLOCK0",
-		clock_enable_input_a => "BYPASS",
-		clock_enable_input_b => "BYPASS",
-		clock_enable_output_a => "BYPASS",
-		clock_enable_output_b => "BYPASS",
-		indata_reg_b => "CLOCK0",
-		init_file => G_INIT_FILE,
-		init_file_layout => "PORT_B",
-		intended_device_family => "MAX 10",
-		lpm_type => "altsyncram",
-		numwords_a => 1024,
-		numwords_b => 4096,
-		operation_mode => "BIDIR_DUAL_PORT",
-		outdata_aclr_a => "NONE",
-		outdata_aclr_b => "NONE",
-		outdata_reg_a => "CLOCK0",
-		outdata_reg_b => "CLOCK0",
-		power_up_uninitialized => "FALSE",
-		read_during_write_mode_mixed_ports => "DONT_CARE",
-		read_during_write_mode_port_a => "NEW_DATA_WITH_NBE_READ",
-		read_during_write_mode_port_b => "NEW_DATA_WITH_NBE_READ",
-		widthad_a => 10,
-		widthad_b => 12,
-		width_a => 32,
-		width_b => 8,
-		width_byteena_a => 1,
-		width_byteena_b => 1,
-		wrcontrol_wraddress_reg_b => "CLOCK0"
+    byte_size                     => 8,
+    clock_enable_input_a          => "BYPASS",
+    clock_enable_output_a         => "BYPASS",
+    init_file                     => G_INIT_FILE,
+    intended_device_family        => "MAX 10",
+    lpm_hint                      => "ENABLE_RUNTIME_MOD=NO",
+    lpm_type                      => "altsyncram",
+    numwords_a                    => 4096,
+    operation_mode                => "SINGLE_PORT",
+    outdata_aclr_a                => "NONE",
+    outdata_reg_a                 => "CLOCK0",
+    power_up_uninitialized        => "FALSE",
+    read_during_write_mode_port_a => "NEW_DATA_NO_NBE_READ",
+    widthad_a                     => 12,
+    width_a                       => 32,
+    width_byteena_a               => 4
   )
   port map
   (
-    --byteena_a => sel, -- FIXME: byte enable? verilog ram
-    address_a => adr(11 downto 2),
-    address_b => (others => '0'),
+    address_a => adr(13 downto 2),
+    byteena_a => sel,
     clock0    => clk,
     data_a    => din,
-    data_b => (others => '0'),
     wren_a    => cyc and stb and we,
-    wren_b    => '0',
-    q_a       => dout,
-    q_b       => open
+    q_a       => dout
   );
 
   PROC_ACK : process (clk)

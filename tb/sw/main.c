@@ -27,6 +27,6 @@ int main(void)
   while (1)
   {
     // Read input from the UART
-    kputchar(giValue = *uart);
+    kputchar(giValue++);
   }
 }

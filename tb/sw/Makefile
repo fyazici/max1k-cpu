@@ -56,11 +56,12 @@ elf: $(BINARY).elf
 bin: $(BINARY).bin
 map: $(BINARY).map
 
-GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).map
+GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).map $(BINARY).size $(BINARY).mif $(BINARY)_dump.S
 
 %.bin: %.elf
 	$(OBJCOPY) -Obinary $(*).elf $(*).bin
-	$(OBJCOPY) -Oihex $(*).elf $(*).hex
+	./bin2mif
+
 
 %.elf %.map: $(OBJS) $(LDSCRIPT)
 	$(LD) $(TGT_LDFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(*).elf

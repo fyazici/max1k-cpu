@@ -9,7 +9,7 @@ start:
 	
 .option push
 .option norelax
-	la gp, global_pointer
+	la gp, __global_pointer$
 .option pop
 	
 	/* Reset satp */

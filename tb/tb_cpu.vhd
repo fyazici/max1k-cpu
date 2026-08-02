@@ -102,7 +102,7 @@ begin
     );
 
   mem : entity work.mem
-    generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex")
+    generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif")
     port map
     (
       clk  => clk,
