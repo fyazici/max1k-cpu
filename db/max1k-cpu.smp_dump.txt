@@ -1,0 +1,10 @@
+
+State Machine - |top|cpu:uut|state
+Name state.S_writeback state.S_memory_1 state.S_memory state.S_execute state.S_decode state.S_fetch_1 state.S_fetch 
+state.S_fetch 0 0 0 0 0 0 0 
+state.S_fetch_1 0 0 0 0 0 1 1 
+state.S_decode 0 0 0 0 1 0 1 
+state.S_execute 0 0 0 1 0 0 1 
+state.S_memory 0 0 1 0 0 0 1 
+state.S_memory_1 0 1 0 0 0 0 1 
+state.S_writeback 1 0 0 0 0 0 1 

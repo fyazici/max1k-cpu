@@ -1,0 +1,118 @@
+
+Merging object attributes
+
+
+Discarded input sections
+
+ .text          0x00000000        0x0 main.o
+ .data          0x00000000        0x0 main.o
+ .bss           0x00000000        0x0 main.o
+ .text.kputchar
+                0x00000000       0x10 main.o
+ .text          0x00000000        0x0 startup.o
+ .data          0x00000000        0x0 startup.o
+ .bss           0x00000000        0x0 startup.o
+ .eh_frame      0x00000000       0x28 startup.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ram              0x00000000         0x00001000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD startup.o
+START GROUP
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libnosys.a
+END GROUP
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a
+START GROUP
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libgloss.a
+END GROUP
+LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a
+
+.text           0x00000000       0x30
+ *(.init)
+ .init          0x00000000       0x30 startup.o
+                0x00000000                start
+ *(.text)
+
+.text.kprint    0x00000030       0x20
+ .text.kprint   0x00000030       0x20 main.o
+                0x00000030                kprint
+
+.text.startup.main
+                0x00000050       0x30
+ .text.startup.main
+                0x00000050       0x30 main.o
+                0x00000050                main
+
+.bss            0x00000080      0x800
+                0x00000080                        PROVIDE (bss_start = .)
+ *(.bss)
+                0x00000480                        . = (. + 0x400)
+ *fill*         0x00000080      0x400 
+                0x00000480                        PROVIDE (stack_top = .)
+                0x00000880                        . = (. + 0x400)
+ *fill*         0x00000480      0x400 
+                0x00000880                        PROVIDE (global_pointer = .)
+                0x00000880                        PROVIDE (bss_end = .)
+
+.sbss.giValue   0x00000880        0x4
+ .sbss.giValue  0x00000880        0x4 main.o
+                0x00000880                giValue
+
+.rodata
+ *(.rodata)
+
+.rodata.main.str1.4
+                0x00000884        0xf
+ .rodata.main.str1.4
+                0x00000884        0xf main.o
+
+.rela.dyn       0x00000894        0x0
+ .rela.init     0x00000894        0x0 main.o
+
+.data
+ *(.data)
+OUTPUT(main.elf elf32-littleriscv)
+
+.sdata.uart     0x00000894        0x4
+ .sdata.uart    0x00000894        0x4 main.o
+                0x00000894                uart
+
+.comment        0x00000000       0x19
+ .comment       0x00000000       0x19 main.o
+                                 0x1a (size before relaxing)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 main.o
+
+.riscv.attributes
+                0x00000000       0x1c
+ .riscv.attributes
+                0x00000000       0x1c main.o
+ .riscv.attributes
+                0x0000001c       0x1a startup.o
+
+Cross Reference Table
+
+Symbol                                            File
+bss_end                                           startup.o
+bss_start                                         startup.o
+giValue                                           main.o
+global_pointer                                    startup.o
+kprint                                            main.o
+kputchar                                          main.o
+main                                              main.o
+                                                  startup.o
+stack_top                                         startup.o
+start                                             startup.o
+uart                                              main.o

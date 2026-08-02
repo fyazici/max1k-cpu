@@ -1,0 +1,45 @@
+v 4
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_regslice.vhd" "d11aeabee6699514162a619067b2a35954ba852f" "20260801201247.532":
+  entity wb_regslice at 1( 0) + 0 on 4;
+  architecture rtl of wb_regslice at 31( 836) + 0 on 4;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_2to1.vhd" "db984c9784636fb7204f4ead67d39dc6efc9db81" "20260801201247.825":
+  entity wb_mux_2to1 at 1( 0) + 0 on 26;
+  architecture rtl of wb_mux_2to1 at 40( 1159) + 0 on 27;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_1to2.vhd" "85b4146860ee17a5245ed9cf00d0bdfef426ff76" "20260801201247.532":
+  entity wb_mux_1to2 at 1( 0) + 0 on 4;
+  architecture rtl of wb_mux_1to2 at 39( 1045) + 0 on 4;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/mem.vhd" "ba1f6f7342e40e958bcf8171aec92717f8a7689e" "20260801201247.825":
+  entity mem at 1( 0) + 0 on 28;
+  architecture rtl of mem at 27( 584) + 0 on 29;
+file "D:\Files\max1k\max1k-cpu\tb\" "tb_cpu.vhd" "40a89cf0935728e6c88da03eb47fba4ebe0bf798" "20260801201247.825":
+  entity tb_cpu at 1( 0) + 0 on 30;
+  architecture rtl of tb_cpu at 9( 139) + 0 on 31;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu_pkg.vhd" "266a42d322af3d21e5bb935456d3076f90469e4c" "20260801201247.825":
+  package cpu_pkg at 1( 0) + 0 on 11;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/alu.vhd" "521cc3fc7da4a4bc0c95c16f70a448522aa3446f" "20260801201247.825":
+  entity alu at 1( 0) + 0 on 20;
+  architecture rtl of alu at 19( 434) + 0 on 21;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/bcond.vhd" "8e920895425ac88d455f61ac790df1a76a092fe1" "20260801201247.825":
+  entity bcond at 1( 0) + 0 on 18;
+  architecture rtl of bcond at 20( 367) + 0 on 19;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/decode.vhd" "d897e0a17f3b57bf9ad007253208238411b787e4" "20260801201247.825":
+  entity decode at 1( 0) + 0 on 12;
+  architecture rtl of decode at 33( 1008) + 0 on 13;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/immext.vhd" "e97a1b15bde4e3524e4b6c349fc04b71fd089c6a" "20260801201247.825":
+  entity immext at 1( 0) + 0 on 14;
+  architecture rtl of immext at 17( 320) + 0 on 15;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/lsu.vhd" "9836126295e2f4521c72c52beef6d2641e48d0eb" "20260801201247.825":
+  entity lsu at 1( 0) + 0 on 22;
+  architecture rtl of lsu at 24( 564) + 0 on 23;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/regfile.vhd" "5813e3a4ac9a09daf2e9ab7a1797925dd9fc5053" "20260801201247.825":
+  entity regfile at 1( 0) + 0 on 16;
+  architecture rtl of regfile at 23( 539) + 0 on 17;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu.vhd" "70cb712b875022c388fea2316a3378ad498cfaaf" "20260801201247.825":
+  entity cpu at 1( 0) + 0 on 24;
+  architecture rtl of cpu at 35( 862) + 0 on 25;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/imem.vhd" "ee4c308d6dc99fdaf56535a58e6774b4b8e2ea29" "20260801193232.884":
+  entity imem at 1( 0) + 0 on 4;
+  architecture rtl of imem at 24( 469) + 0 on 4;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/dmem.vhd" "5e286ad3a0d82b2909845e134deb098e28e2a425" "20260801193232.885":
+  entity dmem at 1( 0) + 0 on 4;
+  architecture rtl of dmem at 24( 529) + 0 on 4;
