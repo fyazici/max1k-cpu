@@ -1,5 +1,5 @@
 Power Analyzer report for project_template
-Sat Aug  1 23:23:35 2026
+Mon Aug  3 21:37:17 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition
 
 
@@ -53,28 +53,28 @@ on the Quartus Prime software download page.
 ; Number detected on machine ; 12          ;
 ; Maximum allowed            ; 6           ;
 ;                            ;             ;
-; Average used               ; 2.03        ;
+; Average used               ; 2.13        ;
 ; Maximum used               ; 6           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processors 2-6         ;  20.7%      ;
+;     Processors 2-6         ;  22.6%      ;
 +----------------------------+-------------+
 
 
 +----------------------------------------------------------------------------------------------------------+
 ; Power Analyzer Summary                                                                                   ;
 +----------------------------------------+-----------------------------------------------------------------+
-; Power Analyzer Status                  ; Successful - Sat Aug  1 23:23:35 2026                           ;
+; Power Analyzer Status                  ; Successful - Mon Aug  3 21:37:17 2026                           ;
 ; Quartus Prime Version                  ; 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition ;
 ; Revision Name                          ; project_template                                                ;
 ; Top-level Entity Name                  ; top                                                             ;
 ; Family                                 ; MAX 10                                                          ;
 ; Device                                 ; 10M08SAU169C8GES                                                ;
 ; Power Models                           ; Final                                                           ;
-; Total Thermal Power Dissipation        ; 239.11 mW                                                       ;
-; Core Dynamic Thermal Power Dissipation ; 67.86 mW                                                        ;
-; Core Static Thermal Power Dissipation  ; 121.37 mW                                                       ;
+; Total Thermal Power Dissipation        ; 251.10 mW                                                       ;
+; Core Dynamic Thermal Power Dissipation ; 79.81 mW                                                        ;
+; Core Static Thermal Power Dissipation  ; 121.41 mW                                                       ;
 ; I/O Thermal Power Dissipation          ; 49.88 mW                                                        ;
 ; Power Estimation Confidence            ; Low: user provided insufficient toggle rate data                ;
 +----------------------------------------+-----------------------------------------------------------------+
@@ -145,7 +145,7 @@ on the Quartus Prime software download page.
 ;     3.3-V LVTTL I/O Standard                ; 3.3 V                      ;
 ;     3.3 V Schmitt Trigger I/O Standard      ; 3.3 V                      ;
 ;                                             ;                            ;
-; Auto computed junction temperature          ; 29.7 degrees Celsius       ;
+; Auto computed junction temperature          ; 29.9 degrees Celsius       ;
 ;     Ambient temperature                     ; 25.0 degrees Celsius       ;
 ;     Junction-to-Case thermal resistance     ; 11.20 degrees Celsius/Watt ;
 ;     Case-to-Heat Sink thermal resistance    ; 0.10 degrees Celsius/Watt  ;
@@ -169,37 +169,41 @@ on the Quartus Prime software download page.
 ; Block Type          ; Total Thermal Power by Block Type ; Block Thermal Dynamic Power ; Block Thermal Static Power (1) ; Routing Thermal Dynamic Power ; Block Average Toggle Rate (millions of transitions / sec) ;
 +---------------------+-----------------------------------+-----------------------------+--------------------------------+-------------------------------+-----------------------------------------------------------+
 ; PLL                 ; 7.13 mW                           ; 7.13 mW                     ; --                             ; 0.00 mW                       ;   33.335                                                  ;
-; M9K                 ; 3.76 mW                           ; 3.61 mW                     ; --                             ; 0.15 mW                       ;    6.250                                                  ;
-; Combinational cell  ; 7.73 mW                           ; 2.75 mW                     ; --                             ; 4.98 mW                       ;    5.255                                                  ;
-; Clock control block ; 3.11 mW                           ; 0.00 mW                     ; --                             ; 3.11 mW                       ;  100.005                                                  ;
-; Register cell       ; 7.70 mW                           ; 5.22 mW                     ; --                             ; 2.48 mW                       ;    6.250                                                  ;
+; M9K                 ; 7.77 mW                           ; 7.70 mW                     ; --                             ; 0.07 mW                       ;    6.250                                                  ;
+; Combinational cell  ; 7.17 mW                           ; 2.84 mW                     ; --                             ; 4.33 mW                       ;    5.137                                                  ;
+; Clock control block ; 3.20 mW                           ; 0.00 mW                     ; --                             ; 3.20 mW                       ;  100.005                                                  ;
+; Register cell       ; 8.95 mW                           ; 5.65 mW                     ; --                             ; 3.30 mW                       ;    6.250                                                  ;
 ; I/O                 ; 12.92 mW                          ; 9.53 mW                     ; 3.39 mW                        ; 0.00 mW                       ;    4.586                                                  ;
-; Voltage Regulator   ; 39.19 mW                          ; 38.43 mW                    ; 0.76 mW                        ; --                            ; --                                                        ;
+; Voltage Regulator   ; 46.36 mW                          ; 45.60 mW                    ; 0.76 mW                        ; --                            ; --                                                        ;
 +---------------------+-----------------------------------+-----------------------------+--------------------------------+-------------------------------+-----------------------------------------------------------+
 (1) The "Block Thermal Static Power" for all block types except Pins and the Voltage Regulator, if one exists, is part of the "Core Static Thermal Power Dissipation" value found on the PowerPlay Power Analyzer-->Summary report panel. The "Core Static Thermal Power Dissipation" also contains the thermal static power dissipated by the routing.
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Thermal Power Dissipation by Hierarchy                                                                                                                                                                                                                             ;
-+---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+---------------------------------------------------------------------+
-; Compilation Hierarchy Node                  ; Total Thermal Power by Hierarchy (1) ; Block Thermal Dynamic Power (1) ; Block Thermal Static Power (1)(2) ; Routing Thermal Dynamic Power (1) ; Full Hierarchy Name                                                 ;
-+---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+---------------------------------------------------------------------+
-; |top                                        ; 81.55 mW (52.41 mW)                  ; 66.67 mW (48.14 mW)             ; 4.15 mW (4.15 mW)                 ; 10.73 mW (0.12 mW)                ; |top                                                                ;
-;     |hard_block:auto_generated_inst         ; 0.00 mW (0.00 mW)                    ; 0.00 mW (0.00 mW)               ; --                                ; 0.00 mW (0.00 mW)                 ; |top|hard_block:auto_generated_inst                                 ;
-;     |mem:mem                                ; 3.78 mW (0.01 mW)                    ; 3.62 mW (0.01 mW)               ; --                                ; 0.16 mW (0.00 mW)                 ; |top|mem:mem                                                        ;
-;         |altsyncram:U_MEM                   ; 3.76 mW (0.00 mW)                    ; 3.61 mW (0.00 mW)               ; --                                ; 0.15 mW (0.00 mW)                 ; |top|mem:mem|altsyncram:U_MEM                                       ;
-;             |altsyncram_4ot3:auto_generated ; 3.76 mW (3.76 mW)                    ; 3.61 mW (3.61 mW)               ; --                                ; 0.15 mW (0.15 mW)                 ; |top|mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated        ;
-;     |pll1:U_PLL1                            ; 10.24 mW (0.00 mW)                   ; 7.13 mW (0.00 mW)               ; --                                ; 3.11 mW (0.00 mW)                 ; |top|pll1:U_PLL1                                                    ;
-;         |altpll:altpll_component            ; 10.24 mW (0.00 mW)                   ; 7.13 mW (0.00 mW)               ; --                                ; 3.11 mW (0.00 mW)                 ; |top|pll1:U_PLL1|altpll:altpll_component                            ;
-;             |pll1_altpll:auto_generated     ; 10.24 mW (10.24 mW)                  ; 7.13 mW (7.13 mW)               ; --                                ; 3.11 mW (3.11 mW)                 ; |top|pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated ;
-;     |wb_mux_2to1:u_wbmux                    ; 0.17 mW (0.17 mW)                    ; 0.05 mW (0.05 mW)               ; --                                ; 0.12 mW (0.12 mW)                 ; |top|wb_mux_2to1:u_wbmux                                            ;
-;     |cpu:uut                                ; 14.95 mW (1.39 mW)                   ; 7.73 mW (0.51 mW)               ; --                                ; 7.22 mW (0.88 mW)                 ; |top|cpu:uut                                                        ;
-;         |alu:U_ALU                          ; 1.58 mW (1.58 mW)                    ; 0.71 mW (0.71 mW)               ; --                                ; 0.88 mW (0.88 mW)                 ; |top|cpu:uut|alu:U_ALU                                              ;
-;         |bcond:U_BCOND                      ; 0.12 mW (0.12 mW)                    ; 0.11 mW (0.11 mW)               ; --                                ; 0.01 mW (0.01 mW)                 ; |top|cpu:uut|bcond:U_BCOND                                          ;
-;         |decode:U_DECODE                    ; 1.09 mW (1.09 mW)                    ; 0.27 mW (0.27 mW)               ; --                                ; 0.82 mW (0.82 mW)                 ; |top|cpu:uut|decode:U_DECODE                                        ;
-;         |lsu:U_LSU                          ; 0.52 mW (0.52 mW)                    ; 0.38 mW (0.38 mW)               ; --                                ; 0.14 mW (0.14 mW)                 ; |top|cpu:uut|lsu:U_LSU                                              ;
-;         |regfile:U_REGFILE                  ; 10.24 mW (10.24 mW)                  ; 5.75 mW (5.75 mW)               ; --                                ; 4.49 mW (4.49 mW)                 ; |top|cpu:uut|regfile:U_REGFILE                                      ;
-+---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+---------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Thermal Power Dissipation by Hierarchy                                                                                                                                                                                                                                          ;
++---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+----------------------------------------------------------------------------------+
+; Compilation Hierarchy Node                  ; Total Thermal Power by Hierarchy (1) ; Block Thermal Dynamic Power (1) ; Block Thermal Static Power (1)(2) ; Routing Thermal Dynamic Power (1) ; Full Hierarchy Name                                                              ;
++---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+----------------------------------------------------------------------------------+
+; |top                                        ; 93.49 mW (59.61 mW)                  ; 78.44 mW (55.31 mW)             ; 4.15 mW (4.15 mW)                 ; 10.91 mW (0.15 mW)                ; |top                                                                             ;
+;     |hard_block:auto_generated_inst         ; 0.00 mW (0.00 mW)                    ; 0.00 mW (0.00 mW)               ; --                                ; 0.00 mW (0.00 mW)                 ; |top|hard_block:auto_generated_inst                                              ;
+;     |cpu:U_CPU                              ; 14.43 mW (1.42 mW)                   ; 7.72 mW (0.54 mW)               ; --                                ; 6.70 mW (0.88 mW)                 ; |top|cpu:U_CPU                                                                   ;
+;         |alu:U_ALU                          ; 1.42 mW (1.42 mW)                    ; 0.70 mW (0.70 mW)               ; --                                ; 0.72 mW (0.72 mW)                 ; |top|cpu:U_CPU|alu:U_ALU                                                         ;
+;         |bcond:U_BCOND                      ; 0.10 mW (0.10 mW)                    ; 0.09 mW (0.09 mW)               ; --                                ; 0.01 mW (0.01 mW)                 ; |top|cpu:U_CPU|bcond:U_BCOND                                                     ;
+;         |decode:U_DECODE                    ; 1.14 mW (1.14 mW)                    ; 0.34 mW (0.34 mW)               ; --                                ; 0.80 mW (0.80 mW)                 ; |top|cpu:U_CPU|decode:U_DECODE                                                   ;
+;         |lsu:U_LSU                          ; 0.66 mW (0.66 mW)                    ; 0.50 mW (0.50 mW)               ; --                                ; 0.16 mW (0.16 mW)                 ; |top|cpu:U_CPU|lsu:U_LSU                                                         ;
+;         |regfile:U_REGFILE                  ; 9.69 mW (9.69 mW)                    ; 5.56 mW (5.56 mW)               ; --                                ; 4.14 mW (4.14 mW)                 ; |top|cpu:U_CPU|regfile:U_REGFILE                                                 ;
+;     |wb_gpio:U_GPIO                         ; 0.42 mW (0.42 mW)                    ; 0.30 mW (0.30 mW)               ; --                                ; 0.12 mW (0.12 mW)                 ; |top|wb_gpio:U_GPIO                                                              ;
+;     |wb_mem:U_MEM                           ; 7.78 mW (0.02 mW)                    ; 7.71 mW (0.01 mW)               ; --                                ; 0.08 mW (0.01 mW)                 ; |top|wb_mem:U_MEM                                                                ;
+;         |altsyncram:altsyncram_component    ; 7.77 mW (0.00 mW)                    ; 7.70 mW (0.00 mW)               ; --                                ; 0.07 mW (0.00 mW)                 ; |top|wb_mem:U_MEM|altsyncram:altsyncram_component                                ;
+;             |altsyncram_n0v3:auto_generated ; 7.77 mW (7.77 mW)                    ; 7.70 mW (7.70 mW)               ; --                                ; 0.07 mW (0.07 mW)                 ; |top|wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated ;
+;     |pll1:U_PLL1                            ; 10.33 mW (0.00 mW)                   ; 7.13 mW (0.00 mW)               ; --                                ; 3.20 mW (0.00 mW)                 ; |top|pll1:U_PLL1                                                                 ;
+;         |altpll:altpll_component            ; 10.33 mW (0.00 mW)                   ; 7.13 mW (0.00 mW)               ; --                                ; 3.20 mW (0.00 mW)                 ; |top|pll1:U_PLL1|altpll:altpll_component                                         ;
+;             |pll1_altpll:auto_generated     ; 10.33 mW (10.33 mW)                  ; 7.13 mW (7.13 mW)               ; --                                ; 3.20 mW (3.20 mW)                 ; |top|pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated              ;
+;     |wb_mux_2to2:U_WBMUX                    ; 0.93 mW (0.00 mW)                    ; 0.27 mW (0.00 mW)               ; --                                ; 0.66 mW (0.00 mW)                 ; |top|wb_mux_2to2:U_WBMUX                                                         ;
+;         |wb_mux_1to2:U_EGRESS               ; 0.03 mW (0.03 mW)                    ; 0.03 mW (0.03 mW)               ; --                                ; 0.00 mW (0.00 mW)                 ; |top|wb_mux_2to2:U_WBMUX|wb_mux_1to2:U_EGRESS                                    ;
+;         |wb_mux_2to1:U_INGRESS              ; 0.07 mW (0.07 mW)                    ; 0.06 mW (0.06 mW)               ; --                                ; 0.01 mW (0.01 mW)                 ; |top|wb_mux_2to2:U_WBMUX|wb_mux_2to1:U_INGRESS                                   ;
+;         |wb_regslice:U_REGSLICE             ; 0.82 mW (0.82 mW)                    ; 0.17 mW (0.17 mW)               ; --                                ; 0.64 mW (0.64 mW)                 ; |top|wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE                                  ;
++---------------------------------------------+--------------------------------------+---------------------------------+-----------------------------------+-----------------------------------+----------------------------------------------------------------------------------+
 (1) Value in parentheses is the power consumed at that level of hierarchy. Value not in parentheses is the power consumed at that level of hierarchy plus the power consumed by all levels of hierarchy below it.
 
 (2) The "Block Thermal Static Power" for all levels of hierarchy except the top-level hierarchy is part of the "Core Static Thermal Power Dissipation" value found on the PowerPlay Power Analyzer-->Summary report panel. The "Core Static Thermal Power Dissipation" also contains the thermal static power dissipated by the routing.
@@ -210,7 +214,7 @@ on the Quartus Prime software download page.
 +---------------------------------------------------------------------------------+-----------------------+--------------------------+
 ; Clock Domain                                                                    ; Clock Frequency (MHz) ; Total Core Dynamic Power ;
 +---------------------------------------------------------------------------------+-----------------------+--------------------------+
-; pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated|wire_pll1_clk[0] ; 50.00                 ; 29.44                    ;
+; pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated|wire_pll1_clk[0] ; 50.00                 ; 34.22                    ;
 ; CLK12M                                                                          ; 12.00                 ; 0.00                     ;
 ; SDRAM_CLK                                                                       ; 96.01                 ; 0.00                     ;
 +---------------------------------------------------------------------------------+-----------------------+--------------------------+
@@ -223,7 +227,7 @@ on the Quartus Prime software download page.
 +----------------+-------------------------+---------------------------+--------------------------+----------------------------------+
 ; VCCIO          ; 15.29 mA                ; 2.85 mA                   ; 12.44 mA                 ; 15.29 mA                         ;
 ; VCCA           ; 4.34 mA                 ; 1.32 mA                   ; 3.03 mA                  ; 4.34 mA                          ;
-; VCC_ONE        ; 58.78 mA                ; 21.35 mA                  ; 37.43 mA                 ; 58.78 mA                         ;
+; VCC_ONE        ; 62.77 mA                ; 25.33 mA                  ; 37.44 mA                 ; 62.77 mA                         ;
 +----------------+-------------------------+---------------------------+--------------------------+----------------------------------+
 (1) Currents reported in columns "Total Current Drawn", "Dynamic Current Drawn", and "Static Current Drawn" are sufficient for user operation of the device.  
 (2) Currents reported in column "Minimum Power Supply Current" are sufficient for power-up, configuration, and user operation of the device.
@@ -271,9 +275,9 @@ on the Quartus Prime software download page.
 ;     -- Number of signals with Static Probability from Node, entity or clock assignment ; 4 (0.1%)     ; 2 (2.7%)   ; 0 (0.0%)      ; 2 (0.1%)      ;
 ;                                                                                        ;              ;            ;               ;               ;
 ; Vectorless estimation                                                                  ;              ;            ;               ;               ;
-;     -- Number of signals with Toggle Rate from Vectorless estimation                   ; 4069 (99.3%) ; 47 (63.5%) ; 1292 (100.0%) ; 2730 (99.9%)  ;
-;     -- Number of signals with Zero toggle rate, from Vectorless estimation             ; 85 (2.1%)    ; 39 (52.7%) ; 0 (0.0%)      ; 46 (1.7%)     ;
-;     -- Number of signals with Static Probability from Vectorless estimation            ; 4069 (99.3%) ; 47 (63.5%) ; 1292 (100.0%) ; 2730 (99.9%)  ;
+;     -- Number of signals with Toggle Rate from Vectorless estimation                   ; 4374 (99.3%) ; 47 (63.5%) ; 1453 (100.0%) ; 2874 (99.9%)  ;
+;     -- Number of signals with Zero toggle rate, from Vectorless estimation             ; 83 (1.9%)    ; 39 (52.7%) ; 0 (0.0%)      ; 44 (1.5%)     ;
+;     -- Number of signals with Static Probability from Vectorless estimation            ; 4374 (99.3%) ; 47 (63.5%) ; 1453 (100.0%) ; 2874 (99.9%)  ;
 ;                                                                                        ;              ;            ;               ;               ;
 ; Default assignment                                                                     ;              ;            ;               ;               ;
 ;     -- Number of signals with Toggle Rate from Default assignment                      ; 0 (0.0%)     ; 0 (0.0%)   ; 0 (0.0%)      ; 0 (0.0%)      ;
@@ -298,7 +302,7 @@ on the Quartus Prime software download page.
 Info: *******************************************************************
 Info: Running Quartus Prime Power Analyzer
     Info: Version 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition
-    Info: Processing started: Sat Aug  1 23:23:32 2026
+    Info: Processing started: Mon Aug  3 21:37:13 2026
 Info: Command: quartus_pow --read_settings_files=off --write_settings_files=off max1k-cpu -c project_template
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (21077): Low junction temperature is 0 degrees C
@@ -315,12 +319,12 @@ Info (218000): Using Advanced I/O Power to simulate I/O buffers with the specifi
 Info (334003): Started post-fitting delay annotation
 Warning (334000): Timing characteristics of device 10M08SAU169C8GES are preliminary
 Info (334004): Delay annotation completed successfully
-Info (215049): Average toggle rate for this design is 5.609 millions of transitions / sec
-Info (215031): Total thermal power estimate for the design is 239.11 mW
+Info (215049): Average toggle rate for this design is 5.544 millions of transitions / sec
+Info (215031): Total thermal power estimate for the design is 251.10 mW
 Info: Quartus Prime Power Analyzer was successful. 0 errors, 3 warnings
-    Info: Peak virtual memory: 4891 megabytes
-    Info: Processing ended: Sat Aug  1 23:23:35 2026
-    Info: Elapsed time: 00:00:03
+    Info: Peak virtual memory: 4889 megabytes
+    Info: Processing ended: Mon Aug  3 21:37:17 2026
+    Info: Elapsed time: 00:00:04
     Info: Total CPU time (on all processors): 00:00:06
 
 

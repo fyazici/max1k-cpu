@@ -7,8 +7,8 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.kputchar
-                0x00000000       0x10 main.o
+ .text.out32    0x00000000        0x8 main.o
+ .text.in32     0x00000000        0x8 main.o
  .text          0x00000000        0x0 startup.o
  .data          0x00000000        0x0 startup.o
  .bss           0x00000000        0x0 startup.o
@@ -42,49 +42,36 @@ LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a
                 0x00000000                start
  *(.text)
 
-.text.kprint    0x00000030       0x1c
- .text.kprint   0x00000030       0x1c main.o
-                0x00000030                kprint
+.text.usleep    0x00000030       0x20
+ .text.usleep   0x00000030       0x20 main.o
+                0x00000030                usleep
 
 .text.startup.main
-                0x0000004c       0x28
+                0x00000050       0x30
  .text.startup.main
-                0x0000004c       0x28 main.o
-                0x0000004c                main
+                0x00000050       0x30 main.o
+                0x00000050                main
 
-.bss            0x00000074      0x800
-                0x00000074                        PROVIDE (bss_start = .)
+.rela.dyn       0x00000080        0x0
+ .rela.init     0x00000080        0x0 main.o
+
+.bss            0x00000080      0x800
+                0x00000080                        PROVIDE (bss_start = .)
  *(.bss)
-                0x00000474                        . = (. + 0x400)
- *fill*         0x00000074      0x400 
-                0x00000474                        PROVIDE (stack_top = .)
-                0x00000874                        . = (. + 0x400)
- *fill*         0x00000474      0x400 
-                0x00000874                        PROVIDE (__global_pointer$ = .)
-                0x00000874                        PROVIDE (bss_end = .)
-
-.sbss.giValue   0x00000874        0x4
- .sbss.giValue  0x00000874        0x4 main.o
-                0x00000874                giValue
+                0x00000480                        . = (. + 0x400)
+ *fill*         0x00000080      0x400 
+                0x00000480                        PROVIDE (stack_top = .)
+                0x00000880                        . = (. + 0x400)
+ *fill*         0x00000480      0x400 
+                0x00000880                        PROVIDE (__global_pointer$ = .)
+                0x00000880                        PROVIDE (bss_end = .)
 
 .rodata
  *(.rodata)
 
-.rodata.main.str1.4
-                0x00000878        0xf
- .rodata.main.str1.4
-                0x00000878        0xf main.o
-
-.rela.dyn       0x00000888        0x0
- .rela.init     0x00000888        0x0 main.o
-
 .data
  *(.data)
 OUTPUT(main.elf elf32-littleriscv)
-
-.sdata.uart     0x00000888        0x4
- .sdata.uart    0x00000888        0x4 main.o
-                0x00000888                uart
 
 .comment        0x00000000       0x19
  .comment       0x00000000       0x19 main.o
@@ -108,11 +95,10 @@ Symbol                                            File
 __global_pointer$                                 startup.o
 bss_end                                           startup.o
 bss_start                                         startup.o
-giValue                                           main.o
-kprint                                            main.o
-kputchar                                          main.o
+in32                                              main.o
 main                                              main.o
                                                   startup.o
+out32                                             main.o
 stack_top                                         startup.o
 start                                             startup.o
-uart                                              main.o
+usleep                                            main.o

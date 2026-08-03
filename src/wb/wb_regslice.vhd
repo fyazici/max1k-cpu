@@ -49,7 +49,7 @@ begin
         s_ack <= '0';
         case (state) is
           when S_idle =>
-            if s_cyc = '1' and s_stb = '1' then
+            if s_cyc = '1' and s_stb = '1' and s_ack = '0' then
               m_cyc  <= '1';
               m_stb  <= '1';
               m_we   <= s_we;

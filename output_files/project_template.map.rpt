@@ -1,5 +1,5 @@
 Analysis & Synthesis report for project_template
-Sat Aug  1 23:23:17 2026
+Mon Aug  3 21:36:57 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition
 
 
@@ -15,23 +15,24 @@ Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Ed
   7. Analysis & Synthesis Resource Utilization by Entity
   8. Analysis & Synthesis RAM Summary
   9. Analysis & Synthesis IP Cores Summary
- 10. State Machine - |top|cpu:uut|state
+ 10. State Machine - |top|cpu:U_CPU|state
  11. Registers Removed During Synthesis
  12. General Register Statistics
  13. Inverted Register Statistics
  14. Multiplexer Restructuring Statistics (Restructuring Performed)
- 15. Source assignments for mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated
+ 15. Source assignments for wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated
  16. Parameter Settings for User Entity Instance: pll1:U_PLL1|altpll:altpll_component
- 17. Parameter Settings for User Entity Instance: cpu:uut
- 18. Parameter Settings for User Entity Instance: mem:mem
- 19. Parameter Settings for User Entity Instance: mem:mem|altsyncram:U_MEM
+ 17. Parameter Settings for User Entity Instance: cpu:U_CPU
+ 18. Parameter Settings for User Entity Instance: wb_mem:U_MEM
+ 19. Parameter Settings for User Entity Instance: wb_mem:U_MEM|altsyncram:altsyncram_component
  20. altpll Parameter Settings by Entity Instance
  21. altsyncram Parameter Settings by Entity Instance
- 22. Port Connectivity Checks: "wb_mux_2to1:u_wbmux"
- 23. Port Connectivity Checks: "pll1:U_PLL1"
- 24. Post-Synthesis Netlist Statistics for Top Partition
- 25. Elapsed Time Per Partition
- 26. Analysis & Synthesis Messages
+ 22. Port Connectivity Checks: "wb_gpio:U_GPIO"
+ 23. Port Connectivity Checks: "wb_mux_2to2:U_WBMUX"
+ 24. Port Connectivity Checks: "pll1:U_PLL1"
+ 25. Post-Synthesis Netlist Statistics for Top Partition
+ 26. Elapsed Time Per Partition
+ 27. Analysis & Synthesis Messages
 
 
 
@@ -58,18 +59,18 @@ on the Quartus Prime software download page.
 +------------------------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                                         ;
 +------------------------------------+-----------------------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Sat Aug  1 23:23:17 2026                           ;
+; Analysis & Synthesis Status        ; Successful - Mon Aug  3 21:36:57 2026                           ;
 ; Quartus Prime Version              ; 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition ;
 ; Revision Name                      ; project_template                                                ;
 ; Top-level Entity Name              ; top                                                             ;
 ; Family                             ; MAX 10                                                          ;
-; Total logic elements               ; 3,592                                                           ;
-;     Total combinational functions  ; 2,582                                                           ;
-;     Dedicated logic registers      ; 1,260                                                           ;
-; Total registers                    ; 1260                                                            ;
+; Total logic elements               ; 3,731                                                           ;
+;     Total combinational functions  ; 2,713                                                           ;
+;     Dedicated logic registers      ; 1,421                                                           ;
+; Total registers                    ; 1421                                                            ;
 ; Total pins                         ; 50                                                              ;
 ; Total virtual pins                 ; 0                                                               ;
-; Total memory bits                  ; 32,768                                                          ;
+; Total memory bits                  ; 131,072                                                         ;
 ; Embedded Multiplier 9-bit elements ; 0                                                               ;
 ; Total PLLs                         ; 1                                                               ;
 ; UFM blocks                         ; 0                                                               ;
@@ -184,40 +185,44 @@ on the Quartus Prime software download page.
 +----------------------------+-------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                               ;
-+----------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                                 ; Library ;
-+----------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
-; src/mem.vhd                      ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/mem.vhd                                         ;         ;
-; src/wb/wb_mux_2to1.vhd           ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd                              ;         ;
-; src/cpu/regfile.vhd              ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/regfile.vhd                                 ;         ;
-; src/cpu/lsu.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/lsu.vhd                                     ;         ;
-; src/cpu/immext.vhd               ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/immext.vhd                                  ;         ;
-; src/cpu/decode.vhd               ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/decode.vhd                                  ;         ;
-; src/cpu/cpu_pkg.vhd              ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/cpu_pkg.vhd                                 ;         ;
-; src/cpu/cpu.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd                                     ;         ;
-; src/cpu/bcond.vhd                ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/bcond.vhd                                   ;         ;
-; src/cpu/alu.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/alu.vhd                                     ;         ;
-; src/top.vhd                      ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/top.vhd                                         ;         ;
-; pll1.vhd                         ; yes             ; User Wizard-Generated File             ; D:/Files/max1k/max1k-cpu/pll1.vhd                                            ;         ;
-; altpll.tdf                       ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altpll.tdf            ;         ;
-; aglobal251.inc                   ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/aglobal251.inc        ;         ;
-; stratix_pll.inc                  ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratix_pll.inc       ;         ;
-; stratixii_pll.inc                ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratixii_pll.inc     ;         ;
-; cycloneii_pll.inc                ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/cycloneii_pll.inc     ;         ;
-; db/pll1_altpll.v                 ; yes             ; Auto-Generated Megafunction            ; D:/Files/max1k/max1k-cpu/db/pll1_altpll.v                                    ;         ;
-; altsyncram.tdf                   ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altsyncram.tdf        ;         ;
-; stratix_ram_block.inc            ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratix_ram_block.inc ;         ;
-; lpm_mux.inc                      ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_mux.inc           ;         ;
-; lpm_decode.inc                   ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_decode.inc        ;         ;
-; a_rdenreg.inc                    ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/a_rdenreg.inc         ;         ;
-; altrom.inc                       ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altrom.inc            ;         ;
-; altram.inc                       ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altram.inc            ;         ;
-; altdpram.inc                     ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altdpram.inc          ;         ;
-; db/altsyncram_4ot3.tdf           ; yes             ; Auto-Generated Megafunction            ; D:/Files/max1k/max1k-cpu/db/altsyncram_4ot3.tdf                              ;         ;
-; tb/sw/main.hex                   ; yes             ; Auto-Found Memory Initialization File  ; D:/Files/max1k/max1k-cpu/tb/sw/main.hex                                      ;         ;
-+----------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                      ;
++-----------------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path        ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                                 ; Library ;
++-----------------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
+; src/pll1.vhd                            ; yes             ; User Wizard-Generated File             ; D:/Files/max1k/max1k-cpu/src/pll1.vhd                                        ;         ;
+; src/wb/wb_mux_2to2.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd                              ;         ;
+; src/periph/wb_mem.vhd                   ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd                               ;         ;
+; src/periph/wb_gpio.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/periph/wb_gpio.vhd                              ;         ;
+; src/wb/wb_regslice.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/wb/wb_regslice.vhd                              ;         ;
+; src/wb/wb_mux_2to1.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd                              ;         ;
+; src/wb/wb_mux_1to2.vhd                  ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/wb/wb_mux_1to2.vhd                              ;         ;
+; src/cpu/regfile.vhd                     ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/regfile.vhd                                 ;         ;
+; src/cpu/lsu.vhd                         ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/lsu.vhd                                     ;         ;
+; src/cpu/immext.vhd                      ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/immext.vhd                                  ;         ;
+; src/cpu/decode.vhd                      ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/decode.vhd                                  ;         ;
+; src/cpu/cpu_pkg.vhd                     ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/cpu_pkg.vhd                                 ;         ;
+; src/cpu/cpu.vhd                         ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd                                     ;         ;
+; src/cpu/bcond.vhd                       ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/bcond.vhd                                   ;         ;
+; src/cpu/alu.vhd                         ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/cpu/alu.vhd                                     ;         ;
+; src/top.vhd                             ; yes             ; User VHDL File                         ; D:/Files/max1k/max1k-cpu/src/top.vhd                                         ;         ;
+; altpll.tdf                              ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altpll.tdf            ;         ;
+; aglobal251.inc                          ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/aglobal251.inc        ;         ;
+; stratix_pll.inc                         ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratix_pll.inc       ;         ;
+; stratixii_pll.inc                       ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratixii_pll.inc     ;         ;
+; cycloneii_pll.inc                       ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/cycloneii_pll.inc     ;         ;
+; db/pll1_altpll.v                        ; yes             ; Auto-Generated Megafunction            ; D:/Files/max1k/max1k-cpu/db/pll1_altpll.v                                    ;         ;
+; altsyncram.tdf                          ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altsyncram.tdf        ;         ;
+; stratix_ram_block.inc                   ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratix_ram_block.inc ;         ;
+; lpm_mux.inc                             ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_mux.inc           ;         ;
+; lpm_decode.inc                          ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_decode.inc        ;         ;
+; a_rdenreg.inc                           ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/a_rdenreg.inc         ;         ;
+; altrom.inc                              ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altrom.inc            ;         ;
+; altram.inc                              ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altram.inc            ;         ;
+; altdpram.inc                            ; yes             ; Megafunction                           ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altdpram.inc          ;         ;
+; db/altsyncram_n0v3.tdf                  ; yes             ; Auto-Generated Megafunction            ; D:/Files/max1k/max1k-cpu/db/altsyncram_n0v3.tdf                              ;         ;
+; D:/Files/max1k/max1k-cpu/tb/sw/main.mif ; yes             ; Auto-Found Memory Initialization File  ; D:/Files/max1k/max1k-cpu/tb/sw/main.mif                                      ;         ;
++-----------------------------------------+-----------------+----------------------------------------+------------------------------------------------------------------------------+---------+
 
 
 +-------------------------------------------------------------------------------------------------------------------------------+
@@ -225,24 +230,24 @@ on the Quartus Prime software download page.
 +---------------------------------------------+---------------------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                                           ;
 +---------------------------------------------+---------------------------------------------------------------------------------+
-; Estimated Total logic elements              ; 3,592                                                                           ;
+; Estimated Total logic elements              ; 3,731                                                                           ;
 ;                                             ;                                                                                 ;
-; Total combinational functions               ; 2582                                                                            ;
+; Total combinational functions               ; 2713                                                                            ;
 ; Logic element usage by number of LUT inputs ;                                                                                 ;
-;     -- 4 input functions                    ; 1947                                                                            ;
-;     -- 3 input functions                    ; 466                                                                             ;
-;     -- <=2 input functions                  ; 169                                                                             ;
+;     -- 4 input functions                    ; 1946                                                                            ;
+;     -- 3 input functions                    ; 547                                                                             ;
+;     -- <=2 input functions                  ; 220                                                                             ;
 ;                                             ;                                                                                 ;
 ; Logic elements by mode                      ;                                                                                 ;
-;     -- normal mode                          ; 2429                                                                            ;
+;     -- normal mode                          ; 2560                                                                            ;
 ;     -- arithmetic mode                      ; 153                                                                             ;
 ;                                             ;                                                                                 ;
-; Total registers                             ; 1260                                                                            ;
-;     -- Dedicated logic registers            ; 1260                                                                            ;
+; Total registers                             ; 1421                                                                            ;
+;     -- Dedicated logic registers            ; 1421                                                                            ;
 ;     -- I/O registers                        ; 0                                                                               ;
 ;                                             ;                                                                                 ;
 ; I/O pins                                    ; 50                                                                              ;
-; Total memory bits                           ; 32768                                                                           ;
+; Total memory bits                           ; 131072                                                                          ;
 ;                                             ;                                                                                 ;
 ; Embedded Multiplier 9-bit elements          ; 0                                                                               ;
 ;                                             ;                                                                                 ;
@@ -250,42 +255,46 @@ on the Quartus Prime software download page.
 ;     -- PLLs                                 ; 1                                                                               ;
 ;                                             ;                                                                                 ;
 ; Maximum fan-out node                        ; pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated|wire_pll1_clk[0] ;
-; Maximum fan-out                             ; 1302                                                                            ;
-; Total fan-out                               ; 13448                                                                           ;
-; Average fan-out                             ; 3.39                                                                            ;
+; Maximum fan-out                             ; 1487                                                                            ;
+; Total fan-out                               ; 14648                                                                           ;
+; Average fan-out                             ; 3.42                                                                            ;
 +---------------------------------------------+---------------------------------------------------------------------------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                   ;
-+-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------+-----------------+--------------+
-; Compilation Hierarchy Node                ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                 ; Entity Name     ; Library Name ;
-+-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------+-----------------+--------------+
-; |top                                      ; 2582 (75)           ; 1260 (32)                 ; 32768       ; 0          ; 0            ; 0       ; 0         ; 50   ; 0            ; 0          ; |top                                                                ; top             ; work         ;
-;    |cpu:uut|                              ; 2458 (184)          ; 1225 (71)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut                                                        ; cpu             ; work         ;
-;       |alu:U_ALU|                         ; 615 (615)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut|alu:U_ALU                                              ; alu             ; work         ;
-;       |bcond:U_BCOND|                     ; 87 (87)             ; 1 (1)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut|bcond:U_BCOND                                          ; bcond           ; work         ;
-;       |decode:U_DECODE|                   ; 31 (31)             ; 33 (33)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut|decode:U_DECODE                                        ; decode          ; work         ;
-;       |lsu:U_LSU|                         ; 72 (72)             ; 64 (64)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut|lsu:U_LSU                                              ; lsu             ; work         ;
-;       |regfile:U_REGFILE|                 ; 1469 (1469)         ; 1056 (1056)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:uut|regfile:U_REGFILE                                      ; regfile         ; work         ;
-;    |mem:mem|                              ; 2 (2)               ; 2 (2)                     ; 32768       ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|mem:mem                                                        ; mem             ; work         ;
-;       |altsyncram:U_MEM|                  ; 0 (0)               ; 0 (0)                     ; 32768       ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|mem:mem|altsyncram:U_MEM                                       ; altsyncram      ; work         ;
-;          |altsyncram_4ot3:auto_generated| ; 0 (0)               ; 0 (0)                     ; 32768       ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated        ; altsyncram_4ot3 ; work         ;
-;    |pll1:U_PLL1|                          ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1                                                    ; pll1            ; work         ;
-;       |altpll:altpll_component|           ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1|altpll:altpll_component                            ; altpll          ; work         ;
-;          |pll1_altpll:auto_generated|     ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated ; pll1_altpll     ; work         ;
-;    |wb_mux_2to1:u_wbmux|                  ; 47 (47)             ; 1 (1)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mux_2to1:u_wbmux                                            ; wb_mux_2to1     ; work         ;
-+-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------+-----------------+--------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                ;
++-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+----------------------------------------------------------------------------------+-----------------+--------------+
+; Compilation Hierarchy Node                ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                              ; Entity Name     ; Library Name ;
++-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+----------------------------------------------------------------------------------+-----------------+--------------+
+; |top                                      ; 2713 (74)           ; 1421 (32)                 ; 131072      ; 0          ; 0            ; 0       ; 0         ; 50   ; 0            ; 0          ; |top                                                                             ; top             ; work         ;
+;    |cpu:U_CPU|                            ; 2476 (187)          ; 1229 (71)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU                                                                   ; cpu             ; work         ;
+;       |alu:U_ALU|                         ; 622 (622)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU|alu:U_ALU                                                         ; alu             ; work         ;
+;       |bcond:U_BCOND|                     ; 87 (87)             ; 1 (1)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU|bcond:U_BCOND                                                     ; bcond           ; work         ;
+;       |decode:U_DECODE|                   ; 31 (31)             ; 33 (33)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU|decode:U_DECODE                                                   ; decode          ; work         ;
+;       |lsu:U_LSU|                         ; 77 (77)             ; 68 (68)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU|lsu:U_LSU                                                         ; lsu             ; work         ;
+;       |regfile:U_REGFILE|                 ; 1472 (1472)         ; 1056 (1056)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|cpu:U_CPU|regfile:U_REGFILE                                                 ; regfile         ; work         ;
+;    |pll1:U_PLL1|                          ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1                                                                 ; pll1            ; work         ;
+;       |altpll:altpll_component|           ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1|altpll:altpll_component                                         ; altpll          ; work         ;
+;          |pll1_altpll:auto_generated|     ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated              ; pll1_altpll     ; work         ;
+;    |wb_gpio:U_GPIO|                       ; 68 (68)             ; 73 (73)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_gpio:U_GPIO                                                              ; wb_gpio         ; work         ;
+;    |wb_mem:U_MEM|                         ; 3 (3)               ; 2 (2)                     ; 131072      ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mem:U_MEM                                                                ; wb_mem          ; work         ;
+;       |altsyncram:altsyncram_component|   ; 0 (0)               ; 0 (0)                     ; 131072      ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mem:U_MEM|altsyncram:altsyncram_component                                ; altsyncram      ; work         ;
+;          |altsyncram_n0v3:auto_generated| ; 0 (0)               ; 0 (0)                     ; 131072      ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated ; altsyncram_n0v3 ; work         ;
+;    |wb_mux_2to2:U_WBMUX|                  ; 92 (0)              ; 85 (0)                    ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mux_2to2:U_WBMUX                                                         ; wb_mux_2to2     ; work         ;
+;       |wb_mux_1to2:U_EGRESS|              ; 32 (32)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mux_2to2:U_WBMUX|wb_mux_1to2:U_EGRESS                                    ; wb_mux_1to2     ; work         ;
+;       |wb_mux_2to1:U_INGRESS|             ; 48 (48)             ; 1 (1)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mux_2to2:U_WBMUX|wb_mux_2to1:U_INGRESS                                   ; wb_mux_2to1     ; work         ;
+;       |wb_regslice:U_REGSLICE|            ; 12 (12)             ; 84 (84)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |top|wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE                                  ; wb_regslice     ; work         ;
++-------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+----------------------------------------------------------------------------------+-----------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                                               ;
-+--------------------------------------------------------------------+------+----------------+--------------+--------------+--------------+--------------+-------+-----------------------------------------------+
-; Name                                                               ; Type ; Mode           ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF                                           ;
-+--------------------------------------------------------------------+------+----------------+--------------+--------------+--------------+--------------+-------+-----------------------------------------------+
-; mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated|ALTSYNCRAM ; AUTO ; True Dual Port ; 1024         ; 32           ; 4096         ; 8            ; 32768 ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex ;
-+--------------------------------------------------------------------+------+----------------+--------------+--------------+--------------+--------------+-------+-----------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                                 ;
++----------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+--------+-----------------------------------------------+
+; Name                                                                                   ; Type ; Mode        ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size   ; MIF                                           ;
++----------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+--------+-----------------------------------------------+
+; wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated|ALTSYNCRAM ; AUTO ; Single Port ; 4096         ; 32           ; --           ; --           ; 131072 ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif ;
++----------------------------------------------------------------------------------------+------+-------------+--------------+--------------+--------------+--------------+--------+-----------------------------------------------+
 
 
 +----------------------------------------------------------------------------------------------------+
@@ -293,13 +302,13 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +--------+--------------+---------+--------------+--------------+------------------+-----------------+
 ; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance  ; IP Include File ;
 +--------+--------------+---------+--------------+--------------+------------------+-----------------+
-; Altera ; ALTPLL       ; 25.1    ; N/A          ; N/A          ; |top|pll1:U_PLL1 ; pll1.vhd        ;
+; Altera ; ALTPLL       ; 25.1    ; N/A          ; N/A          ; |top|pll1:U_PLL1 ; src/pll1.vhd    ;
 +--------+--------------+---------+--------------+--------------+------------------+-----------------+
 
 
 Encoding Type:  One-Hot
 +------------------------------------------------------------------------------------------------------------------------------------------------+
-; State Machine - |top|cpu:uut|state                                                                                                             ;
+; State Machine - |top|cpu:U_CPU|state                                                                                                           ;
 +-------------------+-------------------+------------------+----------------+-----------------+----------------+-----------------+---------------+
 ; Name              ; state.S_writeback ; state.S_memory_1 ; state.S_memory ; state.S_execute ; state.S_decode ; state.S_fetch_1 ; state.S_fetch ;
 +-------------------+-------------------+------------------+----------------+-----------------+----------------+-----------------+---------------+
@@ -313,49 +322,51 @@ Encoding Type:  One-Hot
 +-------------------+-------------------+------------------+----------------+-----------------+----------------+-----------------+---------------+
 
 
-+------------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                       ;
-+----------------------------------------+-------------------------------------------------+
-; Register name                          ; Reason for Removal                              ;
-+----------------------------------------+-------------------------------------------------+
-; cpu:uut|regfile:U_REGFILE|regs[0][0]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][1]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][2]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][3]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][4]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][5]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][6]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][7]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][8]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][9]   ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][10]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][11]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][12]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][13]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][14]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][15]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][16]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][17]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][18]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][19]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][20]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][21]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][22]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][23]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][24]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][25]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][26]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][27]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][28]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][29]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][30]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|regfile:U_REGFILE|regs[0][31]  ; Stuck at GND due to stuck port data_in          ;
-; cpu:uut|decode:U_DECODE|b_ovr          ; Merged with cpu:uut|decode:U_DECODE|rd_src[0]   ;
-; cpu:uut|i_stb                          ; Merged with cpu:uut|i_cyc                       ;
-; cpu:uut|d_stb                          ; Merged with cpu:uut|d_cyc                       ;
-; cpu:uut|decode:U_DECODE|alu_shsrc[0]   ; Merged with cpu:uut|decode:U_DECODE|alu_ysrc[0] ;
-; Total Number of Removed Registers = 36 ;                                                 ;
-+----------------------------------------+-------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                              ;
++--------------------------------------------------+--------------------------------------------------------------+
+; Register name                                    ; Reason for Removal                                           ;
++--------------------------------------------------+--------------------------------------------------------------+
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][0]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][1]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][2]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][3]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][4]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][5]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][6]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][7]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][8]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][9]           ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][10]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][11]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][12]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][13]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][14]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][15]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][16]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][17]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][18]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][19]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][20]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][21]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][22]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][23]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][24]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][25]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][26]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][27]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][28]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][29]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][30]          ; Stuck at GND due to stuck port data_in                       ;
+; cpu:U_CPU|regfile:U_REGFILE|regs[0][31]          ; Stuck at GND due to stuck port data_in                       ;
+; wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE|m_stb ; Merged with wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE|state ;
+; wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE|m_cyc ; Merged with wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE|state ;
+; cpu:U_CPU|decode:U_DECODE|b_ovr                  ; Merged with cpu:U_CPU|decode:U_DECODE|rd_src[0]              ;
+; cpu:U_CPU|i_stb                                  ; Merged with cpu:U_CPU|i_cyc                                  ;
+; cpu:U_CPU|d_stb                                  ; Merged with cpu:U_CPU|d_cyc                                  ;
+; cpu:U_CPU|decode:U_DECODE|alu_shsrc[0]           ; Merged with cpu:U_CPU|decode:U_DECODE|alu_ysrc[0]            ;
+; Total Number of Removed Registers = 38           ;                                                              ;
++--------------------------------------------------+--------------------------------------------------------------+
 
 
 +------------------------------------------------------+
@@ -363,12 +374,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 1260  ;
-; Number of registers using Synchronous Clear  ; 34    ;
-; Number of registers using Synchronous Load   ; 17    ;
+; Total registers                              ; 1421  ;
+; Number of registers using Synchronous Clear  ; 36    ;
+; Number of registers using Synchronous Load   ; 23    ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 1149  ;
+; Number of registers using Clock Enable       ; 1275  ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -378,84 +389,88 @@ Encoding Type:  One-Hot
 +----------------------------------------+---------+
 ; Inverted Register                      ; Fan out ;
 +----------------------------------------+---------+
-; reset                                  ; 163     ;
-; reset_ctr[3]                           ; 2       ;
-; reset_ctr[5]                           ; 2       ;
-; reset_ctr[6]                           ; 2       ;
+; reset                                  ; 204     ;
 ; reset_ctr[7]                           ; 2       ;
+; reset_ctr[6]                           ; 2       ;
+; reset_ctr[5]                           ; 2       ;
+; reset_ctr[3]                           ; 2       ;
 ; reset_ctr[8]                           ; 2       ;
 ; reset_ctr[9]                           ; 2       ;
 ; Total number of inverted registers = 7 ;         ;
 +----------------------------------------+---------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                            ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                  ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[1][3]   ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[2][15]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[3][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[4][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[5][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[6][26]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[7][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[8][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[9][24]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[10][16] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[11][18] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[12][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[13][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[14][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[15][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[16][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[17][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[18][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[19][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[20][24] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[21][6]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[22][6]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[23][11] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[24][9]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[25][9]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[26][18] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[27][1]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[28][5]  ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[29][16] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[30][30] ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|regs[31][13] ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |top|cpu:uut|pc[0]                          ;
-; 3:1                ; 25 bits   ; 50 LEs        ; 25 LEs               ; 25 LEs                 ; Yes        ; |top|reset_ctr[14]                          ;
-; 4:1                ; 30 bits   ; 60 LEs        ; 60 LEs               ; 0 LEs                  ; Yes        ; |top|cpu:uut|pc[23]                         ;
-; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |top|cpu:uut|lsu:U_LSU|ldout[13]            ;
-; 32:1               ; 3 bits    ; 63 LEs        ; 3 LEs                ; 60 LEs                 ; Yes        ; |top|cpu:uut|decode:U_DECODE|alu_op[2]      ;
-; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|rs2_dout[9]  ;
-; 7:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |top|cpu:uut|lsu:U_LSU|ldout[3]             ;
-; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; Yes        ; |top|cpu:uut|regfile:U_REGFILE|rs1_dout[10] ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |top|reset_ctr[6]                           ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |top|cpu:uut|Mux5                           ;
-; 5:1                ; 6 bits    ; 18 LEs        ; 12 LEs               ; 6 LEs                  ; No         ; |top|cpu:uut|alu_y[7]                       ;
-; 5:1                ; 11 bits   ; 33 LEs        ; 22 LEs               ; 11 LEs                 ; No         ; |top|cpu:uut|alu_y[25]                      ;
-; 5:1                ; 8 bits    ; 24 LEs        ; 16 LEs               ; 8 LEs                  ; No         ; |top|cpu:uut|alu_y[17]                      ;
-; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |top|cpu:uut|state                          ;
-; 6:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; No         ; |top|cpu:uut|alu_y[2]                       ;
-; 13:1               ; 7 bits    ; 56 LEs        ; 42 LEs               ; 14 LEs                 ; No         ; |top|cpu:uut|alu:U_ALU|Mux23                ;
-; 14:1               ; 7 bits    ; 63 LEs        ; 42 LEs               ; 21 LEs                 ; No         ; |top|cpu:uut|alu:U_ALU|Mux8                 ;
-; 14:1               ; 4 bits    ; 36 LEs        ; 32 LEs               ; 4 LEs                  ; No         ; |top|cpu:uut|alu:U_ALU|Mux27                ;
-; 15:1               ; 4 bits    ; 40 LEs        ; 28 LEs               ; 12 LEs                 ; No         ; |top|cpu:uut|alu:U_ALU|Mux5                 ;
-; 15:1               ; 2 bits    ; 20 LEs        ; 16 LEs               ; 4 LEs                  ; No         ; |top|cpu:uut|alu:U_ALU|Mux28                ;
-; 16:1               ; 2 bits    ; 20 LEs        ; 16 LEs               ; 4 LEs                  ; No         ; |top|cpu:uut|alu:U_ALU|Mux2                 ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                              ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |top|wb_gpio:U_GPIO|io_o[2]                   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |top|cpu:U_CPU|pc[1]                          ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[1][27]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[2][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[3][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[4][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[5][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[6][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[7][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[8][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[9][23]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[10][23] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[11][28] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[12][22] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[13][13] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[14][8]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[15][14] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[16][6]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[17][6]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[18][22] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[19][19] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[20][12] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[21][24] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[22][1]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[23][1]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[24][1]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[25][8]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[26][8]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[27][8]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[28][11] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[29][8]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[30][16] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|regs[31][5]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|wb_gpio:U_GPIO|io_t[16]                  ;
+; 3:1                ; 25 bits   ; 50 LEs        ; 25 LEs               ; 25 LEs                 ; Yes        ; |top|reset_ctr[11]                            ;
+; 4:1                ; 30 bits   ; 60 LEs        ; 60 LEs               ; 0 LEs                  ; Yes        ; |top|cpu:U_CPU|pc[24]                         ;
+; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |top|cpu:U_CPU|lsu:U_LSU|ldout[14]            ;
+; 4:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |top|wb_gpio:U_GPIO|s_dout[28]                ;
+; 32:1               ; 3 bits    ; 63 LEs        ; 3 LEs                ; 60 LEs                 ; Yes        ; |top|cpu:U_CPU|decode:U_DECODE|alu_op[1]      ;
+; 7:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |top|cpu:U_CPU|lsu:U_LSU|ldout[5]             ;
+; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|rs1_dout[22] ;
+; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; Yes        ; |top|cpu:U_CPU|regfile:U_REGFILE|rs2_dout[26] ;
+; 6:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |top|cpu:U_CPU|lsu:U_LSU|sstrb[1]             ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |top|reset_ctr[9]                             ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |top|cpu:U_CPU|Mux25                          ;
+; 5:1                ; 6 bits    ; 18 LEs        ; 12 LEs               ; 6 LEs                  ; No         ; |top|cpu:U_CPU|alu_y[8]                       ;
+; 5:1                ; 11 bits   ; 33 LEs        ; 22 LEs               ; 11 LEs                 ; No         ; |top|cpu:U_CPU|alu_y[27]                      ;
+; 5:1                ; 8 bits    ; 24 LEs        ; 16 LEs               ; 8 LEs                  ; No         ; |top|cpu:U_CPU|alu_y[14]                      ;
+; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |top|cpu:U_CPU|state                          ;
+; 6:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; No         ; |top|cpu:U_CPU|alu_y[1]                       ;
+; 13:1               ; 7 bits    ; 56 LEs        ; 42 LEs               ; 14 LEs                 ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux23                ;
+; 14:1               ; 7 bits    ; 63 LEs        ; 42 LEs               ; 21 LEs                 ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux14                ;
+; 14:1               ; 4 bits    ; 36 LEs        ; 32 LEs               ; 4 LEs                  ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux26                ;
+; 15:1               ; 4 bits    ; 40 LEs        ; 28 LEs               ; 12 LEs                 ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux7                 ;
+; 15:1               ; 2 bits    ; 20 LEs        ; 16 LEs               ; 4 LEs                  ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux28                ;
+; 16:1               ; 2 bits    ; 20 LEs        ; 16 LEs               ; 4 LEs                  ; No         ; |top|cpu:U_CPU|alu:U_ALU|Mux2                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
 
 
-+--------------------------------------------------------------------------------+
-; Source assignments for mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated ;
-+---------------------------------+--------------------+------+------------------+
-; Assignment                      ; Value              ; From ; To               ;
-+---------------------------------+--------------------+------+------------------+
-; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                ;
-+---------------------------------+--------------------+------+------------------+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
 
 
 +----------------------------------------------------------------------------------+
@@ -833,7 +848,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 
 
 +---------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: cpu:uut                ;
+; Parameter Settings for User Entity Instance: cpu:U_CPU              ;
 +----------------+----------------------------------+-----------------+
 ; Parameter Name ; Value                            ; Type            ;
 +----------------+----------------------------------+-----------------+
@@ -843,17 +858,17 @@ Note: In order to hide this table in the UI and the text report file, please set
 
 
 +-------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: mem:mem                    ;
+; Parameter Settings for User Entity Instance: wb_mem:U_MEM               ;
 +----------------+-----------------------------------------------+--------+
 ; Parameter Name ; Value                                         ; Type   ;
 +----------------+-----------------------------------------------+--------+
-; g_init_file    ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex ; String ;
+; g_init_file    ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif ; String ;
 +----------------+-----------------------------------------------+--------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
 +-----------------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: mem:mem|altsyncram:U_MEM                               ;
+; Parameter Settings for User Entity Instance: wb_mem:U_MEM|altsyncram:altsyncram_component           ;
 +------------------------------------+-----------------------------------------------+----------------+
 ; Parameter Name                     ; Value                                         ; Type           ;
 +------------------------------------+-----------------------------------------------+----------------+
@@ -863,24 +878,24 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; AUTO_CASCADE_CHAINS                ; ON                                            ; AUTO_CASCADE   ;
 ; IGNORE_CASCADE_BUFFERS             ; OFF                                           ; IGNORE_CASCADE ;
 ; WIDTH_BYTEENA                      ; 1                                             ; Untyped        ;
-; OPERATION_MODE                     ; BIDIR_DUAL_PORT                               ; Untyped        ;
+; OPERATION_MODE                     ; SINGLE_PORT                                   ; Untyped        ;
 ; WIDTH_A                            ; 32                                            ; Signed Integer ;
-; WIDTHAD_A                          ; 10                                            ; Signed Integer ;
-; NUMWORDS_A                         ; 1024                                          ; Signed Integer ;
+; WIDTHAD_A                          ; 12                                            ; Signed Integer ;
+; NUMWORDS_A                         ; 4096                                          ; Signed Integer ;
 ; OUTDATA_REG_A                      ; CLOCK0                                        ; Untyped        ;
 ; ADDRESS_ACLR_A                     ; NONE                                          ; Untyped        ;
 ; OUTDATA_ACLR_A                     ; NONE                                          ; Untyped        ;
 ; WRCONTROL_ACLR_A                   ; NONE                                          ; Untyped        ;
 ; INDATA_ACLR_A                      ; NONE                                          ; Untyped        ;
 ; BYTEENA_ACLR_A                     ; NONE                                          ; Untyped        ;
-; WIDTH_B                            ; 8                                             ; Signed Integer ;
-; WIDTHAD_B                          ; 12                                            ; Signed Integer ;
-; NUMWORDS_B                         ; 4096                                          ; Signed Integer ;
-; INDATA_REG_B                       ; CLOCK0                                        ; Untyped        ;
-; WRCONTROL_WRADDRESS_REG_B          ; CLOCK0                                        ; Untyped        ;
+; WIDTH_B                            ; 1                                             ; Signed Integer ;
+; WIDTHAD_B                          ; 1                                             ; Signed Integer ;
+; NUMWORDS_B                         ; 0                                             ; Signed Integer ;
+; INDATA_REG_B                       ; CLOCK1                                        ; Untyped        ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1                                        ; Untyped        ;
 ; RDCONTROL_REG_B                    ; CLOCK1                                        ; Untyped        ;
-; ADDRESS_REG_B                      ; CLOCK0                                        ; Untyped        ;
-; OUTDATA_REG_B                      ; CLOCK0                                        ; Untyped        ;
+; ADDRESS_REG_B                      ; CLOCK1                                        ; Untyped        ;
+; OUTDATA_REG_B                      ; UNREGISTERED                                  ; Untyped        ;
 ; BYTEENA_REG_B                      ; CLOCK1                                        ; Untyped        ;
 ; INDATA_ACLR_B                      ; NONE                                          ; Untyped        ;
 ; WRCONTROL_ACLR_B                   ; NONE                                          ; Untyped        ;
@@ -888,27 +903,27 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; OUTDATA_ACLR_B                     ; NONE                                          ; Untyped        ;
 ; RDCONTROL_ACLR_B                   ; NONE                                          ; Untyped        ;
 ; BYTEENA_ACLR_B                     ; NONE                                          ; Untyped        ;
-; WIDTH_BYTEENA_A                    ; 1                                             ; Signed Integer ;
+; WIDTH_BYTEENA_A                    ; 4                                             ; Signed Integer ;
 ; WIDTH_BYTEENA_B                    ; 1                                             ; Signed Integer ;
 ; RAM_BLOCK_TYPE                     ; AUTO                                          ; Untyped        ;
 ; BYTE_SIZE                          ; 8                                             ; Signed Integer ;
 ; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                     ; Untyped        ;
-; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_WITH_NBE_READ                        ; Untyped        ;
-; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_WITH_NBE_READ                        ; Untyped        ;
-; INIT_FILE                          ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex ; Untyped        ;
-; INIT_FILE_LAYOUT                   ; PORT_B                                        ; Untyped        ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ                          ; Untyped        ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ                          ; Untyped        ;
+; INIT_FILE                          ; D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif ; Untyped        ;
+; INIT_FILE_LAYOUT                   ; PORT_A                                        ; Untyped        ;
 ; MAXIMUM_DEPTH                      ; 0                                             ; Signed Integer ;
 ; CLOCK_ENABLE_INPUT_A               ; BYPASS                                        ; Untyped        ;
-; CLOCK_ENABLE_INPUT_B               ; BYPASS                                        ; Untyped        ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL                                        ; Untyped        ;
 ; CLOCK_ENABLE_OUTPUT_A              ; BYPASS                                        ; Untyped        ;
-; CLOCK_ENABLE_OUTPUT_B              ; BYPASS                                        ; Untyped        ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL                                        ; Untyped        ;
 ; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN                               ; Untyped        ;
 ; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN                               ; Untyped        ;
 ; ENABLE_ECC                         ; FALSE                                         ; Untyped        ;
 ; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                                         ; Untyped        ;
 ; WIDTH_ECCSTATUS                    ; 3                                             ; Signed Integer ;
 ; DEVICE_FAMILY                      ; MAX 10                                        ; Untyped        ;
-; CBXI_PARAMETER                     ; altsyncram_4ot3                               ; Untyped        ;
+; CBXI_PARAMETER                     ; altsyncram_n0v3                               ; Untyped        ;
 +------------------------------------+-----------------------------------------------+----------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -930,28 +945,38 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+-------------------------------------+
 
 
-+----------------------------------------------------------------------+
-; altsyncram Parameter Settings by Entity Instance                     ;
-+-------------------------------------------+--------------------------+
-; Name                                      ; Value                    ;
-+-------------------------------------------+--------------------------+
-; Number of entity instances                ; 1                        ;
-; Entity Instance                           ; mem:mem|altsyncram:U_MEM ;
-;     -- OPERATION_MODE                     ; BIDIR_DUAL_PORT          ;
-;     -- WIDTH_A                            ; 32                       ;
-;     -- NUMWORDS_A                         ; 1024                     ;
-;     -- OUTDATA_REG_A                      ; CLOCK0                   ;
-;     -- WIDTH_B                            ; 8                        ;
-;     -- NUMWORDS_B                         ; 4096                     ;
-;     -- ADDRESS_REG_B                      ; CLOCK0                   ;
-;     -- OUTDATA_REG_B                      ; CLOCK0                   ;
-;     -- RAM_BLOCK_TYPE                     ; AUTO                     ;
-;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                ;
-+-------------------------------------------+--------------------------+
++------------------------------------------------------------------------------------------+
+; altsyncram Parameter Settings by Entity Instance                                         ;
++-------------------------------------------+----------------------------------------------+
+; Name                                      ; Value                                        ;
++-------------------------------------------+----------------------------------------------+
+; Number of entity instances                ; 1                                            ;
+; Entity Instance                           ; wb_mem:U_MEM|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; SINGLE_PORT                                  ;
+;     -- WIDTH_A                            ; 32                                           ;
+;     -- NUMWORDS_A                         ; 4096                                         ;
+;     -- OUTDATA_REG_A                      ; CLOCK0                                       ;
+;     -- WIDTH_B                            ; 1                                            ;
+;     -- NUMWORDS_B                         ; 0                                            ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                 ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
++-------------------------------------------+----------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "wb_gpio:U_GPIO"                                                                            ;
++-------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port        ; Type   ; Severity ; Details                                                                             ;
++-------------+--------+----------+-------------------------------------------------------------------------------------+
+; io_o[31..8] ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; io_t        ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++-------------+--------+----------+-------------------------------------------------------------------------------------+
 
 
 +-------------------------------------------------+
-; Port Connectivity Checks: "wb_mux_2to1:u_wbmux" ;
+; Port Connectivity Checks: "wb_mux_2to2:U_WBMUX" ;
 +--------+-------+----------+---------------------+
 ; Port   ; Type  ; Severity ; Details             ;
 +--------+-------+----------+---------------------+
@@ -976,28 +1001,29 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
 ; boundary_port         ; 50                          ;
-; cycloneiii_ff         ; 1260                        ;
-;     ENA               ; 1119                        ;
+; cycloneiii_ff         ; 1421                        ;
+;     ENA               ; 1239                        ;
 ;     ENA SCLR          ; 30                          ;
-;     SCLR              ; 4                           ;
+;     ENA SLD           ; 6                           ;
+;     SCLR              ; 6                           ;
 ;     SLD               ; 17                          ;
-;     plain             ; 90                          ;
+;     plain             ; 123                         ;
 ; cycloneiii_io_obuf    ; 16                          ;
-; cycloneiii_lcell_comb ; 2582                        ;
+; cycloneiii_lcell_comb ; 2714                        ;
 ;     arith             ; 153                         ;
 ;         2 data inputs ; 60                          ;
 ;         3 data inputs ; 93                          ;
-;     normal            ; 2429                        ;
+;     normal            ; 2561                        ;
 ;         0 data inputs ; 1                           ;
 ;         1 data inputs ; 4                           ;
-;         2 data inputs ; 104                         ;
-;         3 data inputs ; 373                         ;
-;         4 data inputs ; 1947                        ;
+;         2 data inputs ; 156                         ;
+;         3 data inputs ; 454                         ;
+;         4 data inputs ; 1946                        ;
 ; cycloneiii_pll        ; 1                           ;
-; cycloneiii_ram_block  ; 8                           ;
+; cycloneiii_ram_block  ; 32                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 15.00                       ;
-; Average LUT depth     ; 6.87                        ;
+; Max LUT depth         ; 15.10                       ;
+; Average LUT depth     ; 6.67                        ;
 +-----------------------+-----------------------------+
 
 
@@ -1016,13 +1042,22 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 25.1std.0 Build 1129 10/21/2025 Patches 0.02std SC Lite Edition
-    Info: Processing started: Sat Aug  1 23:23:03 2026
+    Info: Processing started: Mon Aug  3 21:36:43 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off max1k-cpu -c project_template
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
-Info (12021): Found 2 design units, including 1 entities, in source file src/mem.vhd
-    Info (12022): Found design unit 1: mem-rtl File: D:/Files/max1k/max1k-cpu/src/mem.vhd Line: 27
-    Info (12023): Found entity 1: mem File: D:/Files/max1k/max1k-cpu/src/mem.vhd Line: 9
+Info (12021): Found 2 design units, including 1 entities, in source file src/pll1.vhd
+    Info (12022): Found design unit 1: pll1-SYN File: D:/Files/max1k/max1k-cpu/src/pll1.vhd Line: 54
+    Info (12023): Found entity 1: pll1 File: D:/Files/max1k/max1k-cpu/src/pll1.vhd Line: 43
+Info (12021): Found 2 design units, including 1 entities, in source file src/wb/wb_mux_2to2.vhd
+    Info (12022): Found design unit 1: wb_mux_2to2-rtl File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd Line: 49
+    Info (12023): Found entity 1: wb_mux_2to2 File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd Line: 6
+Info (12021): Found 2 design units, including 1 entities, in source file src/periph/wb_mem.vhd
+    Info (12022): Found design unit 1: wb_mem-rtl File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 27
+    Info (12023): Found entity 1: wb_mem File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 9
+Info (12021): Found 2 design units, including 1 entities, in source file src/periph/wb_gpio.vhd
+    Info (12022): Found design unit 1: wb_gpio-rtl File: D:/Files/max1k/max1k-cpu/src/periph/wb_gpio.vhd Line: 26
+    Info (12023): Found entity 1: wb_gpio File: D:/Files/max1k/max1k-cpu/src/periph/wb_gpio.vhd Line: 6
 Info (12021): Found 2 design units, including 1 entities, in source file src/wb/wb_regslice.vhd
     Info (12022): Found design unit 1: wb_regslice-rtl File: D:/Files/max1k/max1k-cpu/src/wb/wb_regslice.vhd Line: 31
     Info (12023): Found entity 1: wb_regslice File: D:/Files/max1k/max1k-cpu/src/wb/wb_regslice.vhd Line: 6
@@ -1030,14 +1065,8 @@ Info (12021): Found 2 design units, including 1 entities, in source file src/wb/
     Info (12022): Found design unit 1: wb_mux_2to1-rtl File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 40
     Info (12023): Found entity 1: wb_mux_2to1 File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 6
 Info (12021): Found 2 design units, including 1 entities, in source file src/wb/wb_mux_1to2.vhd
-    Info (12022): Found design unit 1: wb_mux_1to2-rtl File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_1to2.vhd Line: 39
+    Info (12022): Found design unit 1: wb_mux_1to2-rtl File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_1to2.vhd Line: 42
     Info (12023): Found entity 1: wb_mux_1to2 File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_1to2.vhd Line: 6
-Info (12021): Found 2 design units, including 1 entities, in source file src/imem.vhd
-    Info (12022): Found design unit 1: imem-rtl File: D:/Files/max1k/max1k-cpu/src/imem.vhd Line: 24
-    Info (12023): Found entity 1: imem File: D:/Files/max1k/max1k-cpu/src/imem.vhd Line: 9
-Info (12021): Found 2 design units, including 1 entities, in source file src/dmem.vhd
-    Info (12022): Found design unit 1: dmem-rtl File: D:/Files/max1k/max1k-cpu/src/dmem.vhd Line: 24
-    Info (12023): Found entity 1: dmem File: D:/Files/max1k/max1k-cpu/src/dmem.vhd Line: 9
 Info (12021): Found 2 design units, including 1 entities, in source file src/cpu/regfile.vhd
     Info (12022): Found design unit 1: regfile-rtl File: D:/Files/max1k/max1k-cpu/src/cpu/regfile.vhd Line: 23
     Info (12023): Found entity 1: regfile File: D:/Files/max1k/max1k-cpu/src/cpu/regfile.vhd Line: 6
@@ -1073,9 +1102,6 @@ Info (12021): Found 2 design units, including 1 entities, in source file src/uar
 Info (12021): Found 2 design units, including 1 entities, in source file src/top.vhd
     Info (12022): Found design unit 1: top-rtl File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 26
     Info (12023): Found entity 1: top File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 6
-Info (12021): Found 2 design units, including 1 entities, in source file pll1.vhd
-    Info (12022): Found design unit 1: pll1-SYN File: D:/Files/max1k/max1k-cpu/pll1.vhd Line: 54
-    Info (12023): Found entity 1: pll1 File: D:/Files/max1k/max1k-cpu/pll1.vhd Line: 43
 Info (12127): Elaborating entity "top" for the top level hierarchy
 Warning (10541): VHDL Signal Declaration warning at top.vhd(11): used implicit default value for signal "SDRAM_A" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 11
 Warning (10541): VHDL Signal Declaration warning at top.vhd(12): used implicit default value for signal "SDRAM_BA" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 12
@@ -1087,10 +1113,12 @@ Warning (10541): VHDL Signal Declaration warning at top.vhd(17): used implicit d
 Warning (10541): VHDL Signal Declaration warning at top.vhd(18): used implicit default value for signal "SDRAM_WE" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 18
 Warning (10541): VHDL Signal Declaration warning at top.vhd(19): used implicit default value for signal "SDRAM_DQM" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 19
 Warning (10541): VHDL Signal Declaration warning at top.vhd(21): used implicit default value for signal "FT2232H_RX" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 21
-Info (12128): Elaborating entity "pll1" for hierarchy "pll1:U_PLL1" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 73
-Info (12128): Elaborating entity "altpll" for hierarchy "pll1:U_PLL1|altpll:altpll_component" File: D:/Files/max1k/max1k-cpu/pll1.vhd Line: 147
-Info (12130): Elaborated megafunction instantiation "pll1:U_PLL1|altpll:altpll_component" File: D:/Files/max1k/max1k-cpu/pll1.vhd Line: 147
-Info (12133): Instantiated megafunction "pll1:U_PLL1|altpll:altpll_component" with the following parameter: File: D:/Files/max1k/max1k-cpu/pll1.vhd Line: 147
+Warning (10541): VHDL Signal Declaration warning at top.vhd(79): used implicit default value for signal "io_i" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 79
+Warning (10036): Verilog HDL or VHDL warning at top.vhd(81): object "io_t" assigned a value but never read File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 81
+Info (12128): Elaborating entity "pll1" for hierarchy "pll1:U_PLL1" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 86
+Info (12128): Elaborating entity "altpll" for hierarchy "pll1:U_PLL1|altpll:altpll_component" File: D:/Files/max1k/max1k-cpu/src/pll1.vhd Line: 147
+Info (12130): Elaborated megafunction instantiation "pll1:U_PLL1|altpll:altpll_component" File: D:/Files/max1k/max1k-cpu/src/pll1.vhd Line: 147
+Info (12133): Instantiated megafunction "pll1:U_PLL1|altpll:altpll_component" with the following parameter: File: D:/Files/max1k/max1k-cpu/src/pll1.vhd Line: 147
     Info (12134): Parameter "bandwidth_type" = "AUTO"
     Info (12134): Parameter "clk0_divide_by" = "6"
     Info (12134): Parameter "clk0_duty_cycle" = "50"
@@ -1153,14 +1181,15 @@ Info (12133): Instantiated megafunction "pll1:U_PLL1|altpll:altpll_component" wi
 Info (12021): Found 1 design units, including 1 entities, in source file db/pll1_altpll.v
     Info (12023): Found entity 1: pll1_altpll File: D:/Files/max1k/max1k-cpu/db/pll1_altpll.v Line: 30
 Info (12128): Elaborating entity "pll1_altpll" for hierarchy "pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_generated" File: c:/altera_lite/25.1std/quartus/libraries/megafunctions/altpll.tdf Line: 898
-Info (12128): Elaborating entity "cpu" for hierarchy "cpu:uut" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 98
-Info (12128): Elaborating entity "decode" for hierarchy "cpu:uut|decode:U_DECODE" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 104
-Info (12128): Elaborating entity "immext" for hierarchy "cpu:uut|immext:U_IMMEXT" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 127
-Info (12128): Elaborating entity "regfile" for hierarchy "cpu:uut|regfile:U_REGFILE" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 152
-Info (12128): Elaborating entity "bcond" for hierarchy "cpu:uut|bcond:U_BCOND" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 167
-Info (12128): Elaborating entity "alu" for hierarchy "cpu:uut|alu:U_ALU" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 216
-Info (12128): Elaborating entity "lsu" for hierarchy "cpu:uut|lsu:U_LSU" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 227
-Info (12128): Elaborating entity "wb_mux_2to1" for hierarchy "wb_mux_2to1:u_wbmux" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 123
+Info (12128): Elaborating entity "cpu" for hierarchy "cpu:U_CPU" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 111
+Info (12128): Elaborating entity "decode" for hierarchy "cpu:U_CPU|decode:U_DECODE" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 104
+Info (12128): Elaborating entity "immext" for hierarchy "cpu:U_CPU|immext:U_IMMEXT" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 127
+Info (12128): Elaborating entity "regfile" for hierarchy "cpu:U_CPU|regfile:U_REGFILE" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 152
+Info (12128): Elaborating entity "bcond" for hierarchy "cpu:U_CPU|bcond:U_BCOND" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 167
+Info (12128): Elaborating entity "alu" for hierarchy "cpu:U_CPU|alu:U_ALU" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 216
+Info (12128): Elaborating entity "lsu" for hierarchy "cpu:U_CPU|lsu:U_LSU" File: D:/Files/max1k/max1k-cpu/src/cpu/cpu.vhd Line: 227
+Info (12128): Elaborating entity "wb_mux_2to2" for hierarchy "wb_mux_2to2:U_WBMUX" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 136
+Info (12128): Elaborating entity "wb_mux_2to1" for hierarchy "wb_mux_2to2:U_WBMUX|wb_mux_2to1:U_INGRESS" File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd Line: 71
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(50): signal "s1_cyc" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 50
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(50): signal "s0_cyc" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 50
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(59): signal "toggle" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 59
@@ -1183,13 +1212,15 @@ Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(83): signal "
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(83): signal "m_ack" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 83
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(84): signal "sel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 84
 Warning (10492): VHDL Process Statement warning at wb_mux_2to1.vhd(84): signal "m_ack" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to1.vhd Line: 84
-Info (12128): Elaborating entity "mem" for hierarchy "mem:mem" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 157
-Info (12128): Elaborating entity "altsyncram" for hierarchy "mem:mem|altsyncram:U_MEM" File: D:/Files/max1k/max1k-cpu/src/mem.vhd Line: 31
-Info (12130): Elaborated megafunction instantiation "mem:mem|altsyncram:U_MEM" File: D:/Files/max1k/max1k-cpu/src/mem.vhd Line: 31
-Info (12133): Instantiated megafunction "mem:mem|altsyncram:U_MEM" with the following parameter: File: D:/Files/max1k/max1k-cpu/src/mem.vhd Line: 31
+Info (12128): Elaborating entity "wb_regslice" for hierarchy "wb_mux_2to2:U_WBMUX|wb_regslice:U_REGSLICE" File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd Line: 105
+Info (12128): Elaborating entity "wb_mux_1to2" for hierarchy "wb_mux_2to2:U_WBMUX|wb_mux_1to2:U_EGRESS" File: D:/Files/max1k/max1k-cpu/src/wb/wb_mux_2to2.vhd Line: 130
+Info (12128): Elaborating entity "wb_mem" for hierarchy "wb_mem:U_MEM" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 179
+Info (12128): Elaborating entity "altsyncram" for hierarchy "wb_mem:U_MEM|altsyncram:altsyncram_component" File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 31
+Info (12130): Elaborated megafunction instantiation "wb_mem:U_MEM|altsyncram:altsyncram_component" File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 31
+Info (12133): Instantiated megafunction "wb_mem:U_MEM|altsyncram:altsyncram_component" with the following parameter: File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 31
     Info (12134): Parameter "address_aclr_a" = "UNUSED"
     Info (12134): Parameter "address_aclr_b" = "NONE"
-    Info (12134): Parameter "address_reg_b" = "CLOCK0"
+    Info (12134): Parameter "address_reg_b" = "CLOCK1"
     Info (12134): Parameter "byte_size" = "8"
     Info (12134): Parameter "byteena_aclr_a" = "UNUSED"
     Info (12134): Parameter "byteena_aclr_b" = "NONE"
@@ -1197,49 +1228,53 @@ Info (12133): Instantiated megafunction "mem:mem|altsyncram:U_MEM" with the foll
     Info (12134): Parameter "clock_enable_core_a" = "USE_INPUT_CLKEN"
     Info (12134): Parameter "clock_enable_core_b" = "USE_INPUT_CLKEN"
     Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
-    Info (12134): Parameter "clock_enable_input_b" = "BYPASS"
+    Info (12134): Parameter "clock_enable_input_b" = "NORMAL"
     Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
-    Info (12134): Parameter "clock_enable_output_b" = "BYPASS"
+    Info (12134): Parameter "clock_enable_output_b" = "NORMAL"
     Info (12134): Parameter "intended_device_family" = "MAX 10"
     Info (12134): Parameter "ecc_pipeline_stage_enabled" = "FALSE"
     Info (12134): Parameter "enable_ecc" = "FALSE"
     Info (12134): Parameter "implement_in_les" = "OFF"
     Info (12134): Parameter "indata_aclr_a" = "UNUSED"
     Info (12134): Parameter "indata_aclr_b" = "NONE"
-    Info (12134): Parameter "indata_reg_b" = "CLOCK0"
-    Info (12134): Parameter "init_file" = "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.hex"
-    Info (12134): Parameter "init_file_layout" = "PORT_B"
+    Info (12134): Parameter "indata_reg_b" = "CLOCK1"
+    Info (12134): Parameter "init_file" = "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif"
+    Info (12134): Parameter "init_file_layout" = "PORT_A"
     Info (12134): Parameter "maximum_depth" = "0"
-    Info (12134): Parameter "numwords_a" = "1024"
-    Info (12134): Parameter "numwords_b" = "4096"
-    Info (12134): Parameter "operation_mode" = "BIDIR_DUAL_PORT"
+    Info (12134): Parameter "numwords_a" = "4096"
+    Info (12134): Parameter "numwords_b" = "0"
+    Info (12134): Parameter "operation_mode" = "SINGLE_PORT"
     Info (12134): Parameter "outdata_aclr_a" = "NONE"
     Info (12134): Parameter "outdata_aclr_b" = "NONE"
     Info (12134): Parameter "outdata_reg_a" = "CLOCK0"
-    Info (12134): Parameter "outdata_reg_b" = "CLOCK0"
+    Info (12134): Parameter "outdata_reg_b" = "UNREGISTERED"
     Info (12134): Parameter "power_up_uninitialized" = "FALSE"
     Info (12134): Parameter "ram_block_type" = "AUTO"
     Info (12134): Parameter "rdcontrol_aclr_b" = "NONE"
     Info (12134): Parameter "rdcontrol_reg_b" = "CLOCK1"
     Info (12134): Parameter "read_during_write_mode_mixed_ports" = "DONT_CARE"
-    Info (12134): Parameter "read_during_write_mode_port_a" = "NEW_DATA_WITH_NBE_READ"
-    Info (12134): Parameter "read_during_write_mode_port_b" = "NEW_DATA_WITH_NBE_READ"
+    Info (12134): Parameter "read_during_write_mode_port_a" = "NEW_DATA_NO_NBE_READ"
+    Info (12134): Parameter "read_during_write_mode_port_b" = "NEW_DATA_NO_NBE_READ"
     Info (12134): Parameter "stratixiv_m144k_allow_dual_clocks" = "ON"
     Info (12134): Parameter "width_a" = "32"
-    Info (12134): Parameter "width_b" = "8"
-    Info (12134): Parameter "width_byteena_a" = "1"
+    Info (12134): Parameter "width_b" = "1"
+    Info (12134): Parameter "width_byteena_a" = "4"
     Info (12134): Parameter "width_byteena_b" = "1"
     Info (12134): Parameter "width_eccstatus" = "3"
-    Info (12134): Parameter "widthad_a" = "10"
-    Info (12134): Parameter "widthad_b" = "12"
+    Info (12134): Parameter "widthad_a" = "12"
+    Info (12134): Parameter "widthad_b" = "1"
     Info (12134): Parameter "wrcontrol_aclr_a" = "UNUSED"
     Info (12134): Parameter "wrcontrol_aclr_b" = "NONE"
-    Info (12134): Parameter "wrcontrol_wraddress_reg_b" = "CLOCK0"
-    Info (12134): Parameter "lpm_hint" = "UNUSED"
+    Info (12134): Parameter "wrcontrol_wraddress_reg_b" = "CLOCK1"
+    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
     Info (12134): Parameter "lpm_type" = "altsyncram"
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_4ot3.tdf
-    Info (12023): Found entity 1: altsyncram_4ot3 File: D:/Files/max1k/max1k-cpu/db/altsyncram_4ot3.tdf Line: 28
-Info (12128): Elaborating entity "altsyncram_4ot3" for hierarchy "mem:mem|altsyncram:U_MEM|altsyncram_4ot3:auto_generated" File: c:/altera_lite/25.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_n0v3.tdf
+    Info (12023): Found entity 1: altsyncram_n0v3 File: D:/Files/max1k/max1k-cpu/db/altsyncram_n0v3.tdf Line: 28
+Info (12128): Elaborating entity "altsyncram_n0v3" for hierarchy "wb_mem:U_MEM|altsyncram:altsyncram_component|altsyncram_n0v3:auto_generated" File: c:/altera_lite/25.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Warning (113028): 992 out of 1024 addresses are uninitialized. The Quartus Prime software will initialize them to "0". There are 1 warnings found, and 1 warnings are reported. File: D:/Files/max1k/max1k-cpu/tb/sw/main.mif Line: 1
+    Warning (113027): Addresses ranging from 32 to 1023 are not initialized File: D:/Files/max1k/max1k-cpu/tb/sw/main.mif Line: 1
+Critical Warning (127005): Memory depth (4096) in the design file differs from memory depth (1024) in the Memory Initialization File "D:/Files/max1k/max1k-cpu/tb/sw/main.mif" -- setting initial value for remaining addresses to 0 File: D:/Files/max1k/max1k-cpu/src/periph/wb_mem.vhd Line: 31
+Info (12128): Elaborating entity "wb_gpio" for hierarchy "wb_gpio:U_GPIO" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 194
 Warning (13039): The following bidirectional pins have no drivers
     Warning (13040): bidirectional pin "SDRAM_DQ[0]" has no driver File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 20
     Warning (13040): bidirectional pin "SDRAM_DQ[1]" has no driver File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 20
@@ -1288,16 +1323,16 @@ Warning (15899): PLL "pll1:U_PLL1|altpll:altpll_component|pll1_altpll:auto_gener
 Warning (21074): Design contains 2 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "USER_BTN" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 10
     Warning (15610): No output dependent on input pin "FT2232H_TX" File: D:/Files/max1k/max1k-cpu/src/top.vhd Line: 22
-Info (21057): Implemented 3686 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 3865 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 3 input pins
     Info (21059): Implemented 31 output pins
     Info (21060): Implemented 16 bidirectional pins
-    Info (21061): Implemented 3627 logic cells
-    Info (21064): Implemented 8 RAM segments
+    Info (21061): Implemented 3782 logic cells
+    Info (21064): Implemented 32 RAM segments
     Info (21065): Implemented 1 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 78 warnings
-    Info: Peak virtual memory: 4854 megabytes
-    Info: Processing ended: Sat Aug  1 23:23:17 2026
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 83 warnings
+    Info: Peak virtual memory: 4849 megabytes
+    Info: Processing ended: Mon Aug  3 21:36:57 2026
     Info: Elapsed time: 00:00:14
     Info: Total CPU time (on all processors): 00:00:24
 

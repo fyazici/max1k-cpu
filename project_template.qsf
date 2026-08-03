@@ -152,12 +152,13 @@ set_global_assignment -name ENABLE_SIGNALTAP OFF
 set_global_assignment -name USE_SIGNALTAP_FILE stp2.stp
 set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
 set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE COMP IMAGE WITH ERAM"
-set_global_assignment -name VHDL_FILE src/mem.vhd -hdl_version VHDL_2008
+set_global_assignment -name QIP_FILE src/pll1.qip
+set_global_assignment -name VHDL_FILE src/wb/wb_mux_2to2.vhd -hdl_version VHDL_2008
+set_global_assignment -name VHDL_FILE src/periph/wb_mem.vhd -hdl_version VHDL_2008
+set_global_assignment -name VHDL_FILE src/periph/wb_gpio.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_regslice.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_mux_2to1.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_mux_1to2.vhd -hdl_version VHDL_2008
-set_global_assignment -name VHDL_FILE src/imem.vhd -hdl_version VHDL_2008
-set_global_assignment -name VHDL_FILE src/dmem.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/regfile.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/lsu.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/immext.vhd -hdl_version VHDL_2008
@@ -171,5 +172,4 @@ set_global_assignment -name VHDL_FILE src/uart_tx.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/uart_rx.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/top.vhd -hdl_version VHDL_2008
 set_global_assignment -name SDC_FILE constr/top.sdc
-set_global_assignment -name QIP_FILE pll1.qip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

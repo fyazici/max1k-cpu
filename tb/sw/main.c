@@ -1,32 +1,36 @@
 #include <stdint.h>
 #include <stddef.h>
 
-void kputchar(char);
-void kprint(const char *);
+#define CPU_CLOCK_PER_US (1)
+#define GPIO0_BASEADDR ((void *)0x80000000)
 
-volatile unsigned char *uart = (volatile unsigned char *)0x12345678;
-void kputchar(char c)
+void out32(volatile uint32_t *, uint32_t);
+uint32_t in32(volatile uint32_t *);
+void usleep(uint32_t);
+
+void out32(volatile uint32_t *p, uint32_t v)
 {
-  *uart = c;
+  *p = v;
 }
 
-void kprint(const char *str)
+uint32_t in32(volatile uint32_t *p)
 {
-  while (*str != '\0')
-  {
-    kputchar(*str);
-    str++;
-  }
+  return *p;
 }
 
-volatile int giValue = 0;
+void usleep(uint32_t us)
+{
+  volatile uint32_t ctr = us * CPU_CLOCK_PER_US;
+  while (ctr--)
+    ;
+}
 
 int main(void)
 {
-  kprint("Hello world!\r\n");
+  uint32_t ctr = 0;
   while (1)
   {
-    // Read input from the UART
-    kputchar(giValue++);
+    usleep(500000);
+    out32(GPIO0_BASEADDR, ctr++);
   }
 }

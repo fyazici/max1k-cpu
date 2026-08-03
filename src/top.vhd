@@ -57,18 +57,31 @@ architecture rtl of top is
   signal d_ack  : std_logic;
 
   -- memory intf
-  signal m_adr  : std_logic_vector(31 downto 0);
-  signal m_din  : std_logic_vector(31 downto 0);
-  signal m_dout : std_logic_vector(31 downto 0);
-  signal m_we   : std_logic;
-  signal m_sel  : std_logic_vector(3 downto 0);
-  signal m_stb  : std_logic;
-  signal m_cyc  : std_logic;
-  signal m_ack  : std_logic;
+  signal m0_adr  : std_logic_vector(31 downto 0);
+  signal m0_din  : std_logic_vector(31 downto 0);
+  signal m0_dout : std_logic_vector(31 downto 0);
+  signal m0_we   : std_logic;
+  signal m0_sel  : std_logic_vector(3 downto 0);
+  signal m0_stb  : std_logic;
+  signal m0_cyc  : std_logic;
+  signal m0_ack  : std_logic;
 
+  -- gpio intf
+  signal m1_adr  : std_logic_vector(31 downto 0);
+  signal m1_din  : std_logic_vector(31 downto 0);
+  signal m1_dout : std_logic_vector(31 downto 0);
+  signal m1_we   : std_logic;
+  signal m1_sel  : std_logic_vector(3 downto 0);
+  signal m1_stb  : std_logic;
+  signal m1_cyc  : std_logic;
+  signal m1_ack  : std_logic;
+
+  signal io_i : std_logic_vector(31 downto 0);
+  signal io_o : std_logic_vector(31 downto 0);
+  signal io_t : std_logic_vector(31 downto 0);
 begin
 
-  led <= d_dout(23 downto 16);
+  led <= io_o(7 downto 0);
 
   U_PLL1 : pll1
   port map
@@ -95,7 +108,7 @@ begin
     end if;
   end process;
 
-  uut : entity work.cpu
+  U_CPU : entity work.cpu
     generic map(G_RESET_VEC => x"00000000")
     port map
     (
@@ -120,7 +133,7 @@ begin
       d_ack  => d_ack
     );
 
-  u_wbmux : entity work.wb_mux_2to1
+  U_WBMUX : entity work.wb_mux_2to2
     port map
     (
       clk   => clk,
@@ -144,29 +157,58 @@ begin
       s1_dout => d_din,
       s1_ack  => d_ack,
 
-      m_cyc  => m_cyc,
-      m_stb  => m_stb,
-      m_adr  => m_adr,
-      m_we   => m_we,
-      m_sel  => m_sel,
-      m_dout => m_dout,
-      m_din  => m_din,
-      m_ack  => m_ack
+      m0_cyc  => m0_cyc,
+      m0_stb  => m0_stb,
+      m0_adr  => m0_adr,
+      m0_we   => m0_we,
+      m0_sel  => m0_sel,
+      m0_dout => m0_dout,
+      m0_din  => m0_din,
+      m0_ack  => m0_ack,
+
+      m1_cyc  => m1_cyc,
+      m1_stb  => m1_stb,
+      m1_adr  => m1_adr,
+      m1_we   => m1_we,
+      m1_sel  => m1_sel,
+      m1_dout => m1_dout,
+      m1_din  => m1_din,
+      m1_ack  => m1_ack
     );
 
-  mem : entity work.mem
+  U_MEM : entity work.wb_mem
     generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif")
     port map
     (
-      clk  => clk,
-      adr  => m_adr,
-      din  => m_dout,
-      dout => m_din,
-      we   => m_we,
-      sel  => m_sel,
-      stb  => m_stb,
-      cyc  => m_cyc,
-      ack  => m_ack
+      clk    => clk,
+      s_adr  => m0_adr,
+      s_din  => m0_dout,
+      s_dout => m0_din,
+      s_we   => m0_we,
+      s_sel  => m0_sel,
+      s_stb  => m0_stb,
+      s_cyc  => m0_cyc,
+      s_ack  => m0_ack
+    );
+
+  U_GPIO : entity work.wb_gpio
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+
+      s_cyc  => m1_cyc,
+      s_stb  => m1_stb,
+      s_adr  => m1_adr,
+      s_we   => m1_we,
+      s_sel  => m1_sel,
+      s_din  => m1_dout,
+      s_dout => m1_din,
+      s_ack  => m1_ack,
+
+      io_i => io_i,
+      io_o => io_o,
+      io_t => io_t
     );
 
 end architecture;
