@@ -34,6 +34,14 @@
 				{
 					"name" : "LED[7]",
 					"strict" : false
+				},
+				{
+					"name" : "FT2232H_RX",
+					"strict" : false
+				},
+				{
+					"name" : "FT2232H_TX",
+					"strict" : false
 				}
 			]
 		}

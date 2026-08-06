@@ -1,36 +1,36 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 
-#define CPU_CLOCK_PER_US (1)
-#define GPIO0_BASEADDR ((void *)0x80000000)
+#include <platform.h>
 
-void out32(volatile uint32_t *, uint32_t);
-uint32_t in32(volatile uint32_t *);
-void usleep(uint32_t);
-
-void out32(volatile uint32_t *p, uint32_t v)
-{
-  *p = v;
-}
-
-uint32_t in32(volatile uint32_t *p)
-{
-  return *p;
-}
-
-void usleep(uint32_t us)
-{
-  volatile uint32_t ctr = us * CPU_CLOCK_PER_US;
-  while (ctr--)
-    ;
-}
+void puts_(const char *s);
 
 int main(void)
 {
-  uint32_t ctr = 0;
+  HAL_uart_init(UART0_BASEADDR, 115200);
+
+  // struct HAL_Uart *spUart0 = UART0_BASEADDR;
+
   while (1)
   {
     usleep(500000);
-    out32(GPIO0_BASEADDR, ctr++);
+
+    puts_("Hello World 1111\r\n");
+    // spUart0->txr = 'A';
+    out32(GPIO0_BASEADDR, 1);
+
+    usleep(500000);
+    puts_("Hello World 2222\r\n");
+    // spUart0->txr = 'B';
+    out32(GPIO0_BASEADDR, 0);
   }
+}
+
+void puts_(const char *s)
+{
+  char c;
+  while ((c = *s++))
+    outbyte(c);
 }

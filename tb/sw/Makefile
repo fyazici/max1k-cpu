@@ -1,4 +1,4 @@
-OBJS = main.o startup.o
+OBJS = main.o platform.o startup.o
 
 # Our output name
 BINARY = main
@@ -21,7 +21,7 @@ OBJDUMP     := $(PREFIX)-objdump
 GDB         := $(PREFIX)-gdb
 OPT         := -Os
 DEBUG       := 
-CSTD        ?= -std=c99
+#CSTD        ?= -std=c99
 
 # C flags
 TGT_CFLAGS  += $(OPT) $(CSTD) $(DEBUG)
@@ -29,6 +29,8 @@ TGT_CFLAGS  += $(ARCH_FLAGS)
 TGT_CFLAGS  += -Wextra -Wshadow -Wimplicit-function-declaration
 TGT_CFLAGS  += -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
 TGT_CFLAGS  += -fno-common -ffunction-sections -fdata-sections
+TGT_CFLAGS  += -I.
+TGT_CFLAGS  += -Wno-unused-parameter
 
 # C preprocessor common flags
 TGT_CFLAGS    += -MD

@@ -6,11 +6,11 @@ SECTIONS {
 	/* Include entry point at start of binary */
 	.text : ALIGN(4) {
 		*(.init);
-		*(.text);
+		*(.text*);
 	}
 	.bss : ALIGN(4) {
 		PROVIDE(bss_start = .);
-		*(.bss);
+		*(.bss*);
 		. += 1024;
 		PROVIDE(stack_top = .);
 		. += 1024;
@@ -18,9 +18,12 @@ SECTIONS {
 		PROVIDE(bss_end = .);
 	}
 	.rodata : ALIGN(4) {
-		*(.rodata);
+		*(.rodata*);
 	}
 	.data : ALIGN(4) {
-		*(.data);
+		*(.data*);
 	}
 }
+
+/* for sbrk */
+PROVIDE(_end = .);

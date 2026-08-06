@@ -8,7 +8,8 @@ use altera_mf.altera_mf_components.all;
 
 entity wb_mem is
   generic (
-    G_INIT_FILE : string := "UNUSED"
+    G_AW : natural := 10;
+	 G_INIT_FILE : string := "UNUSED"
   );
   port (
     clk : in std_logic;
@@ -37,19 +38,19 @@ begin
     intended_device_family        => "MAX 10",
     lpm_hint                      => "ENABLE_RUNTIME_MOD=NO",
     lpm_type                      => "altsyncram",
-    numwords_a                    => 4096,
+    numwords_a                    => 2**G_AW,
     operation_mode                => "SINGLE_PORT",
     outdata_aclr_a                => "NONE",
     outdata_reg_a                 => "CLOCK0",
     power_up_uninitialized        => "FALSE",
     read_during_write_mode_port_a => "NEW_DATA_NO_NBE_READ",
-    widthad_a                     => 12,
+    widthad_a                     => G_AW,
     width_a                       => 32,
     width_byteena_a               => 4
   )
   port map
   (
-    address_a => s_adr(13 downto 2),
+    address_a => s_adr((G_AW+2)-1 downto 2),
     byteena_a => s_sel,
     clock0    => clk,
     data_a    => s_din,
