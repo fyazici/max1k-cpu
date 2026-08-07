@@ -1,7 +1,7 @@
 Archive member included to satisfy reference by file (symbol)
 
 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-reent.o)
-                              platform.o (errno)
+                              platform.o (symbol from plugin) (errno)
 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-impure.o)
                               /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-reent.o) (_impure_ptr)
 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
@@ -32,48 +32,16 @@ Archive member included to satisfy reference by file (symbol)
                               /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o) (_fclose_r)
 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
                               /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fclose.o) (__sflush_r)
-/home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-                              platform.o (__divsi3)
 
 Merging object attributes
 
 
 Discarded input sections
 
- .text          0x00000000        0x0 main.o
- .data          0x00000000        0x0 main.o
- .bss           0x00000000        0x0 main.o
- .text          0x00000000        0x0 platform.o
- .data          0x00000000        0x0 platform.o
- .bss           0x00000000        0x0 platform.o
- .text.HAL_uart_putc
-                0x00000000       0x14 platform.o
- .text.HAL_uart_getc
-                0x00000000       0x1c platform.o
- .text.out16    0x00000000        0x8 platform.o
- .text.out8     0x00000000        0x8 platform.o
- .text.in32     0x00000000        0x8 platform.o
- .text.in16     0x00000000        0x8 platform.o
- .text.in8      0x00000000        0x8 platform.o
- .text._close   0x00000000        0x8 platform.o
- .text._execve  0x00000000       0x14 platform.o
- .text._fork    0x00000000       0x14 platform.o
- .text._fstat   0x00000000       0x10 platform.o
- .text._getpid  0x00000000        0x8 platform.o
- .text._isatty  0x00000000        0x8 platform.o
- .text._kill    0x00000000       0x14 platform.o
- .text._link    0x00000000       0x14 platform.o
- .text._lseek   0x00000000        0x8 platform.o
- .text._open    0x00000000        0x8 platform.o
- .text._read    0x00000000        0x8 platform.o
- .text._sbrk    0x00000000       0x24 platform.o
- .text._stat    0x00000000       0x10 platform.o
- .text._times   0x00000000        0x8 platform.o
- .text._unlink  0x00000000       0x14 platform.o
- .text._wait    0x00000000       0x14 platform.o
- .text._write   0x00000000       0x50 platform.o
- .sbss.heap_end.0
-                0x00000000        0x4 platform.o
+ .text          0x00000000       0x7c /tmp/ccS5lTrc.ltrans0.ltrans.o
+ .data          0x00000000        0x0 /tmp/ccS5lTrc.ltrans0.ltrans.o
+ .bss           0x00000000        0x0 /tmp/ccS5lTrc.ltrans0.ltrans.o
+ .sbss          0x00000000        0x4 /tmp/ccS5lTrc.ltrans0.ltrans.o
  .text          0x00000000        0x0 startup.o
  .data          0x00000000        0x0 startup.o
  .bss           0x00000000        0x0 startup.o
@@ -283,8 +251,6 @@ Discarded input sections
                 0x00000000        0x0 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
  .riscv.attributes
                 0x00000000       0x1c /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
- .data          0x00000000        0x0 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
- .bss           0x00000000        0x0 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
 
 Memory Configuration
 
@@ -294,6 +260,7 @@ Name             Origin             Length             Attributes
 Linker script and memory map
 
 LOAD main.o
+LOAD /tmp/ccS5lTrc.ltrans0.ltrans.o
 LOAD platform.o
 LOAD startup.o
 START GROUP
@@ -309,115 +276,64 @@ END GROUP
 LOAD /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a
                 0x00000000                        . = 0x0
 
-.text           0x00000000      0x1fc
+.text           0x00000000       0xa4
  *(.init)
  .init          0x00000000       0x30 startup.o
                 0x00000000                start
  *(.text*)
- .text.puts_    0x00000030       0x34 main.o
-                0x00000030                puts_
- .text.startup.main
-                0x00000064       0x6c main.o
-                0x00000064                main
- .text.HAL_uart_init
-                0x000000d0       0x38 platform.o
-                0x000000d0                HAL_uart_init
- .text.outbyte  0x00000108       0x18 platform.o
-                0x00000108                outbyte
- .text.out32    0x00000120        0x8 platform.o
-                0x00000120                out32
- .text.usleep   0x00000128       0x20 platform.o
-                0x00000128                usleep
- .text          0x00000148       0xb4 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-                0x00000148                __divsi3
-                0x00000150                __hidden___udivsi3
-                0x00000150                __udivsi3
-                0x00000198                __umodsi3
-                0x000001cc                __modsi3
+ .text.startup  0x00000030       0x74 /tmp/ccS5lTrc.ltrans0.ltrans.o
+                0x00000030                main
 
-.bss            0x000001fc      0x800
-                0x000001fc                        PROVIDE (bss_start = .)
+.bss            0x000000a4      0x800
+                0x000000a4                        PROVIDE (bss_start = .)
  *(.bss*)
-                0x000005fc                        . = (. + 0x400)
- *fill*         0x000001fc      0x400 
-                0x000005fc                        PROVIDE (stack_top = .)
-                0x000009fc                        . = (. + 0x400)
- *fill*         0x000005fc      0x400 
-                0x000009fc                        PROVIDE (__global_pointer$ = .)
-                0x000009fc                        PROVIDE (bss_end = .)
+                0x000004a4                        . = (. + 0x400)
+ *fill*         0x000000a4      0x400 
+                0x000004a4                        PROVIDE (stack_top = .)
+                0x000008a4                        . = (. + 0x400)
+ *fill*         0x000004a4      0x400 
+                0x000008a4                        PROVIDE (__global_pointer$ = .)
+                0x000008a4                        PROVIDE (bss_end = .)
 
-.rodata         0x000009fc       0x27
+.rodata         0x000008a4      0x103
  *(.rodata*)
- .rodata.main.str1.4
-                0x000009fc       0x27 main.o
+ .rodata.str1.4
+                0x000008a4      0x103 /tmp/ccS5lTrc.ltrans0.ltrans.o
 
-.rela.dyn       0x00000a24        0x0
- .rela.init     0x00000a24        0x0 main.o
+.rela.dyn       0x000009a8        0x0
+ .rela.init     0x000009a8        0x0 startup.o
 
 .data
  *(.data*)
-                0x00000a23                        PROVIDE (_end = .)
+                0x000009a7                        PROVIDE (_end = .)
 OUTPUT(main.elf elf32-littleriscv)
 
 .comment        0x00000000       0x19
- .comment       0x00000000       0x19 main.o
-                                 0x1a (size before relaxing)
- .comment       0x00000019        0x0 platform.o
+ .comment       0x00000000       0x19 /tmp/ccS5lTrc.ltrans0.ltrans.o
                                  0x1a (size before relaxing)
 
 .note.GNU-stack
                 0x00000000        0x0
  .note.GNU-stack
-                0x00000000        0x0 main.o
- .note.GNU-stack
-                0x00000000        0x0 platform.o
+                0x00000000        0x0 /tmp/ccS5lTrc.ltrans0.ltrans.o
 
 .riscv.attributes
                 0x00000000       0x1c
  .riscv.attributes
-                0x00000000       0x1c main.o
+                0x00000000       0x1c /tmp/ccS5lTrc.ltrans0.ltrans.o
  .riscv.attributes
-                0x0000001c       0x1c platform.o
- .riscv.attributes
-                0x00000038       0x1a startup.o
- .riscv.attributes
-                0x00000052       0x1a /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_line     0x00000000      0x153
- .debug_line    0x00000000      0x153 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_line_str
-                0x00000000       0x7c
- .debug_line_str
-                0x00000000       0x7c /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_info     0x00000000       0x5f
- .debug_info    0x00000000       0x5f /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_abbrev   0x00000000       0x28
- .debug_abbrev  0x00000000       0x28 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_aranges  0x00000000       0x20
- .debug_aranges
-                0x00000000       0x20 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-
-.debug_str      0x00000000       0xb7
- .debug_str     0x00000000       0xb7 /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-                                 0xc1 (size before relaxing)
+                0x0000001c       0x1a startup.o
 
 Cross Reference Table
 
 Symbol                                            File
-HAL_uart_getc                                     platform.o
-HAL_uart_init                                     platform.o
-                                                  main.o
-HAL_uart_putc                                     platform.o
-__divsi3                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-                                                  platform.o
+HAL_uart_getc                                     platform.o (symbol from plugin)
+HAL_uart_init                                     platform.o (symbol from plugin)
+                                                  main.o (symbol from plugin)
+HAL_uart_putc                                     platform.o (symbol from plugin)
 __fp_lock_all                                     /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 __fp_unlock_all                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 __global_pointer$                                 startup.o
-__hidden___udivsi3                                /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
 __malloc_av_                                      /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
 __malloc_current_mallinfo                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
@@ -436,7 +352,6 @@ __malloc_trim_threshold                           /home/fatih/opt/riscv/lib/gcc/
 __malloc_unlock                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mlock.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
-__modsi3                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
 __sclose                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 __seofread                                        /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
@@ -461,28 +376,28 @@ __sseek                                           /home/fatih/opt/riscv/lib/gcc/
 __stdio_exit_handler                              /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 __swrite                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
-__udivsi3                                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-__umodsi3                                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/libgcc.a(div.o)
-_close                                            platform.o
+_close                                            /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-closer.o)
 _close_r                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-closer.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
-_end                                              platform.o
-_execve                                           platform.o
+_end                                              /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
+_execve                                           platform.o (symbol from plugin)
 _fclose_r                                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fclose.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 _fflush_r                                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
-_fork                                             platform.o
+_fork                                             platform.o (symbol from plugin)
 _free_r                                           /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fclose.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-reent.o)
-_fstat                                            platform.o
+_fstat                                            platform.o (symbol from plugin)
 _fwalk_sglue                                      /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fwalk.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
-_getpid                                           platform.o
+_getpid                                           platform.o (symbol from plugin)
 _impure_data                                      /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-impure.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
@@ -490,32 +405,36 @@ _impure_ptr                                       /home/fatih/opt/riscv/lib/gcc/
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fclose.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-reent.o)
-_isatty                                           platform.o
-_kill                                             platform.o
-_link                                             platform.o
-_lseek                                            platform.o
+_isatty                                           platform.o (symbol from plugin)
+_kill                                             platform.o (symbol from plugin)
+_link                                             platform.o (symbol from plugin)
+_lseek                                            /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-lseekr.o)
 _lseek_r                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-lseekr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
 _malloc_r                                         /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
 _malloc_trim_r                                    /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
-_open                                             platform.o
-_read                                             platform.o
+_open                                             platform.o (symbol from plugin)
+_read                                             /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-readr.o)
 _read_r                                           /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-readr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
 _reclaim_reent                                    /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-reent.o)
-_sbrk                                             platform.o
+_sbrk                                             /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-sbrkr.o)
 _sbrk_r                                           /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-sbrkr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-mallocr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-freer.o)
-_stat                                             platform.o
-_times                                            platform.o
-_unlink                                           platform.o
-_wait                                             platform.o
-_write                                            platform.o
+_stat                                             platform.o (symbol from plugin)
+_times                                            platform.o (symbol from plugin)
+_unlink                                           platform.o (symbol from plugin)
+_wait                                             platform.o (symbol from plugin)
+_write                                            /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  platform.o (symbol from plugin)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-writer.o)
 _write_r                                          /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-writer.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-stdio.o)
@@ -527,24 +446,20 @@ errno                                             /home/fatih/opt/riscv/lib/gcc/
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-readr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-lseekr.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-closer.o)
-                                                  platform.o
+                                                  platform.o (symbol from plugin)
 fclose                                            /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fclose.o)
 fflush                                            /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-fflush.o)
-in16                                              platform.o
-in32                                              platform.o
-in8                                               platform.o
-main                                              main.o
+main                                              /tmp/ccS5lTrc.ltrans0.ltrans.o
+                                                  main.o (symbol from plugin)
                                                   startup.o
 memset                                            /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-memset.o)
                                                   /home/fatih/opt/riscv/lib/gcc/riscv32-unknown-elf/16.1.0/../../../../riscv32-unknown-elf/lib/libc.a(libc_a-findfp.o)
-out16                                             platform.o
-out32                                             platform.o
-                                                  main.o
-out8                                              platform.o
-outbyte                                           platform.o
-                                                  main.o
-puts_                                             main.o
+msg                                               main.o (symbol from plugin)
+outbyte                                           platform.o (symbol from plugin)
+                                                  main.o (symbol from plugin)
+puts_                                             main.o (symbol from plugin)
+spGpio0                                           main.o (symbol from plugin)
 stack_top                                         startup.o
 start                                             startup.o
-usleep                                            platform.o
-                                                  main.o
+usleep                                            platform.o (symbol from plugin)
+                                                  main.o (symbol from plugin)

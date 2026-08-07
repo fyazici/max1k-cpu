@@ -28,35 +28,6 @@ void outbyte(char c)
   HAL_uart_putc(UART0_BASEADDR, c);
 }
 
-/*
- * MEM stuff
- */
-
-void out32(volatile uint32_t *p, uint32_t v)
-{
-  *p = v;
-}
-void out16(volatile uint16_t *p, uint16_t v)
-{
-  *p = v;
-}
-void out8(volatile uint8_t *p, uint8_t v)
-{
-  *p = v;
-}
-uint32_t in32(volatile uint32_t *p)
-{
-  return *p;
-}
-uint16_t in16(volatile uint16_t *p)
-{
-  return *p;
-}
-uint8_t in8(volatile uint8_t *p)
-{
-  return *p;
-}
-
 /* UTIL stuff */
 void usleep(uint32_t us)
 {

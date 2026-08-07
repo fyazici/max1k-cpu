@@ -10,4 +10,7 @@ derive_clock_uncertainty
 
 #set false path
 set_false_path -from [get_ports {USER_BTN}]
-set_false_path -from * -to [get_ports {LED*}]
+set_false_path -from [get_ports {LED*}]
+set_false_path -to [get_ports {LED*}]
+set_false_path -from [get_ports {FT2232H_TX}]
+set_false_path -to [get_ports {FT2232H_RX}]

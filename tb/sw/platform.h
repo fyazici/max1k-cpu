@@ -24,15 +24,23 @@ struct HAL_Uart
   {
     uint8_t tx_ready : 1;
     uint8_t rx_valid : 1;
-    uint32_t reserved : 30;
+    uint32_t _reserved : 30;
   } status;
   uint32_t txr;
   uint32_t rxr;
 };
 
-int HAL_uart_init(volatile struct HAL_Uart *spUart, int baudrate);
+int HAL_uart_init(volatile struct HAL_Uart *spUart, const int baudrate);
 void HAL_uart_putc(volatile struct HAL_Uart *spUart, char c);
 char HAL_uart_getc(volatile struct HAL_Uart *spUart);
+
+struct HAL_Gpio
+{
+  uint32_t dir;
+  uint32_t _reserved;
+  uint32_t idr;
+  uint32_t odr;
+};
 
 void outbyte(char);
 
@@ -54,12 +62,6 @@ int _unlink(char *name);
 int _wait(int *status);
 int _write(int file, char *ptr, int len);
 
-void out32(volatile uint32_t *, uint32_t);
-void out16(volatile uint16_t *, uint16_t);
-void out8(volatile uint8_t *, uint8_t);
-uint32_t in32(volatile uint32_t *);
-uint16_t in16(volatile uint16_t *);
-uint8_t in8(volatile uint8_t *);
-void usleep(uint32_t);
+void usleep(uint32_t us);
 
 #endif /* _PLATFORM_H_ */

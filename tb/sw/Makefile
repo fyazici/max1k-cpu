@@ -19,9 +19,9 @@ SIZE        := $(PREFIX)-size
 OBJCOPY     := $(PREFIX)-objcopy
 OBJDUMP     := $(PREFIX)-objdump
 GDB         := $(PREFIX)-gdb
-OPT         := -Os
+OPT         := -flto -O3
 DEBUG       := 
-#CSTD        ?= -std=c99
+CSTD        ?= -std=c99
 
 # C flags
 TGT_CFLAGS  += $(OPT) $(CSTD) $(DEBUG)
@@ -43,6 +43,7 @@ TGT_LDFLAGS     += -T$(LDSCRIPT)
 TGT_LDFLAGS     += $(ARCH_FLAGS) $(DEBUG)
 TGT_LDFLAGS     += -Wl,-Map=$(*).map -Wl,--cref
 TGT_LDFLAGS     += -Wl,--gc-sections
+TGT_LDFLAGS     += -flto
 
 # Used libraries
 DEFS        += 

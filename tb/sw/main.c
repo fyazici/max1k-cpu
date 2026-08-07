@@ -5,26 +5,24 @@
 
 #include <platform.h>
 
+const char *msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elementum nunc elit, nec eleifend metus viverra et. Cras vehicula arcu diam, ut tempor justo blandit id. Aliquam hendrerit turpis sed urna dictum rhoncus. Aenean consectetur nulla eu elit ligula.\n\r";
+
+volatile struct HAL_Gpio *spGpio0 = GPIO0_BASEADDR;
+
 void puts_(const char *s);
 
 int main(void)
 {
   HAL_uart_init(UART0_BASEADDR, 115200);
 
-  // struct HAL_Uart *spUart0 = UART0_BASEADDR;
+  spGpio0->dir = 0x0; // all output
+  spGpio0->odr = 0x0f;
 
   while (1)
   {
     usleep(500000);
-
-    puts_("Hello World 1111\r\n");
-    // spUart0->txr = 'A';
-    out32(GPIO0_BASEADDR, 1);
-
-    usleep(500000);
-    puts_("Hello World 2222\r\n");
-    // spUart0->txr = 'B';
-    out32(GPIO0_BASEADDR, 0);
+    puts_(msg);
+    spGpio0->odr ^= 0xFF;
   }
 }
 

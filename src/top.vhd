@@ -6,7 +6,7 @@ use ieee.math_real.all;
 entity top is
   port (
     CLK12M     : in std_logic;
-    LED        : out std_logic_vector(7 downto 0);
+    LED        : inout std_logic_vector(7 downto 0);
     USER_BTN   : in std_logic;
     SDRAM_A    : out std_logic_vector(11 downto 0);
     SDRAM_BA   : out std_logic_vector(1 downto 0);
@@ -87,33 +87,37 @@ architecture rtl of top is
   signal wb_periph_ack_r  : std_logic;
 
   -- gpio intf
-  signal wb_gpio_adr  : std_logic_vector(31 downto 0);
-  signal wb_gpio_din  : std_logic_vector(31 downto 0);
-  signal wb_gpio_dout : std_logic_vector(31 downto 0);
-  signal wb_gpio_we   : std_logic;
-  signal wb_gpio_sel  : std_logic_vector(3 downto 0);
-  signal wb_gpio_stb  : std_logic;
-  signal wb_gpio_cyc  : std_logic;
-  signal wb_gpio_ack  : std_logic;
+  signal wb_gpio0_adr  : std_logic_vector(31 downto 0);
+  signal wb_gpio0_din  : std_logic_vector(31 downto 0);
+  signal wb_gpio0_dout : std_logic_vector(31 downto 0);
+  signal wb_gpio0_we   : std_logic;
+  signal wb_gpio0_sel  : std_logic_vector(3 downto 0);
+  signal wb_gpio0_stb  : std_logic;
+  signal wb_gpio0_cyc  : std_logic;
+  signal wb_gpio0_ack  : std_logic;
 
   -- uart intf
-  signal wb_uart_adr  : std_logic_vector(31 downto 0);
-  signal wb_uart_din  : std_logic_vector(31 downto 0);
-  signal wb_uart_dout : std_logic_vector(31 downto 0);
-  signal wb_uart_we   : std_logic;
-  signal wb_uart_sel  : std_logic_vector(3 downto 0);
-  signal wb_uart_stb  : std_logic;
-  signal wb_uart_cyc  : std_logic;
-  signal wb_uart_ack  : std_logic;
+  signal wb_uart0_adr  : std_logic_vector(31 downto 0);
+  signal wb_uart0_din  : std_logic_vector(31 downto 0);
+  signal wb_uart0_dout : std_logic_vector(31 downto 0);
+  signal wb_uart0_we   : std_logic;
+  signal wb_uart0_sel  : std_logic_vector(3 downto 0);
+  signal wb_uart0_stb  : std_logic;
+  signal wb_uart0_cyc  : std_logic;
+  signal wb_uart0_ack  : std_logic;
 
   -- gpio
-  signal io_i : std_logic_vector(31 downto 0);
-  signal io_o : std_logic_vector(31 downto 0);
-  signal io_t : std_logic_vector(31 downto 0);
+  signal gpio0_i : std_logic_vector(31 downto 0) := (others => '0');
+  signal gpio0_o : std_logic_vector(31 downto 0);
+  signal gpio0_t : std_logic_vector(31 downto 0);
 
 begin
 
-  led <= io_o(7 downto 0);
+  GEN_GPIO0 : for I in 0 to 7 generate
+    led(I) <= gpio0_o(I) when (gpio0_t(I) = '0') else
+    'Z';
+    gpio0_i(I) <= led(I);
+  end generate;
 
   U_PLL1 : pll1
   port map
@@ -271,60 +275,60 @@ begin
       s_ack  => wb_periph_ack_r,
 
       -- 0x8000_0000 1G
-      m0_cyc  => wb_gpio_cyc,
-      m0_stb  => wb_gpio_stb,
-      m0_adr  => wb_gpio_adr,
-      m0_we   => wb_gpio_we,
-      m0_sel  => wb_gpio_sel,
-      m0_dout => wb_gpio_dout,
-      m0_din  => wb_gpio_din,
-      m0_ack  => wb_gpio_ack,
+      m0_cyc  => wb_gpio0_cyc,
+      m0_stb  => wb_gpio0_stb,
+      m0_adr  => wb_gpio0_adr,
+      m0_we   => wb_gpio0_we,
+      m0_sel  => wb_gpio0_sel,
+      m0_dout => wb_gpio0_dout,
+      m0_din  => wb_gpio0_din,
+      m0_ack  => wb_gpio0_ack,
 
       -- 0xC000_0000 1G
-      m1_cyc  => wb_uart_cyc,
-      m1_stb  => wb_uart_stb,
-      m1_adr  => wb_uart_adr,
-      m1_we   => wb_uart_we,
-      m1_sel  => wb_uart_sel,
-      m1_dout => wb_uart_dout,
-      m1_din  => wb_uart_din,
-      m1_ack  => wb_uart_ack
+      m1_cyc  => wb_uart0_cyc,
+      m1_stb  => wb_uart0_stb,
+      m1_adr  => wb_uart0_adr,
+      m1_we   => wb_uart0_we,
+      m1_sel  => wb_uart0_sel,
+      m1_dout => wb_uart0_dout,
+      m1_din  => wb_uart0_din,
+      m1_ack  => wb_uart0_ack
     );
 
-  U_GPIO : entity work.wb_gpio
+  U_GPIO0 : entity work.wb_gpio
     port map
     (
       clk   => clk,
       reset => reset,
 
-      s_cyc  => wb_gpio_cyc,
-      s_stb  => wb_gpio_stb,
-      s_adr  => wb_gpio_adr,
-      s_we   => wb_gpio_we,
-      s_sel  => wb_gpio_sel,
-      s_din  => wb_gpio_dout,
-      s_dout => wb_gpio_din,
-      s_ack  => wb_gpio_ack,
+      s_cyc  => wb_gpio0_cyc,
+      s_stb  => wb_gpio0_stb,
+      s_adr  => wb_gpio0_adr,
+      s_we   => wb_gpio0_we,
+      s_sel  => wb_gpio0_sel,
+      s_din  => wb_gpio0_dout,
+      s_dout => wb_gpio0_din,
+      s_ack  => wb_gpio0_ack,
 
-      io_i => io_i,
-      io_o => io_o,
-      io_t => io_t
+      gpio_i => gpio0_i,
+      gpio_o => gpio0_o,
+      gpio_t => gpio0_t
     );
 
-  U_UART : entity work.wb_uart
+  U_UART0 : entity work.wb_uart
     port map
     (
       clk   => clk,
       reset => reset,
 
-      s_cyc  => wb_uart_cyc,
-      s_stb  => wb_uart_stb,
-      s_adr  => wb_uart_adr,
-      s_we   => wb_uart_we,
-      s_sel  => wb_uart_sel,
-      s_din  => wb_uart_dout,
-      s_dout => wb_uart_din,
-      s_ack  => wb_uart_ack,
+      s_cyc  => wb_uart0_cyc,
+      s_stb  => wb_uart0_stb,
+      s_adr  => wb_uart0_adr,
+      s_we   => wb_uart0_we,
+      s_sel  => wb_uart0_sel,
+      s_din  => wb_uart0_dout,
+      s_dout => wb_uart0_din,
+      s_ack  => wb_uart0_ack,
 
       uart_rx => FT2232H_TX,
       uart_tx => FT2232H_RX

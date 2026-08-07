@@ -41,9 +41,9 @@ begin
       when ALUOP_XOR =>
         z <= x xor y;
       when ALUOP_SRL =>
-        z <= std_logic_vector(shift_right(unsigned(x), to_integer(unsigned(y))));
+        z <= std_logic_vector(shift_right(unsigned(x), to_integer(unsigned(y(4 downto 0)))));
       when ALUOP_SRA =>
-        z <= std_logic_vector(shift_right(signed(x), to_integer(unsigned(y))));
+        z <= std_logic_vector(shift_right(signed(x), to_integer(unsigned(y(4 downto 0)))));
       when ALUOP_OR =>
         z <= x or y;
       when ALUOP_AND =>

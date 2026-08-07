@@ -21,26 +21,17 @@ main.o: main.c \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/lock.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/stdio.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/string.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_locale.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/strings.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/string.h \
  platform.h /home/fatih/opt/riscv/riscv32-unknown-elf/include/stdlib.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/stdlib.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/alloca.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/stat.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/time.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/time.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/types.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/endian.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/_endian.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/select.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_sigset.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_timeval.h \
+ /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_pthreadtypes.h \
+ /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/types.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/timespec.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_timespec.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_pthreadtypes.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/sched.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/types.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/times.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/errno.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/errno.h
