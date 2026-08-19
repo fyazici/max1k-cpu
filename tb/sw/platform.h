@@ -15,7 +15,7 @@ extern int errno;
 #define GPIO0_BASEADDR ((void *)0x80000000)
 #define UART0_BASEADDR ((void *)0xC0000000)
 
-#define PERIPH_CLK_HZ (50000000)
+#define PERIPH_CLK_HZ (100 * 1000 * 1000)
 
 struct HAL_Uart
 {

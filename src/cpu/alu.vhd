@@ -20,37 +20,39 @@ architecture rtl of alu is
 
 begin
 
-  PROC_COMB : process (op, x, y, shamt)
+  PROC_SEQ : process (clk)
   begin
-    z <= (others => 'X');
-    case (op) is
-      when ALUOP_ADD =>
-        z <= std_logic_vector(signed(x) + signed(y));
-      when ALUOP_SUB =>
-        z <= std_logic_vector(signed(x) - signed(y));
-      when ALUOP_SLL =>
-        z <= std_logic_vector(shift_left(unsigned(x), to_integer(unsigned(shamt))));
-      when ALUOP_SLT =>
-        if signed(x) < signed(y) then
-          z(0) <= '1';
-        end if;
-      when ALUOP_SLTU =>
-        if unsigned(x) < unsigned(y) then
-          z(0) <= '1';
-        end if;
-      when ALUOP_XOR =>
-        z <= x xor y;
-      when ALUOP_SRL =>
-        z <= std_logic_vector(shift_right(unsigned(x), to_integer(unsigned(y(4 downto 0)))));
-      when ALUOP_SRA =>
-        z <= std_logic_vector(shift_right(signed(x), to_integer(unsigned(y(4 downto 0)))));
-      when ALUOP_OR =>
-        z <= x or y;
-      when ALUOP_AND =>
-        z <= x and y;
-      when others =>
-        null;
-    end case;
+    if rising_edge(clk) then
+      z <= (others => 'X');
+      case (op) is
+        when ALUOP_ADD =>
+          z <= std_logic_vector(signed(x) + signed(y));
+        when ALUOP_SUB =>
+          z <= std_logic_vector(signed(x) - signed(y));
+        when ALUOP_SLL =>
+          z <= std_logic_vector(shift_left(unsigned(x), to_integer(unsigned(shamt))));
+        when ALUOP_SLT =>
+          if signed(x) < signed(y) then
+            z(0) <= '1';
+          end if;
+        when ALUOP_SLTU =>
+          if unsigned(x) < unsigned(y) then
+            z(0) <= '1';
+          end if;
+        when ALUOP_XOR =>
+          z <= x xor y;
+        when ALUOP_SRL =>
+          z <= std_logic_vector(shift_right(unsigned(x), to_integer(unsigned(y(4 downto 0)))));
+        when ALUOP_SRA =>
+          z <= std_logic_vector(shift_right(signed(x), to_integer(unsigned(y(4 downto 0)))));
+        when ALUOP_OR =>
+          z <= x or y;
+        when ALUOP_AND =>
+          z <= x and y;
+        when others =>
+          null;
+      end case;
+    end if;
   end process;
 
 end architecture;

@@ -63,6 +63,7 @@ architecture rtl of cpu is
   signal lsu_ldout   : std_logic_vector(31 downto 0);
   signal lsu_size    : std_logic_vector(1 downto 0);
   signal lsu_signext : std_logic;
+  signal ldout_latch : std_logic_vector(31 downto 0);
 
   signal imm_sel  : std_logic_vector(2 downto 0);
   signal imm_dout : std_logic_vector(31 downto 0);
@@ -83,10 +84,11 @@ architecture rtl of cpu is
 
 begin
 
+  pc_plus_4 <= std_logic_vector(unsigned(pc) + 4);
+
   PROC_PC_MUX : process (pc, pc_src, pc_plus_4, b_ovr, b_cond, alu_z)
   begin
-    pc_din    <= (others => 'X');
-    pc_plus_4 <= std_logic_vector(unsigned(pc) + 4);
+    pc_din <= (others => 'X');
     case (pc_src) is
       when PCSRC_PCp4 =>
         pc_din <= pc_plus_4;
@@ -132,7 +134,7 @@ begin
       imm   => imm_dout
     );
 
-  PROC_RDMUX : process (rd_src, alu_z, pc_plus_4, lsu_ldout)
+  PROC_RDMUX : process (rd_src, alu_z, pc_plus_4, ldout_latch)
   begin
     rd_din <= (others => 'X');
     case (rd_src) is
@@ -141,7 +143,7 @@ begin
       when RDSRC_PCp4 =>
         rd_din <= pc_plus_4;
       when RDSRC_MEM =>
-        rd_din <= lsu_ldout;
+        rd_din <= ldout_latch;
       when others =>
         null;
     end case;
@@ -227,7 +229,6 @@ begin
   U_LSU : entity work.lsu
     port map
     (
-      clk     => clk,
       offset  => alu_z(1 downto 0),
       size    => lsu_size,
       signext => lsu_signext,
@@ -288,9 +289,10 @@ begin
 
           when S_memory_1 =>
             if d_ack = '1' then
-              d_cyc <= '0';
-              d_stb <= '0';
-              state <= S_writeback;
+              ldout_latch <= lsu_ldout;
+              d_cyc       <= '0';
+              d_stb       <= '0';
+              state       <= S_writeback;
             end if;
 
           when S_writeback =>

@@ -29,7 +29,6 @@ architecture rtl of top is
     port (
       inclk0 : in std_logic := '0';
       c0     : out std_logic;
-      c1     : out std_logic;
       locked : out std_logic
     );
   end component;
@@ -124,7 +123,6 @@ begin
   (
     inclk0 => CLK12M,
     c0     => clk,
-    c1     => open,
     locked => locked
   );
 
