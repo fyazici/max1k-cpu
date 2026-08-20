@@ -11,18 +11,20 @@ volatile struct HAL_Gpio *spGpio0 = GPIO0_BASEADDR;
 
 void puts_(const char *s);
 
+#define ROR8(x) (((x >> 1) | (x << 7)) & 0xFF)
+
 int main(void)
 {
   HAL_uart_init(UART0_BASEADDR, 115200);
 
   spGpio0->dir = 0x0; // all output
-  spGpio0->odr = 0x0f;
+  spGpio0->odr = 0xF0E0C080;
 
   while (1)
   {
     usleep(500000);
     puts_(msg);
-    spGpio0->odr ^= 0xFF;
+    spGpio0->odr = ROR8(spGpio0->odr);
   }
 }
 

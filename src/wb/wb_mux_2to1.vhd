@@ -44,7 +44,7 @@ architecture rtl of wb_mux_2to1 is
 
 begin
 
-  PROC_COMB : process (all)
+  PROC_SEL : process (s0_cyc, s1_cyc, toggle, s0_stb, s0_adr, s0_we, s0_sel, s0_din, s1_stb, s1_adr, s1_we, s1_sel, s1_din)
     variable req : std_logic_vector(1 downto 0);
   begin
     req := s1_cyc & s0_cyc;
@@ -60,7 +60,22 @@ begin
       when others =>
         null;
     end case;
+  end process;
 
+  PROC_SEQ : process (clk)
+  begin
+    if rising_edge(clk) then
+      if sel = '0' and m_ack = '1' then
+        toggle <= '1';
+      end if;
+      if sel = '1' and m_ack = '1' then
+        toggle <= '0';
+      end if;
+    end if;
+  end process;
+  
+  PROC_MUX : process (sel, s0_cyc, s0_stb, s0_adr, s0_we, s0_sel, s0_din, s1_cyc, s1_stb, s1_adr, s1_we, s1_sel, s1_din)
+  begin
     if sel = '0' then
       m_cyc  <= s0_cyc;
       m_stb  <= s0_stb;
@@ -76,25 +91,12 @@ begin
       m_sel  <= s1_sel;
       m_dout <= s1_din;
     end if;
-
-    s0_dout <= m_din;
-    s1_dout <= m_din;
-
-    s0_ack <= not(sel) and m_ack;
-    s1_ack <= sel and m_ack;
-
   end process;
+    
+  s0_dout <= m_din;
+  s1_dout <= m_din;
 
-  PROC_SEQ : process (clk)
-  begin
-    if rising_edge(clk) then
-      if sel = '0' and m_ack = '1' then
-        toggle <= '1';
-      end if;
-      if sel = '1' and m_ack = '1' then
-        toggle <= '0';
-      end if;
-    end if;
-  end process;
+  s0_ack <= not(sel) and m_ack;
+  s1_ack <= sel and m_ack;
 
 end architecture;

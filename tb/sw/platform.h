@@ -11,7 +11,7 @@
 #undef errno
 extern int errno;
 
-#define CPU_CLOCK_PER_US (1)
+#define CPU_CLOCK_PER_US (2)
 #define GPIO0_BASEADDR ((void *)0x80000000)
 #define UART0_BASEADDR ((void *)0xC0000000)
 

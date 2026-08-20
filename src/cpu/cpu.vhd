@@ -57,6 +57,7 @@ architecture rtl of cpu is
   signal alu_shsrc : std_logic_vector(0 downto 0);
   signal alu_shamt : std_logic_vector(4 downto 0);
   signal alu_z     : std_logic_vector(31 downto 0);
+  signal alu_adr   : std_logic_vector(31 downto 0);
 
   signal rd_src : std_logic_vector(1 downto 0);
 
@@ -74,10 +75,10 @@ architecture rtl of cpu is
   signal b_cond : std_logic;
 
   type t_state is (
-    S_fetch, S_fetch_1,
+    S_fetch,
     S_decode,
     S_execute,
-    S_memory, S_memory_1,
+    S_memory,
     S_writeback
   );
   signal state : t_state := S_fetch;
@@ -86,22 +87,15 @@ begin
 
   pc_plus_4 <= std_logic_vector(unsigned(pc) + 4);
 
-  PROC_PC_MUX : process (pc, pc_src, pc_plus_4, b_ovr, b_cond, alu_z)
-  begin
-    pc_din <= (others => 'X');
-    case (pc_src) is
-      when PCSRC_PCp4 =>
-        pc_din <= pc_plus_4;
-      when PCSRC_ALU =>
-        if b_ovr = '1' or b_cond = '1' then
-          pc_din <= alu_z;
-        else
-          pc_din <= pc_plus_4;
-        end if;
-      when others =>
-        null;
-    end case;
-  end process;
+  U_PCMUX : entity work.mux2
+    generic map(G_DW => 32)
+    port map
+    (
+      sel => pc_src and ((b_ovr or b_cond) & ""),
+      d0  => pc_plus_4, --PCSRC_PCp4
+      d1  => alu_z, -- PCSRC_ALU
+      q   => pc_din
+    );
 
   U_DECODE : entity work.decode
     port map
@@ -134,24 +128,24 @@ begin
       imm   => imm_dout
     );
 
-  PROC_RDMUX : process (rd_src, alu_z, pc_plus_4, ldout_latch)
-  begin
-    rd_din <= (others => 'X');
-    case (rd_src) is
-      when RDSRC_ALU =>
-        rd_din <= alu_z;
-      when RDSRC_PCp4 =>
-        rd_din <= pc_plus_4;
-      when RDSRC_MEM =>
-        rd_din <= ldout_latch;
-      when others =>
-        null;
-    end case;
-  end process;
+  U_RDMUX : entity work.mux4
+    generic map(G_DW => 32)
+    port map
+    (
+      sel => rd_src,
+      d0  => alu_z, -- RDSRC_ALU
+      d1  => pc_plus_4, -- RDSRC_PCp4
+      d2  => ldout_latch, -- RDSRC_MEM
+      d3 => (others => 'X'),
+      q   => rd_din
+    );
 
   rd_we <= '1' when (state = S_writeback) else
     '0';
   U_REGFILE : entity work.regfile
+    generic map(
+      G_USE_BRAM => FALSE
+    )
     port map
     (
       clk   => clk,
@@ -176,44 +170,35 @@ begin
       cond => b_cond
     );
 
-  PROC_ALU_XMUX : process (alu_xsrc, rs1_dout, pc)
-  begin
-    alu_x <= (others => 'X');
-    case (alu_xsrc) is
-      when XSRC_RS1 =>
-        alu_x <= rs1_dout;
-      when XSRC_PC =>
-        alu_x <= pc;
-      when others =>
-        null;
-    end case;
-  end process;
+  U_ALU_XMUX : entity work.mux2
+    generic map(G_DW => 32)
+    port map
+    (
+      sel => alu_xsrc,
+      d0  => rs1_dout, -- XSRC_RS1
+      d1  => pc, -- XSRC_PC
+      q   => alu_x
+    );
 
-  PROC_ALU_YMUX : process (alu_ysrc, rs2_dout, imm_dout)
-  begin
-    alu_y <= (others => 'X');
-    case (alu_ysrc) is
-      when YSRC_R => -- R-type
-        alu_y <= rs2_dout;
-      when YSRC_I => -- I-type
-        alu_y <= imm_dout;
-      when others =>
-        null;
-    end case;
-  end process;
+  U_ALU_YMUX : entity work.mux2
+    generic map(G_DW => 32)
+    port map
+    (
+      sel => alu_ysrc,
+      d0  => rs2_dout, -- YSRC_R
+      d1  => imm_dout, -- YSRC_I
+      q   => alu_y
+    );
 
-  PROC_ALU_SHMUX : process (alu_shsrc, instr, rs2_dout)
-  begin
-    alu_shamt <= (others => 'X');
-    case (alu_shsrc) is
-      when SHSRC_I => -- I-type
-        alu_shamt <= instr(24 downto 20);
-      when SHSRC_R => -- R-type
-        alu_shamt <= rs2_dout(4 downto 0);
-      when others =>
-        null;
-    end case;
-  end process;
+  U_ALU_SHMUX : entity work.mux2
+    generic map(G_DW => 5)
+    port map
+    (
+      sel => alu_shsrc,
+      d0  => instr(24 downto 20), -- SHSRC_I
+      d1  => rs2_dout(4 downto 0), -- SHSRC_R
+      q   => alu_shamt
+    );
 
   U_ALU : entity work.alu
     port map
@@ -223,13 +208,14 @@ begin
       shamt => alu_shamt,
       x     => alu_x,
       y     => alu_y,
-      z     => alu_z
+      z     => alu_z,
+      adr   => alu_adr
     );
 
   U_LSU : entity work.lsu
     port map
     (
-      offset  => alu_z(1 downto 0),
+      offset  => alu_adr(1 downto 0),
       size    => lsu_size,
       signext => lsu_signext,
 
@@ -240,8 +226,15 @@ begin
       sstrb => d_sel
     );
 
+  i_cyc <= '1' when (state = S_fetch) else
+    '0';
+  i_stb <= i_cyc;
   i_adr <= pc;
-  d_adr <= alu_z(31 downto 2) & "00";
+
+  d_cyc <= mem_mask when (state = S_memory) else
+    '0';
+  d_stb <= d_cyc;
+  d_adr <= alu_adr(31 downto 2) & "00";
 
   -- DOCs:
   -- https://docs.riscv.org/reference/isa/unpriv/rv32.html
@@ -253,22 +246,11 @@ begin
       if reset = '1' then
         pc    <= G_RESET_VEC;
         state <= S_fetch;
-        i_stb <= '0';
-        i_cyc <= '0';
-        d_stb <= '0';
-        d_cyc <= '0';
       else
         case (state) is
           when S_fetch =>
-            i_cyc <= '1';
-            i_stb <= '1';
-            state <= S_fetch_1;
-
-          when S_fetch_1 =>
             if i_ack = '1' then
               instr <= i_din;
-              i_cyc <= '0';
-              i_stb <= '0';
               state <= S_decode;
             end if;
 
@@ -279,19 +261,8 @@ begin
             state <= S_memory;
 
           when S_memory =>
-            if mem_mask = '1' then
-              d_cyc <= '1';
-              d_stb <= '1';
-              state <= S_memory_1;
-            else
-              state <= S_writeback;
-            end if;
-
-          when S_memory_1 =>
-            if d_ack = '1' then
+            if mem_mask = '0' or d_ack = '1' then
               ldout_latch <= lsu_ldout;
-              d_cyc       <= '0';
-              d_stb       <= '0';
               state       <= S_writeback;
             end if;
 
