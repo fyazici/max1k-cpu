@@ -215,7 +215,11 @@ begin
     );
 
   U_MEM : entity work.wb_mem
-    generic map(G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif")
+    generic map
+    (
+      G_AW        => 11,
+      G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif"
+    )
     port map
     (
       clk    => clk,

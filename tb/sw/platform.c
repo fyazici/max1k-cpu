@@ -101,22 +101,15 @@ int _read(int file, char *ptr, int len)
 
 caddr_t _sbrk(int incr)
 {
-  extern char _end; /* Defined by the linker */
+  extern char end; /* Defined by the linker */
   static char *heap_end;
   char *prev_heap_end;
 
   if (heap_end == 0)
   {
-    heap_end = &_end;
+    heap_end = &end;
   }
   prev_heap_end = heap_end;
-  /*
-  if (heap_end + incr > stack_ptr)
-  {
-    write(1, "Heap and stack collision\n", 25);
-    abort();
-  }
-  */
 
   heap_end += incr;
   return (caddr_t)prev_heap_end;

@@ -144,7 +144,7 @@ begin
     '0';
   U_REGFILE : entity work.regfile
     generic map(
-      G_USE_BRAM => FALSE
+      G_USE_BRAM => TRUE
     )
     port map
     (
@@ -208,9 +208,10 @@ begin
       shamt => alu_shamt,
       x     => alu_x,
       y     => alu_y,
-      z     => alu_z,
-      adr   => alu_adr
+      z     => alu_z
     );
+
+  alu_adr <= std_logic_vector(signed(rs1_dout) + signed(imm_dout));
 
   U_LSU : entity work.lsu
     port map

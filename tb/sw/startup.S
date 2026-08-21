@@ -1,12 +1,12 @@
-.section .init
+.section .vectors
 
 .option norvc
 
-.type start, @function
-.global start
-start:
+.type reset_handler, @function
+.global reset_handler
+reset_handler:
 	.cfi_startproc
-	
+
 .option push
 .option norelax
 	la gp, __global_pointer$
@@ -16,15 +16,15 @@ start:
 	/* csrw satp, zero */
 	
 	/* Setup stack */
-	la sp, stack_top
+	la sp, _stack
 	
 	/* Clear the BSS section */
-	la t5, bss_start
-	la t6, bss_end
-bss_clear:
+	la t5, _edata
+	la t6, _ebss
+_bss_clear_loop:
 	sw zero, (t5)
 	addi t5, t5, 4
-	bltu t5, t6, bss_clear
+	bltu t5, t6, _bss_clear_loop
 	
 	la t0, main
 	/* csrw mepc, t0 */

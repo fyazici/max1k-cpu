@@ -1,29 +1,43 @@
-ENTRY(start);
+ENTRY(reset_handler);
  
-. = 0x00000000;
+MEMORY
+{
+	/* rom (rx) : ORIGIN = 0x08000000, LENGTH = 64K */
+	ram (rwx) : ORIGIN = 0x00000000, LENGTH = 8K
+}
  
 SECTIONS {
-	/* Include entry point at start of binary */
-	.text : ALIGN(4) {
-		*(.init);
-		*(.text*);
-	}
-	.bss : ALIGN(4) {
-		PROVIDE(bss_start = .);
-		*(.bss*);
-		. += 1024;
-		PROVIDE(stack_top = .);
-		. += 1024;
-		PROVIDE(__global_pointer$ = .);
-		PROVIDE(bss_end = .);
-	}
-	.rodata : ALIGN(4) {
-		*(.rodata*);
-	}
-	.data : ALIGN(4) {
-		*(.data*);
-	}
+	.text : {
+		*(.vectors)	/* Vector table */
+		*(.text*)	/* Program code */
+		. = ALIGN(4);
+		*(.rodata*)	/* Read-only data */
+		. = ALIGN(4);
+	} >ram
+
+	. = ALIGN(4);
+	_etext = .;
+
+	.data : {
+		_data = .;
+		*(.data*)	/* Read-write initialized data */
+		__global_pointer$ = .;
+		*(.sdata*) /* small data opt */
+		*(.ramtext*)    /* "text" functions to run in ram */
+		. = ALIGN(4);
+		_edata = .;
+	} >ram
+	_data_loadaddr = LOADADDR(.data);
+
+	.bss : {
+		*(.bss*)	/* Read-write zero initialized data */
+		*(COMMON)
+		. = ALIGN(4);
+		_ebss = .;
+	} >ram
+
+	. = ALIGN(4);
+	end = .;
 }
 
-/* for sbrk */
-PROVIDE(_end = .);
+PROVIDE(_stack = ORIGIN(ram) + LENGTH(ram));

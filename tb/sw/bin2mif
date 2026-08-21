@@ -1,2 +1,2 @@
 #!/bin/bash
-xxd -e -c 4 -g 4 main.bin | awk 'BEGIN {print "DEPTH = 1024;\nWIDTH = 32;\nADDRESS_RADIX = HEX;\nDATA_RADIX = HEX;\nCONTENT BEGIN"; addr=0} {printf "%X : %s;\n", addr++, toupper($2)} END {print "END;"}' > main.mif
+xxd -e -c 4 -g 4 main.bin | awk 'BEGIN {print "DEPTH = 2048;\nWIDTH = 32;\nADDRESS_RADIX = HEX;\nDATA_RADIX = HEX;\nCONTENT BEGIN"; addr=0} {printf "%X : %s;\n", addr++, toupper($2)} END {print "END;"}' > main.mif

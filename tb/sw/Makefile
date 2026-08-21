@@ -1,4 +1,4 @@
-OBJS = main.o platform.o startup.o
+OBJS = main.o printf/printf.o platform.o startup.o
 
 # Our output name
 BINARY = main
@@ -19,7 +19,7 @@ SIZE        := $(PREFIX)-size
 OBJCOPY     := $(PREFIX)-objcopy
 OBJDUMP     := $(PREFIX)-objdump
 GDB         := $(PREFIX)-gdb
-OPT         := -flto -O3
+OPT         := -Os
 DEBUG       := 
 CSTD        ?= -std=c99
 
@@ -43,10 +43,15 @@ TGT_LDFLAGS     += -T$(LDSCRIPT)
 TGT_LDFLAGS     += $(ARCH_FLAGS) $(DEBUG)
 TGT_LDFLAGS     += -Wl,-Map=$(*).map -Wl,--cref
 TGT_LDFLAGS     += -Wl,--gc-sections
-TGT_LDFLAGS     += -flto
 
 # Used libraries
-DEFS        += 
+DEFS        += -DPRINTF_INCLUDE_CONFIG_H=0 
+DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT=0 
+DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_HARD=0
+DEFS        += -DPRINTF_SUPPORT_MSVC_STYLE_INTEGER_SPECIFIERS=0
+DEFS        += -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0
+DEFS        += -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0
+DEFS        += -DPRINTF_SUPPORT_WRITEBACK_SPECIFIER=0
 LDFLAGS     += 
 LDLIBS      += 
 LDLIBS      += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group

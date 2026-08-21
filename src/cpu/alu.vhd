@@ -12,16 +12,13 @@ entity alu is
     shamt : in std_logic_vector(4 downto 0);
     x     : in std_logic_vector(31 downto 0);
     y     : in std_logic_vector(31 downto 0);
-    z     : out std_logic_vector(31 downto 0);
-    adr   : out std_logic_vector(31 downto 0)
+    z     : out std_logic_vector(31 downto 0)
   );
 end entity alu;
 
 architecture rtl of alu is
 
 begin
-
-  adr <= std_logic_vector(signed(x) + signed(y));
 
   PROC_SEQ : process (clk)
   begin

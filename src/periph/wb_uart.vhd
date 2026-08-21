@@ -109,8 +109,9 @@ begin
 
   U_RX_FIFO : entity work.stream_fifo
     generic map(
-      G_DW         => 8,
-      G_AW         => 4
+      G_DW       => 8,
+      G_AW       => 3,
+      G_RAMSTYLE => "logic"
     )
     port map
     (
@@ -130,8 +131,9 @@ begin
 
   U_TX_FIFO : entity work.stream_fifo
     generic map(
-      G_DW         => 8,
-      G_AW         => 4
+      G_DW       => 8,
+      G_AW       => 3,
+      G_RAMSTYLE => "logic"
     )
     port map
     (

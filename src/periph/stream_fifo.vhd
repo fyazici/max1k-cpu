@@ -5,8 +5,9 @@ use ieee.math_real.all;
 
 entity stream_fifo is
   generic (
-    G_DW : natural := 8;
-    G_AW : natural := 4
+    G_DW       : natural := 8;
+    G_AW       : natural := 4;
+    G_RAMSTYLE : string  := "auto"
   );
   port (
     clk   : in std_logic;
@@ -28,7 +29,7 @@ architecture rtl of stream_fifo is
   signal mem : t_mem(0 to (2 ** G_AW - 1));
 
   attribute ramstyle        : string;
-  attribute ramstyle of mem : signal is "no_rw_check";
+  attribute ramstyle of mem : signal is G_RAMSTYLE & ", no_rw_check";
 
   signal wptr : unsigned(G_AW downto 0);
   signal rptr : unsigned(G_AW downto 0);

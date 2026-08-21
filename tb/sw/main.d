@@ -20,11 +20,11 @@ main.o: main.c \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/_types.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/lock.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/stdio.h \
+ /home/fatih/opt/riscv/riscv32-unknown-elf/include/stdlib.h \
+ /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/stdlib.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/string.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/string.h \
- platform.h /home/fatih/opt/riscv/riscv32-unknown-elf/include/stdlib.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/stdlib.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/stat.h \
+ platform.h /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/stat.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/time.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/machine/time.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/types.h \
@@ -34,4 +34,5 @@ main.o: main.c \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/_timespec.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/times.h \
  /home/fatih/opt/riscv/riscv32-unknown-elf/include/errno.h \
- /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/errno.h
+ /home/fatih/opt/riscv/riscv32-unknown-elf/include/sys/errno.h \
+ printf/printf.h

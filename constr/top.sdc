@@ -1,6 +1,6 @@
 #create input clock which is 12MHz
 create_clock -name CLK12M -period 83.333 [get_ports {CLK12M}]
-create_clock -name SDRAM_CLK -period 10.416 [get_ports {SDRAM_CLK}]
+#create_clock -name SDRAM_CLK -period 10.416 [get_ports {SDRAM_CLK}]
 
 #derive PLL clocks
 derive_pll_clocks
