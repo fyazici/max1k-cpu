@@ -26,7 +26,8 @@ entity decode is
     lsu_signext : out std_logic;
     mem_mask    : out std_logic;
     mem_we      : out std_logic;
-    wb_mask     : out std_logic
+    wb_mask     : out std_logic;
+    csr_src     : out std_logic_vector(1 downto 0)
   );
 end entity decode;
 
@@ -53,6 +54,7 @@ begin
       mem_mask    <= '0';
       mem_we      <= '0';
       wb_mask     <= '0';
+      csr_src     <= instr(21) & instr(27); -- FIXME: handle invalid cases
 
       case (instr(6 downto 2)) is
         when "01101"        => -- LUI
@@ -140,6 +142,11 @@ begin
           alu_shsrc <= SHSRC_R;
           rd_src    <= RDSRC_ALU;
           wb_mask   <= '1';
+
+        when "11100" => -- SYSTEM
+          -- FIXME: cover all cases
+          rd_src  <= RDSRC_CSR;
+          wb_mask <= '1';
 
         when others => -- NOP
           null;

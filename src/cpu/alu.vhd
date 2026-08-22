@@ -32,10 +32,12 @@ begin
         when ALUOP_SLL =>
           z <= std_logic_vector(shift_left(unsigned(x), to_integer(unsigned(shamt))));
         when ALUOP_SLT =>
+          z <= (others   => '0');
           if signed(x) < signed(y) then
             z(0) <= '1';
           end if;
         when ALUOP_SLTU =>
+          z <= (others    => '0');
           if unsigned(x) < unsigned(y) then
             z(0) <= '1';
           end if;

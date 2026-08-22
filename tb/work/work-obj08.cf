@@ -1,77 +1,80 @@
 v 4
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/pll1.vhd" "3a55163b88a41e4751bc434a5fb4b8aba66c4b70" "20260821194628.110":
-  entity pll1 at 37( 1507) + 0 on 73;
-  architecture syn of pll1 at 53( 1731) + 0 on 74;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_mem.vhd" "a86b95d57fbdc7b1b3b7faea2ac8ac3e12bcf0c2" "20260821194628.110":
-  entity wb_mem at 1( 0) + 0 on 57;
-  architecture rtl of wb_mem at 28( 631) + 0 on 58;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_gpio.vhd" "f9a842fc2dfbab2550a8b1ae4fe5aaa84865bced" "20260821194628.110":
-  entity wb_gpio at 1( 0) + 0 on 59;
-  architecture rtl of wb_gpio at 26( 665) + 0 on 60;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/top.vhd" "4070dcba7888dceced0b2e4ef2a94f146126c35b" "20260821194628.110":
-  entity top at 1( 0) + 0 on 69;
-  architecture rtl of top at 26( 741) + 0 on 70;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/pll1.vhd" "3a55163b88a41e4751bc434a5fb4b8aba66c4b70" "20260822210256.531":
+  entity pll1 at 37( 1507) + 0 on 75;
+  architecture syn of pll1 at 53( 1731) + 0 on 76;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_mem.vhd" "a86b95d57fbdc7b1b3b7faea2ac8ac3e12bcf0c2" "20260822210256.531":
+  entity wb_mem at 1( 0) + 0 on 59;
+  architecture rtl of wb_mem at 28( 631) + 0 on 60;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_gpio.vhd" "f9a842fc2dfbab2550a8b1ae4fe5aaa84865bced" "20260822210256.531":
+  entity wb_gpio at 1( 0) + 0 on 61;
+  architecture rtl of wb_gpio at 26( 665) + 0 on 62;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/top.vhd" "c02e32d17e7fb7603719e951ae0b161535a743a5" "20260822210256.531":
+  entity top at 1( 0) + 0 on 71;
+  architecture rtl of top at 26( 741) + 0 on 72;
 file "D:\Files\max1k\max1k-cpu\tb\" "../src/dmem.vhd" "5e286ad3a0d82b2909845e134deb098e28e2a425" "20260801193232.885":
   entity dmem at 1( 0) + 0 on 4;
   architecture rtl of dmem at 24( 529) + 0 on 4;
 file "D:\Files\max1k\max1k-cpu\tb\" "../src/imem.vhd" "ee4c308d6dc99fdaf56535a58e6774b4b8e2ea29" "20260801193232.884":
   entity imem at 1( 0) + 0 on 4;
   architecture rtl of imem at 24( 469) + 0 on 4;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu.vhd" "b9b8cccbe86b70825aa895201591a6bebf4c02be" "20260821194628.110":
-  entity cpu at 1( 0) + 0 on 47;
-  architecture rtl of cpu at 35( 862) + 0 on 48;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/regfile.vhd" "def3a0d82d45728223abd4b44540da594000cf4e" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu.vhd" "1ef4adeed7e38fee9a851da214331681eb5fc17e" "20260822210256.531":
+  entity cpu at 1( 0) + 0 on 49;
+  architecture rtl of cpu at 35( 862) + 0 on 50;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/regfile.vhd" "def3a0d82d45728223abd4b44540da594000cf4e" "20260822210256.531":
   entity regfile at 1( 0) + 0 on 39;
   architecture rtl of regfile at 26( 593) + 0 on 40;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/lsu.vhd" "ad5519f7280eeb12c30546f1f5702c23628f0970" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/lsu.vhd" "ad5519f7280eeb12c30546f1f5702c23628f0970" "20260822210256.531":
   entity lsu at 1( 0) + 0 on 45;
   architecture rtl of lsu at 22( 537) + 0 on 46;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/immext.vhd" "e97a1b15bde4e3524e4b6c349fc04b71fd089c6a" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/immext.vhd" "e97a1b15bde4e3524e4b6c349fc04b71fd089c6a" "20260822210256.531":
   entity immext at 1( 0) + 0 on 37;
   architecture rtl of immext at 17( 320) + 0 on 38;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/decode.vhd" "d897e0a17f3b57bf9ad007253208238411b787e4" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/decode.vhd" "9c20387c68ec66cbdc50a0a37af1e31963b582d1" "20260822210256.531":
   entity decode at 1( 0) + 0 on 35;
-  architecture rtl of decode at 33( 1008) + 0 on 36;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/bcond.vhd" "8e920895425ac88d455f61ac790df1a76a092fe1" "20260821194628.110":
+  architecture rtl of decode at 34( 1061) + 0 on 36;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/bcond.vhd" "8e920895425ac88d455f61ac790df1a76a092fe1" "20260822210256.531":
   entity bcond at 1( 0) + 0 on 41;
   architecture rtl of bcond at 20( 367) + 0 on 42;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/alu.vhd" "6ebc76e498d24dd2d9c604d4136de447733ccbc8" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/alu.vhd" "219b5c050ff643bba2f14ba7f36a8b252289927e" "20260822210256.531":
   entity alu at 1( 0) + 0 on 43;
   architecture rtl of alu at 19( 434) + 0 on 44;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu_pkg.vhd" "266a42d322af3d21e5bb935456d3076f90469e4c" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/cpu_pkg.vhd" "598471e76da342ef3b1ae007da6f7914dfc561a6" "20260822210256.531":
   package cpu_pkg at 1( 0) + 0 on 30;
-file "D:\Files\max1k\max1k-cpu\tb\" "tb_cpu.vhd" "59c556827719f01173f627b6d4391bebeec2ade0" "20260821194628.110":
-  entity tb_cpu at 1( 0) + 0 on 71;
-  architecture rtl of tb_cpu at 9( 139) + 0 on 72;
+file "D:\Files\max1k\max1k-cpu\tb\" "tb_cpu.vhd" "59c556827719f01173f627b6d4391bebeec2ade0" "20260822210256.531":
+  entity tb_cpu at 1( 0) + 0 on 73;
+  architecture rtl of tb_cpu at 9( 139) + 0 on 74;
 file "D:\Files\max1k\max1k-cpu\tb\" "../src/mem.vhd" "703b96d0ef44e0ca5cd993e0cf6df876b798b0ea" "20260802185529.121":
   entity mem at 1( 0) + 0 on 28;
   architecture rtl of mem at 27( 584) + 0 on 29;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_1to2.vhd" "a06add11759c1b840dc1bb5e791273b36439a60d" "20260821194628.110":
-  entity wb_mux_1to2 at 1( 0) + 0 on 53;
-  architecture rtl of wb_mux_1to2 at 42( 1190) + 0 on 54;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_2to1.vhd" "26554a28eced476e7d3b2e6e0d9dde7ed47ccdab" "20260821194628.110":
-  entity wb_mux_2to1 at 1( 0) + 0 on 49;
-  architecture rtl of wb_mux_2to1 at 40( 1159) + 0 on 50;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_regslice.vhd" "48f6d784846f4f206340d21a20b38c32c42a9510" "20260821194628.110":
-  entity wb_regslice at 1( 0) + 0 on 51;
-  architecture rtl of wb_regslice at 31( 836) + 0 on 52;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_2to2.vhd" "bfcef52c2045d9e191fcfd4455d3e0784b96459d" "20260821194628.110":
-  entity wb_mux_2to2 at 1( 0) + 0 on 55;
-  architecture rtl of wb_mux_2to2 at 49( 1486) + 0 on 56;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/stream_fifo.vhd" "70d7b2891e2bf7637866ce6b5c5ba75164ab9d84" "20260821194628.110":
-  entity stream_fifo at 1( 0) + 0 on 63;
-  architecture rtl of stream_fifo at 26( 570) + 0 on 64;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/uart_rx.vhd" "9c7368dee63026cf29dfd63da1b95004357e5d26" "20260821194628.110":
-  entity uart_rx at 1( 0) + 0 on 61;
-  architecture rtl of uart_rx at 21( 399) + 0 on 62;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/uart_tx.vhd" "97a2325504196eabd26e99ce16dbd01e56520840" "20260821194628.110":
-  entity uart_tx at 1( 0) + 0 on 65;
-  architecture rtl of uart_tx at 21( 396) + 0 on 66;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_uart.vhd" "0a48f9b4e08e5da564dde090720e4b9022f97d30" "20260821194628.110":
-  entity wb_uart at 1( 0) + 0 on 67;
-  architecture rtl of wb_uart at 25( 578) + 0 on 68;
-file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/mux.vhd" "bf5ed408640a8d5c50c402bcc484e1ef43ecd632" "20260821194628.110":
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_1to2.vhd" "a06add11759c1b840dc1bb5e791273b36439a60d" "20260822210256.531":
+  entity wb_mux_1to2 at 1( 0) + 0 on 55;
+  architecture rtl of wb_mux_1to2 at 42( 1190) + 0 on 56;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_2to1.vhd" "26554a28eced476e7d3b2e6e0d9dde7ed47ccdab" "20260822210256.531":
+  entity wb_mux_2to1 at 1( 0) + 0 on 51;
+  architecture rtl of wb_mux_2to1 at 40( 1159) + 0 on 52;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_regslice.vhd" "48f6d784846f4f206340d21a20b38c32c42a9510" "20260822210256.531":
+  entity wb_regslice at 1( 0) + 0 on 53;
+  architecture rtl of wb_regslice at 31( 836) + 0 on 54;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/wb/wb_mux_2to2.vhd" "bfcef52c2045d9e191fcfd4455d3e0784b96459d" "20260822210256.531":
+  entity wb_mux_2to2 at 1( 0) + 0 on 57;
+  architecture rtl of wb_mux_2to2 at 49( 1486) + 0 on 58;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/stream_fifo.vhd" "70d7b2891e2bf7637866ce6b5c5ba75164ab9d84" "20260822210256.531":
+  entity stream_fifo at 1( 0) + 0 on 65;
+  architecture rtl of stream_fifo at 26( 570) + 0 on 66;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/uart_rx.vhd" "9c7368dee63026cf29dfd63da1b95004357e5d26" "20260822210256.531":
+  entity uart_rx at 1( 0) + 0 on 63;
+  architecture rtl of uart_rx at 21( 399) + 0 on 64;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/uart_tx.vhd" "97a2325504196eabd26e99ce16dbd01e56520840" "20260822210256.531":
+  entity uart_tx at 1( 0) + 0 on 67;
+  architecture rtl of uart_tx at 21( 396) + 0 on 68;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/periph/wb_uart.vhd" "0a48f9b4e08e5da564dde090720e4b9022f97d30" "20260822210256.531":
+  entity wb_uart at 1( 0) + 0 on 69;
+  architecture rtl of wb_uart at 25( 578) + 0 on 70;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/mux.vhd" "bf5ed408640a8d5c50c402bcc484e1ef43ecd632" "20260822210256.531":
   entity mux2 at 1( 0) + 0 on 31;
   architecture rtl of mux2 at 18( 393) + 0 on 32;
   entity mux4 at 33( 657) + 0 on 33;
   architecture rtl of mux4 at 52( 1152) + 0 on 34;
+file "D:\Files\max1k\max1k-cpu\tb\" "../src/cpu/counter64.vhd" "6f144d124b1fd6b54ef33c7434f1f105093926ca" "20260822210256.531":
+  entity counter64 at 1( 0) + 0 on 47;
+  architecture rtl of counter64 at 16( 337) + 0 on 48;

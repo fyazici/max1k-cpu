@@ -34,6 +34,12 @@ package cpu_pkg is
   constant RDSRC_ALU  : std_logic_vector(1 downto 0) := "00";
   constant RDSRC_PCp4 : std_logic_vector(1 downto 0) := "01";
   constant RDSRC_MEM  : std_logic_vector(1 downto 0) := "10";
+  constant RDSRC_CSR  : std_logic_vector(1 downto 0) := "11";
+
+  constant CSRSRC_MCYCLE    : std_logic_vector(1 downto 0) := "00";
+  constant CSRSRC_MCYCLEH   : std_logic_vector(1 downto 0) := "01";
+  constant CSRSRC_MINSTRET  : std_logic_vector(1 downto 0) := "10";
+  constant CSRSRC_MINSTRETH : std_logic_vector(1 downto 0) := "11";
 
   constant LSU_BYTE : std_logic_vector(1 downto 0) := "00";
   constant LSU_HALF : std_logic_vector(1 downto 0) := "01";

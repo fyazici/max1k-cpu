@@ -1,4 +1,4 @@
-OBJS = main.o printf/printf.o platform.o startup.o
+OBJS = main.o collatz.o printf/printf.o platform.o startup.o
 
 # Our output name
 BINARY = main
@@ -7,7 +7,7 @@ LDSCRIPT = lscript.ld
 
 # Target-specific flags
 FP_FLAGS    ?= 
-ARCH_FLAGS   = -march=rv32i -mabi=ilp32 $(FP_FLAGS)
+ARCH_FLAGS   = -march=rv32i_zicsr -mabi=ilp32 $(FP_FLAGS)
 
 # Compiler configuration
 PREFIX      ?= riscv32-unknown-elf

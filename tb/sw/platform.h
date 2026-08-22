@@ -11,11 +11,24 @@
 #undef errno
 extern int errno;
 
-#define CPU_CLOCK_PER_US (2)
 #define GPIO0_BASEADDR ((void *)0x80000000)
 #define UART0_BASEADDR ((void *)0xC0000000)
 
 #define PERIPH_CLK_HZ (100 * 1000 * 1000)
+#define CPU_CYCLES_PER_US (PERIPH_CLK_HZ / 1000000)
+
+#define READ_CSR(csr_name) ({ \
+  uint32_t __tmp;             \
+  __asm__ __volatile__(       \
+      "csrr %0, " #csr_name   \
+      : "=r"(__tmp)           \
+      :                       \
+      : "memory");            \
+  __tmp;                      \
+})
+
+uint64_t csr_read_mcycle(void);
+uint64_t csr_read_minstret(void);
 
 struct HAL_Uart
 {

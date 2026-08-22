@@ -1,6 +1,33 @@
 #include <platform.h>
 
 /*
+ * CSR utils
+ */
+uint64_t csr_read_mcycle(void)
+{
+  uint32_t x, y, z;
+  do
+  {
+    x = READ_CSR(mcycleh);
+    y = READ_CSR(mcycle);
+    z = READ_CSR(mcycleh);
+  } while (x != z);
+  return ((uint64_t)x << 32) | (uint64_t)y;
+}
+
+uint64_t csr_read_minstret(void)
+{
+  uint32_t x, y, z;
+  do
+  {
+    x = READ_CSR(minstreth);
+    y = READ_CSR(minstret);
+    z = READ_CSR(minstreth);
+  } while (x != z);
+  return ((uint64_t)x << 32) | (uint64_t)y;
+}
+
+/*
  * HAL stuff - TODO move
  */
 int HAL_uart_init(volatile struct HAL_Uart *spUart, int baudrate)
@@ -31,8 +58,9 @@ void outbyte(char c)
 /* UTIL stuff */
 void usleep(uint32_t us)
 {
-  volatile uint32_t ctr = us * CPU_CLOCK_PER_US;
-  while (ctr--)
+  uint64_t begin = csr_read_mcycle();
+  uint64_t end = begin + us * CPU_CYCLES_PER_US;
+  while (csr_read_mcycle() < end)
     ;
 }
 

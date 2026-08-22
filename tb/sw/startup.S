@@ -13,7 +13,7 @@ reset_handler:
 .option pop
 	
 	/* Reset satp */
-	/* csrw satp, zero */
+	csrw satp, zero
 	
 	/* Setup stack */
 	la sp, _stack
@@ -27,7 +27,7 @@ _bss_clear_loop:
 	bltu t5, t6, _bss_clear_loop
 	
 	la t0, main
-	/* csrw mepc, t0 */
+	csrw mepc, t0
 	
 	/* Jump to kernel! */
 	tail main

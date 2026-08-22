@@ -83,6 +83,17 @@ architecture rtl of cpu is
   );
   signal state : t_state := S_fetch;
 
+  -- CSRs
+  signal mcycle    : std_logic_vector(31 downto 0) := (others => '0');
+  signal mcycleh   : std_logic_vector(31 downto 0) := (others => '0');
+  signal minstret  : std_logic_vector(31 downto 0) := (others => '0');
+  signal minstreth : std_logic_vector(31 downto 0) := (others => '0');
+
+  signal minstret_ce : std_logic;
+
+  signal csr_src  : std_logic_vector(1 downto 0);
+  signal csr_dout : std_logic_vector(31 downto 0);
+
 begin
 
   pc_plus_4 <= std_logic_vector(unsigned(pc) + 4);
@@ -117,7 +128,8 @@ begin
       lsu_signext => lsu_signext,
       mem_mask    => mem_mask,
       mem_we      => d_we,
-      wb_mask     => wb_mask
+      wb_mask     => wb_mask,
+      csr_src     => csr_src
     );
 
   U_IMMEXT : entity work.immext
@@ -136,7 +148,7 @@ begin
       d0  => alu_z, -- RDSRC_ALU
       d1  => pc_plus_4, -- RDSRC_PCp4
       d2  => ldout_latch, -- RDSRC_MEM
-      d3 => (others => 'X'),
+      d3  => csr_dout,
       q   => rd_din
     );
 
@@ -225,6 +237,41 @@ begin
       sdin  => rs2_dout,
       sdout => d_dout,
       sstrb => d_sel
+    );
+
+  U_MCYCLE_CTR : entity work.counter64
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+      ce    => '1',
+      ql    => mcycle,
+      qh    => mcycleh
+    );
+
+  U_MINSTRET_CTR : entity work.counter64
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+      ce    => minstret_ce,
+      ql    => minstret,
+      qh    => minstreth
+    );
+
+  minstret_ce <= '1' when (state = S_writeback) else
+    '0';
+
+  U_CSR_MUX : entity work.mux4
+    generic map(G_DW => 32)
+    port map
+    (
+      sel => csr_src,
+      d0  => mcycle,
+      d1  => mcycleh,
+      d2  => minstret,
+      d3  => minstreth,
+      q   => csr_dout
     );
 
   i_cyc <= '1' when (state = S_fetch) else
