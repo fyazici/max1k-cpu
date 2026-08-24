@@ -5,3 +5,9 @@ incremental_db
 *.bak
 output_files
 tb/tb_cpu.ghw
+*.d
+*.map
+*.elf
+*_dump.S
+*.bin
+*.size

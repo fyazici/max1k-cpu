@@ -3,7 +3,7 @@ ENTRY(reset_handler);
 MEMORY
 {
 	/* rom (rx) : ORIGIN = 0x08000000, LENGTH = 64K */
-	ram (rwx) : ORIGIN = 0x00000000, LENGTH = 16K
+	ram (rwx) : ORIGIN = 0x00000000, LENGTH = 32K
 }
  
 SECTIONS {
@@ -21,9 +21,8 @@ SECTIONS {
 	.data : {
 		_data = .;
 		*(.data*)	/* Read-write initialized data */
-		__global_pointer$ = .;
 		*(.sdata*) /* small data opt */
-		*(.ramtext*)    /* "text" functions to run in ram */
+		__global_pointer$ = .;
 		. = ALIGN(4);
 		_edata = .;
 	} >ram
@@ -31,6 +30,7 @@ SECTIONS {
 
 	.bss : {
 		*(.bss*)	/* Read-write zero initialized data */
+		*(.sbss*)
 		*(COMMON)
 		. = ALIGN(4);
 		_ebss = .;

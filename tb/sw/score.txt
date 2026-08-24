@@ -1,0 +1,15 @@
+======================================================================
+2026-08-24: Inst+Data @ BRAM, 100 MHZ, No pipelining, No cache, No MUL
+CoreMark Size    : 666
+Total ticks      : 1347770681
+Total time (secs): 13
+Iterations/Sec   : 15
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O3
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f

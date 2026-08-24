@@ -1,7 +1,7 @@
-OBJS = main.o collatz.o printf/printf.o platform.o startup.o
+OBJS = coremark/core_main.o coremark/core_matrix.o coremark/core_list_join.o coremark/core_state.o coremark/core_util.o coremark/core_portme.o coremark/cvt.o coremark/ee_printf.o platform.o startup.o
 
 # Our output name
-BINARY = main
+BINARY = core_main
 
 LDSCRIPT = lscript.ld
 
@@ -19,17 +19,17 @@ SIZE        := $(PREFIX)-size
 OBJCOPY     := $(PREFIX)-objcopy
 OBJDUMP     := $(PREFIX)-objdump
 GDB         := $(PREFIX)-gdb
-OPT         := -Os
+OPT         := -O2
 DEBUG       := 
 CSTD        ?= -std=c99
 
 # C flags
 TGT_CFLAGS  += $(OPT) $(CSTD) $(DEBUG)
 TGT_CFLAGS  += $(ARCH_FLAGS)
-TGT_CFLAGS  += -Wextra -Wshadow -Wimplicit-function-declaration
+TGT_CFLAGS  += -Wall -Wextra -Wshadow -Wimplicit-function-declaration
 TGT_CFLAGS  += -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
 TGT_CFLAGS  += -fno-common -ffunction-sections -fdata-sections
-TGT_CFLAGS  += -I.
+TGT_CFLAGS  += -I./ -Icoremark/
 TGT_CFLAGS  += -Wno-unused-parameter
 
 # C preprocessor common flags
@@ -45,13 +45,14 @@ TGT_LDFLAGS     += -Wl,-Map=$(*).map -Wl,--cref
 TGT_LDFLAGS     += -Wl,--gc-sections
 
 # Used libraries
-DEFS        += -DPRINTF_INCLUDE_CONFIG_H=0 
-DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT=0 
-DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_HARD=0
-DEFS        += -DPRINTF_SUPPORT_MSVC_STYLE_INTEGER_SPECIFIERS=0
-DEFS        += -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0
-DEFS        += -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0
-DEFS        += -DPRINTF_SUPPORT_WRITEBACK_SPECIFIER=0
+# DEFS        += -DPRINTF_INCLUDE_CONFIG_H=0 
+# DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT=0 
+# DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_HARD=0
+# DEFS        += -DPRINTF_SUPPORT_MSVC_STYLE_INTEGER_SPECIFIERS=0
+# DEFS        += -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0
+# DEFS        += -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0
+# DEFS        += -DPRINTF_SUPPORT_WRITEBACK_SPECIFIER=0
+DEFS        += -DCORE_DEBUG=0 -DPERFORMANCE_RUN=1 -DITERATIONS=200
 LDFLAGS     += 
 LDLIBS      += 
 LDLIBS      += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
@@ -68,7 +69,7 @@ GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).map $(BINARY).size $(BI
 
 %.bin: %.elf
 	$(OBJCOPY) -Obinary $(*).elf $(*).bin
-	./bin2mif
+	./bin2mif $(*).bin
 
 
 %.elf %.map: $(OBJS) $(LDSCRIPT)

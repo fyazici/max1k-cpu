@@ -20,7 +20,7 @@ int main(void)
 {
   HAL_uart_init(UART0_BASEADDR, 115200);
 
-  printf_("BOOT\n\r");
+  printf("BOOT\n\r");
 
   spGpio0->dir = 0x0; // all output
   spGpio0->odr = 0xF0E0C080;
@@ -29,7 +29,7 @@ int main(void)
   uint32_t limit = 1000000;
   uint32_t r = longest_collatz_sequence(limit);
   perf_report();
-  printf_("Longest collatz sequence seed under %d is %d\n\r", (int)limit, (int)r);
+  printf("Longest collatz sequence seed under %d is %d\n\r", (int)limit, (int)r);
 
   int i = 0;
 
@@ -49,7 +49,7 @@ void perf_report()
   unsigned int cpi_int = mcycle / minstret;
   unsigned int cpi_10x = (10 * mcycle) / minstret;
   unsigned int cpi_frac = cpi_10x - 10 * cpi_int;
-  printf_("[PERF_REPORT] => MCYCLE: %llu MINSTRET: %llu CPI: %u.%u\n\r", mcycle, minstret, cpi_int, cpi_frac);
+  printf("[PERF_REPORT] => MCYCLE: %llu MINSTRET: %llu CPI: %u.%u\n\r", mcycle, minstret, cpi_int, cpi_frac);
 }
 
 void putchar_(char c)
