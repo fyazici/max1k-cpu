@@ -126,6 +126,7 @@ ee_u32 default_num_contexts = 1;
 void portable_init(core_portable *p, int *argc, char *argv[])
 {
     HAL_uart_init(UART0_BASEADDR, 1000000);
+    ee_printf("[INIT]\n");
 
     (void)argc; // prevent unused warning
     (void)argv; // prevent unused warning
@@ -148,6 +149,10 @@ void portable_init(core_portable *p, int *argc, char *argv[])
 void portable_fini(core_portable *p)
 {
     p->portable_id = 0;
+    uint32_t cycles = csr_read_mcycle();
+    uint32_t instret = csr_read_minstret();
+    uint32_t cpi_int = cycles / instret;
+    ee_printf("[FINI] C: %lu I: %lu CPI: %lu\n", cycles, instret, cpi_int);
     while (1)
         ;
 }

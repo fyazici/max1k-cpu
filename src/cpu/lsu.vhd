@@ -22,7 +22,7 @@ end entity lsu;
 architecture rtl of lsu is
 begin
 
-  PROC_COMB : process (size, offset, signext, ldin, sdin)
+  PROC_COMB : process (all)
   begin
     ldout <= (others => 'X');
     sdout <= (others => 'X');

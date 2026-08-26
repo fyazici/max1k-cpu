@@ -43,14 +43,14 @@ begin
               regs(to_integer(unsigned(rd_sel))) <= rd_din;
             end if;
 
-            rs1_dout <= regs(to_integer(unsigned(rs1_sel)));
-            rs2_dout <= regs(to_integer(unsigned(rs2_sel)));
-
             -- x0 is always 0
             regs(0) <= (others => '0');
           end if;
         end if;
       end process;
+
+      rs1_dout <= regs(to_integer(unsigned(rs1_sel)));
+      rs2_dout <= regs(to_integer(unsigned(rs2_sel)));
     end block;
   end generate;
 
@@ -78,11 +78,11 @@ begin
             mem0(to_integer(unsigned(rd_sel))) <= rd_din;
             mem1(to_integer(unsigned(rd_sel))) <= rd_din;
           end if;
-
-          rs1_dout <= mem0(to_integer(unsigned(rs1_sel)));
-          rs2_dout <= mem1(to_integer(unsigned(rs2_sel)));
         end if;
       end process;
+
+      rs1_dout <= mem0(to_integer(unsigned(rs1_sel)));
+      rs2_dout <= mem1(to_integer(unsigned(rs2_sel)));
 
     end block;
   end generate;

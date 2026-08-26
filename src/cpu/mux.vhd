@@ -17,7 +17,7 @@ end entity mux2;
 
 architecture rtl of mux2 is
 begin
-  PROC_COMB : process (sel, d0, d1)
+  PROC_COMB : process (all)
   begin
     case (sel) is
       when "0" =>
@@ -51,7 +51,7 @@ end entity mux4;
 
 architecture rtl of mux4 is
 begin
-  PROC_COMB : process (sel, d0, d1, d2, d3)
+  PROC_COMB : process (all)
   begin
     case (sel) is
       when "00" =>

@@ -7,8 +7,6 @@ use work.cpu_pkg.all;
 
 entity bcond is
   port (
-    clk : in std_logic;
-
     rs1 : in std_logic_vector(31 downto 0);
     rs2 : in std_logic_vector(31 downto 0);
     sel : in std_logic_vector(2 downto 0);
@@ -30,19 +28,17 @@ begin
   ltu_c <= '1' when (unsigned(rs1) < unsigned(rs2)) else
     '0';
 
-  PROC_SEQ : process (clk)
+  PROC_COMB : process (all)
   begin
-    if rising_edge(clk) then
-      case (sel) is
-        when BEQ    => cond    <= eq_c;
-        when BNE    => cond    <= not(eq_c);
-        when BLT    => cond    <= lt_c;
-        when BGE    => cond    <= not(lt_c);
-        when BLTU   => cond   <= ltu_c;
-        when BGEU   => cond   <= not(ltu_c);
-        when others => cond <= 'X';
-      end case;
-    end if;
+    case (sel) is
+      when BEQ    => cond    <= eq_c;
+      when BNE    => cond    <= not(eq_c);
+      when BLT    => cond    <= lt_c;
+      when BGE    => cond    <= not(lt_c);
+      when BLTU   => cond   <= ltu_c;
+      when BGEU   => cond   <= not(ltu_c);
+      when others => cond <= 'X';
+    end case;
   end process;
 
 end architecture;

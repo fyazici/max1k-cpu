@@ -59,7 +59,7 @@ begin
   m1_cyc <= sel and s_cyc;
   m1_stb <= sel and s_stb;
 
-  PROC_COMB : process (sel, m0_ack, m0_din, m1_ack, m1_din)
+  PROC_COMB : process (all)
   begin
     if sel = '0' then
       s_ack  <= m0_ack;

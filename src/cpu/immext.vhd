@@ -24,7 +24,7 @@ begin
   imm_u <= instr(31 downto 12) & x"000";
   imm_j <= std_logic_vector(resize(signed(instr(31) & instr(19 downto 12) & instr(20) & instr(30 downto 21) & "0"), 32));
 
-  PROC_COMB : process (sel, imm_i, imm_s, imm_b, imm_u, imm_j)
+  PROC_COMB : process (all)
   begin
     case (sel) is
       when ISEL_I => imm <= imm_i;
