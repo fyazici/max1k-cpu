@@ -39,11 +39,14 @@ architecture rtl of top is
   signal reset_ctr : natural   := 1000;
 
   -- instruction memory intf
-  signal wb_ibus_adr : std_logic_vector(31 downto 0);
-  signal wb_ibus_din : std_logic_vector(31 downto 0);
-  signal wb_ibus_stb : std_logic;
-  signal wb_ibus_cyc : std_logic;
-  signal wb_ibus_ack : std_logic;
+  signal wb_ibus_adr  : std_logic_vector(31 downto 0);
+  signal wb_ibus_din  : std_logic_vector(31 downto 0);
+  signal wb_ibus_dout : std_logic_vector(31 downto 0) := (others => '0');
+  signal wb_ibus_we   : std_logic                     := '0';
+  signal wb_ibus_sel  : std_logic_vector(3 downto 0)  := (others => '0');
+  signal wb_ibus_stb  : std_logic;
+  signal wb_ibus_cyc  : std_logic;
+  signal wb_ibus_ack  : std_logic;
 
   -- data memory intf
   signal wb_dbus_adr  : std_logic_vector(31 downto 0);
@@ -55,6 +58,33 @@ architecture rtl of top is
   signal wb_dbus_cyc  : std_logic;
   signal wb_dbus_ack  : std_logic;
 
+  signal wb_dbus_adr_r  : std_logic_vector(31 downto 0);
+  signal wb_dbus_din_r  : std_logic_vector(31 downto 0);
+  signal wb_dbus_dout_r : std_logic_vector(31 downto 0);
+  signal wb_dbus_we_r   : std_logic;
+  signal wb_dbus_sel_r  : std_logic_vector(3 downto 0);
+  signal wb_dbus_stb_r  : std_logic;
+  signal wb_dbus_cyc_r  : std_logic;
+  signal wb_dbus_ack_r  : std_logic;
+
+  signal wb_d2m_adr  : std_logic_vector(31 downto 0);
+  signal wb_d2m_din  : std_logic_vector(31 downto 0);
+  signal wb_d2m_dout : std_logic_vector(31 downto 0);
+  signal wb_d2m_we   : std_logic;
+  signal wb_d2m_sel  : std_logic_vector(3 downto 0);
+  signal wb_d2m_stb  : std_logic;
+  signal wb_d2m_cyc  : std_logic;
+  signal wb_d2m_ack  : std_logic;
+
+  signal wb_d2p_adr  : std_logic_vector(31 downto 0);
+  signal wb_d2p_din  : std_logic_vector(31 downto 0);
+  signal wb_d2p_dout : std_logic_vector(31 downto 0);
+  signal wb_d2p_we   : std_logic;
+  signal wb_d2p_sel  : std_logic_vector(3 downto 0);
+  signal wb_d2p_stb  : std_logic;
+  signal wb_d2p_cyc  : std_logic;
+  signal wb_d2p_ack  : std_logic;
+
   -- memory intf
   signal wb_mem_adr  : std_logic_vector(31 downto 0);
   signal wb_mem_din  : std_logic_vector(31 downto 0);
@@ -64,26 +94,6 @@ architecture rtl of top is
   signal wb_mem_stb  : std_logic;
   signal wb_mem_cyc  : std_logic;
   signal wb_mem_ack  : std_logic;
-
-  -- periph intf
-  signal wb_periph_adr  : std_logic_vector(31 downto 0);
-  signal wb_periph_din  : std_logic_vector(31 downto 0);
-  signal wb_periph_dout : std_logic_vector(31 downto 0);
-  signal wb_periph_we   : std_logic;
-  signal wb_periph_sel  : std_logic_vector(3 downto 0);
-  signal wb_periph_stb  : std_logic;
-  signal wb_periph_cyc  : std_logic;
-  signal wb_periph_ack  : std_logic;
-
-  -- periph intf regslice
-  signal wb_periph_adr_r  : std_logic_vector(31 downto 0);
-  signal wb_periph_din_r  : std_logic_vector(31 downto 0);
-  signal wb_periph_dout_r : std_logic_vector(31 downto 0);
-  signal wb_periph_we_r   : std_logic;
-  signal wb_periph_sel_r  : std_logic_vector(3 downto 0);
-  signal wb_periph_stb_r  : std_logic;
-  signal wb_periph_cyc_r  : std_logic;
-  signal wb_periph_ack_r  : std_logic;
 
   -- gpio intf
   signal wb_gpio0_adr  : std_logic_vector(31 downto 0);
@@ -167,51 +177,101 @@ begin
       d_ack  => wb_dbus_ack
     );
 
-  U_WBMUX : entity work.wb_mux_2to2
+  U_WBRS_D2P : entity work.wb_regslice
     port map
     (
       clk   => clk,
       reset => reset,
 
-      -- 0x0000_0000 4G
-      s0_cyc  => wb_ibus_cyc,
-      s0_stb  => wb_ibus_stb,
-      s0_adr  => wb_ibus_adr,
-      s0_we   => '0',
-      s0_sel => (others => '0'),
-      s0_din => (others => '0'),
-      s0_dout => wb_ibus_din,
-      s0_ack  => wb_ibus_ack,
+      s_cyc  => wb_dbus_cyc,
+      s_stb  => wb_dbus_stb,
+      s_adr  => wb_dbus_adr,
+      s_we   => wb_dbus_we,
+      s_sel  => wb_dbus_sel,
+      s_din  => wb_dbus_dout,
+      s_dout => wb_dbus_din,
+      s_ack  => wb_dbus_ack,
 
-      -- 0x0000_0000 4G
-      s1_cyc  => wb_dbus_cyc,
-      s1_stb  => wb_dbus_stb,
-      s1_adr  => wb_dbus_adr,
-      s1_we   => wb_dbus_we,
-      s1_sel  => wb_dbus_sel,
-      s1_din  => wb_dbus_dout,
-      s1_dout => wb_dbus_din,
-      s1_ack  => wb_dbus_ack,
+      m_cyc  => wb_dbus_cyc_r,
+      m_stb  => wb_dbus_stb_r,
+      m_adr  => wb_dbus_adr_r,
+      m_we   => wb_dbus_we_r,
+      m_sel  => wb_dbus_sel_r,
+      m_dout => wb_dbus_dout_r,
+      m_din  => wb_dbus_din_r,
+      m_ack  => wb_dbus_ack_r
+    );
 
-      -- 0x0000_0000 2G
-      m0_cyc  => wb_mem_cyc,
-      m0_stb  => wb_mem_stb,
-      m0_adr  => wb_mem_adr,
-      m0_we   => wb_mem_we,
-      m0_sel  => wb_mem_sel,
-      m0_dout => wb_mem_dout,
-      m0_din  => wb_mem_din,
-      m0_ack  => wb_mem_ack,
+  U_WBMUX_DBUS : entity work.wb_mux_1to2
+    port map
+    (
+      clk   => clk,
+      reset => reset,
 
-      -- 0x8000_0000 2G
-      m1_cyc  => wb_periph_cyc,
-      m1_stb  => wb_periph_stb,
-      m1_adr  => wb_periph_adr,
-      m1_we   => wb_periph_we,
-      m1_sel  => wb_periph_sel,
-      m1_dout => wb_periph_dout,
-      m1_din  => wb_periph_din,
-      m1_ack  => wb_periph_ack
+      sel => wb_dbus_adr_r(31),
+
+      s_cyc  => wb_dbus_cyc_r,
+      s_stb  => wb_dbus_stb_r,
+      s_adr  => wb_dbus_adr_r,
+      s_we   => wb_dbus_we_r,
+      s_sel  => wb_dbus_sel_r,
+      s_din  => wb_dbus_dout_r,
+      s_dout => wb_dbus_din_r,
+      s_ack  => wb_dbus_ack_r,
+
+      -- 0x0000_0000 2G Mem
+      m0_cyc  => wb_d2m_cyc,
+      m0_stb  => wb_d2m_stb,
+      m0_adr  => wb_d2m_adr,
+      m0_we   => wb_d2m_we,
+      m0_sel  => wb_d2m_sel,
+      m0_dout => wb_d2m_dout,
+      m0_din  => wb_d2m_din,
+      m0_ack  => wb_d2m_ack,
+
+      -- 0x8000_0000 2G Periph
+      m1_cyc  => wb_d2p_cyc,
+      m1_stb  => wb_d2p_stb,
+      m1_adr  => wb_d2p_adr,
+      m1_we   => wb_d2p_we,
+      m1_sel  => wb_d2p_sel,
+      m1_dout => wb_d2p_dout,
+      m1_din  => wb_d2p_din,
+      m1_ack  => wb_d2p_ack
+    );
+
+  U_WBMUX_MEM : entity work.wb_Nx1
+    generic map(N => 2, AW => 32, DW => 32)
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+
+      s_cyc(0)  => wb_ibus_cyc,
+      s_cyc(1)  => wb_d2m_cyc,
+      s_stb(0)  => wb_ibus_stb,
+      s_stb(1)  => wb_d2m_stb,
+      s_adr(0)  => wb_ibus_adr,
+      s_adr(1)  => wb_d2m_adr,
+      s_we(0)   => wb_ibus_we,
+      s_we(1)   => wb_d2m_we,
+      s_sel(0)  => wb_ibus_sel,
+      s_sel(1)  => wb_d2m_sel,
+      s_din(0)  => wb_ibus_dout,
+      s_din(1)  => wb_d2m_dout,
+      s_dout(0) => wb_ibus_din,
+      s_dout(1) => wb_d2m_din,
+      s_ack(0)  => wb_ibus_ack,
+      s_ack(1)  => wb_d2m_ack,
+
+      m_cyc  => wb_mem_cyc,
+      m_stb  => wb_mem_stb,
+      m_adr  => wb_mem_adr,
+      m_we   => wb_mem_we,
+      m_sel  => wb_mem_sel,
+      m_dout => wb_mem_dout,
+      m_din  => wb_mem_din,
+      m_ack  => wb_mem_ack
     );
 
   U_MEM : entity work.wb_mem
@@ -233,48 +293,23 @@ begin
       s_ack  => wb_mem_ack
     );
 
-  U_WBRS_PERIPH : entity work.wb_regslice
-    port map
-    (
-      clk   => clk,
-      reset => reset,
-
-      s_cyc  => wb_periph_cyc,
-      s_stb  => wb_periph_stb,
-      s_adr  => wb_periph_adr,
-      s_we   => wb_periph_we,
-      s_sel  => wb_periph_sel,
-      s_din  => wb_periph_dout,
-      s_dout => wb_periph_din,
-      s_ack  => wb_periph_ack,
-
-      m_cyc  => wb_periph_cyc_r,
-      m_stb  => wb_periph_stb_r,
-      m_adr  => wb_periph_adr_r,
-      m_we   => wb_periph_we_r,
-      m_sel  => wb_periph_sel_r,
-      m_dout => wb_periph_dout_r,
-      m_din  => wb_periph_din_r,
-      m_ack  => wb_periph_ack_r
-    );
-
   U_WBMUX_PERIPH : entity work.wb_mux_1to2
     port map
     (
       clk   => clk,
       reset => reset,
 
-      sel => wb_periph_adr_r(30),
+      sel => wb_d2p_adr(30),
 
       -- 0x8000_0000 2G
-      s_cyc  => wb_periph_cyc_r,
-      s_stb  => wb_periph_stb_r,
-      s_adr  => wb_periph_adr_r,
-      s_we   => wb_periph_we_r,
-      s_sel  => wb_periph_sel_r,
-      s_din  => wb_periph_dout_r,
-      s_dout => wb_periph_din_r,
-      s_ack  => wb_periph_ack_r,
+      s_cyc  => wb_d2p_cyc,
+      s_stb  => wb_d2p_stb,
+      s_adr  => wb_d2p_adr,
+      s_we   => wb_d2p_we,
+      s_sel  => wb_d2p_sel,
+      s_din  => wb_d2p_dout,
+      s_dout => wb_d2p_din,
+      s_ack  => wb_d2p_ack,
 
       -- 0x8000_0000 1G
       m0_cyc  => wb_gpio0_cyc,

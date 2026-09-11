@@ -3,6 +3,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+use work.wb_pkg.all;
+
 entity wb_mux_2to2 is
   port (
     clk   : in std_logic;
@@ -68,29 +70,29 @@ architecture rtl of wb_mux_2to2 is
 
 begin
 
-  U_INGRESS : entity work.wb_mux_2to1
+  U_INGRESS : entity work.wb_Nx1
+    generic map(N => 2, AW => 32, DW => 32)
     port map
     (
       clk   => clk,
       reset => reset,
 
-      s0_cyc  => s0_cyc,
-      s0_stb  => s0_stb,
-      s0_adr  => s0_adr,
-      s0_we   => s0_we,
-      s0_sel  => s0_sel,
-      s0_din  => s0_din,
-      s0_dout => s0_dout,
-      s0_ack  => s0_ack,
-
-      s1_cyc  => s1_cyc,
-      s1_stb  => s1_stb,
-      s1_adr  => s1_adr,
-      s1_we   => s1_we,
-      s1_sel  => s1_sel,
-      s1_din  => s1_din,
-      s1_dout => s1_dout,
-      s1_ack  => s1_ack,
+      s_cyc(0)  => s0_cyc,
+      s_cyc(1)  => s1_cyc,
+      s_stb(0)  => s0_stb,
+      s_stb(1)  => s1_stb,
+      s_adr(0)  => s0_adr,
+      s_adr(1)  => s1_adr,
+      s_we(0)   => s0_we,
+      s_we(1)   => s1_we,
+      s_sel(0)  => s0_sel,
+      s_sel(1)  => s1_sel,
+      s_din(0)  => s0_din,
+      s_din(1)  => s1_din,
+      s_dout(0) => s0_dout,
+      s_dout(1) => s1_dout,
+      s_ack(0)  => s0_ack,
+      s_ack(1)  => s1_ack,
 
       m_cyc  => i_cyc,
       m_stb  => i_stb,

@@ -5,6 +5,8 @@ incremental_db
 *.bak
 output_files
 tb/tb_cpu.ghw
+tb/tb_cpu.vcd
+tb/work
 *.d
 *.map
 *.elf

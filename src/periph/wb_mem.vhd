@@ -41,9 +41,9 @@ begin
     numwords_a                    => 2**G_AW,
     operation_mode                => "SINGLE_PORT",
     outdata_aclr_a                => "NONE",
-    outdata_reg_a                 => "CLOCK0",
+    outdata_reg_a                 => "UNREGISTERED",
     power_up_uninitialized        => "FALSE",
-    read_during_write_mode_port_a => "NEW_DATA_NO_NBE_READ",
+    read_during_write_mode_port_a => "DONT_CARE",
     widthad_a                     => G_AW,
     width_a                       => 32,
     width_byteena_a               => 4
@@ -61,8 +61,9 @@ begin
   PROC_ACK : process (clk)
   begin
     if rising_edge(clk) then
-      ack_r1 <= s_cyc and s_stb and not(s_ack);
-      s_ack  <= ack_r1 and not(s_ack);
+      -- ack_r1 <= s_cyc and s_stb and not(s_ack);
+      -- s_ack  <= ack_r1 and not(s_ack);
+		s_ack <= s_cyc and s_stb and not(s_ack);
     end if;
   end process;
 

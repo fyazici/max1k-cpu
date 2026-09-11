@@ -21,6 +21,8 @@ end entity;
 architecture rtl of uart_rx is
   signal dout_valid_r : std_logic;
 
+  signal rx_x, rx_s : std_logic := '0';
+
   signal rx_prev   : std_logic;
   signal bit_timer : unsigned(15 downto 0);
   signal bit_idx   : natural range 0 to 7;
@@ -28,6 +30,14 @@ architecture rtl of uart_rx is
   type state_t is (S_IDLE, S_START, S_SAMPLE, S_STOP, S_END);
   signal state : state_t;
 begin
+
+  PROC_CDC : process (clk)
+  begin
+    if rising_edge(clk) then
+      rx_x <= rx;
+      rx_s <= rx_x;
+    end if;
+  end process;
 
   PROC_UART_RX : process (clk)
   begin
@@ -39,16 +49,16 @@ begin
         dout_valid_r <= '0';
         rx_prev      <= '1';
       else
-        rx_prev <= rx;
+        rx_prev <= rx_s;
         case (state) is
           when S_IDLE =>
             dout_valid_r <= '0';
-            if (rx = '0' and rx_prev = '1') then
+            if (rx_s = '0' and rx_prev = '1') then
               bit_timer <= unsigned("0" & baud_div(15 downto 1));
               state     <= S_START;
             end if;
           when S_START =>
-            if (rx = '0') then
+            if (rx_s = '0') then
               if (bit_timer = 0) then
                 bit_timer <= unsigned(baud_div);
                 bit_idx   <= 7;
@@ -62,7 +72,7 @@ begin
             end if;
           when S_SAMPLE =>
             if (bit_timer = 0) then
-              dout_data(7 - bit_idx) <= rx;
+              dout_data(7 - bit_idx) <= rx_s;
               if (bit_idx = 0) then
                 state <= S_STOP;
               else
@@ -74,7 +84,7 @@ begin
             end if;
           when S_STOP =>
             if (bit_timer = 0) then
-              if (rx = '1') then
+              if (rx_s = '1') then
                 dout_valid_r <= '1';
               end if;
               state <= S_END;

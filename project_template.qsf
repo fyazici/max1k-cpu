@@ -148,11 +148,13 @@ set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
 set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
-set_global_assignment -name ENABLE_SIGNALTAP OFF
-set_global_assignment -name USE_SIGNALTAP_FILE stp2.stp
 set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
 set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE COMP IMAGE WITH ERAM"
 set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
+set_global_assignment -name ALLOW_REGISTER_RETIMING ON
+set_global_assignment -name VHDL_FILE src/wb/wb_pkg.vhd -hdl_version VHDL_2008
+set_global_assignment -name VHDL_FILE src/wb/wb_Nx1.vhd -hdl_version VHDL_2008
+set_global_assignment -name VHDL_FILE src/cpu/regce.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/counter64.vhd
 set_global_assignment -name VHDL_FILE src/cpu/mux.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/periph/stream_fifo.vhd -hdl_version VHDL_2008
@@ -164,7 +166,6 @@ set_global_assignment -name VHDL_FILE src/wb/wb_mux_2to2.vhd -hdl_version VHDL_2
 set_global_assignment -name VHDL_FILE src/periph/wb_mem.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/periph/wb_gpio.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_regslice.vhd -hdl_version VHDL_2008
-set_global_assignment -name VHDL_FILE src/wb/wb_mux_2to1.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_mux_1to2.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/regfile.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/lsu.vhd -hdl_version VHDL_2008

@@ -1,4 +1,21 @@
 ======================================================================
+2026-09-11: Inst+Data Mem vs Periph bus separation
+CoreMark Size    : 666
+Total ticks      : 1833243672
+Total time (secs): 18
+Iterations/Sec   : 22
+Iterations       : 400
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x25b5
+Correct operation validated. See README.md for run and reporting rules.
+[FINI] C: 1833804178 I: 287133736 CPI: 6
+======================================================================
 2026-08-26: Inst+Data @ BRAM, 100 MHZ, No pipelining, No cache, No MUL
 CoreMark Size    : 666
 Total ticks      : 1203672692
