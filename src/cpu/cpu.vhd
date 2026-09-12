@@ -334,12 +334,12 @@ begin
       q   => csr_dout
     );
 
-  i_cyc <= '1' when (state = S_fetch_decode) else
+  i_cyc <= not(reset) when (state = S_fetch_decode) else
     '0';
   i_stb <= i_cyc;
   i_adr <= pc;
 
-  d_cyc <= mem_mask when (state = S_memory) else
+  d_cyc <= (not(reset) and mem_mask) when (state = S_memory) else
     '0';
   d_stb <= d_cyc;
   d_adr <= alu_adr(31 downto 2) & "00";

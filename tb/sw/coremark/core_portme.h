@@ -48,14 +48,14 @@ Original Author: Shay Gal-on
         Define to 1 if the platform has stdio.h.
 */
 #ifndef HAS_STDIO
-#define HAS_STDIO 0
+#define HAS_STDIO 1
 #endif
 /* Configuration : HAS_PRINTF
         Define to 1 if the platform has stdio.h and implements the printf
    function.
 */
 #ifndef HAS_PRINTF
-#define HAS_PRINTF 0
+#define HAS_PRINTF 1
 #endif
 
 /* Definitions : COMPILER_VERSION, COMPILER_FLAGS, MEM_LOCATION

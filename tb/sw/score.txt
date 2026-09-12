@@ -1,4 +1,21 @@
 ======================================================================
+2026-09-12: FLASH->SDRAM Boot. Execute from SDRAM. No cache. Stdlib.
+CoreMark Size    : 666
+Total ticks      : 2194868224
+Total time (secs): 21
+Iterations/Sec   : 9
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f
+Correct operation validated. See README.md for run and reporting rules.
+[FINI] C: 2195956029 I: 143638786 CPI: 15.288
+======================================================================
 2026-09-11: Inst+Data Mem vs Periph bus separation
 CoreMark Size    : 666
 Total ticks      : 1833243672

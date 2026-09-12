@@ -1,4 +1,4 @@
-OBJS = startup.o  platform.o coremark/ee_printf.o coremark/core_portme.o coremark/cvt.o coremark/core_util.o coremark/core_list_join.o coremark/core_state.o coremark/core_matrix.o coremark/core_main.o
+OBJS = startup.o  platform.o coremark/core_portme.o coremark/cvt.o coremark/core_util.o coremark/core_list_join.o coremark/core_state.o coremark/core_matrix.o coremark/core_main.o
 
 # Our output name
 BINARY = core_main
@@ -52,7 +52,7 @@ TGT_LDFLAGS     += -Wl,--gc-sections
 # DEFS        += -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0
 # DEFS        += -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0
 # DEFS        += -DPRINTF_SUPPORT_WRITEBACK_SPECIFIER=0
-DEFS        += -DCORE_DEBUG=0 -DPERFORMANCE_RUN=1 -DITERATIONS=400
+DEFS        += -DCORE_DEBUG=0 -DPERFORMANCE_RUN=1 -DITERATIONS=200
 LDFLAGS     +=
 LDLIBS      += 
 LDLIBS      += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group

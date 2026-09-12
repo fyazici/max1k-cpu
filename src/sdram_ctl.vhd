@@ -11,14 +11,14 @@ entity sdram_ctl is
     clk   : in std_logic;
     reset : in std_logic;
 
-    cyc  : in std_logic;
-    stb  : in std_logic;
-    ack  : out std_logic;
-    adr  : in std_logic_vector(31 downto 0);
-    we   : in std_logic;
-    din  : in std_logic_vector(G_BURST_LEN * 16 - 1 downto 0);
-    sel  : in std_logic_vector(G_BURST_LEN * 2 - 1 downto 0);
-    dout : out std_logic_vector(G_BURST_LEN * 16 - 1 downto 0);
+    s_cyc  : in std_logic;
+    s_stb  : in std_logic;
+    s_adr  : in std_logic_vector(31 downto 0);
+    s_we   : in std_logic;
+    s_sel  : in std_logic_vector(G_BURST_LEN * 2 - 1 downto 0);
+    s_din  : in std_logic_vector(G_BURST_LEN * 16 - 1 downto 0);
+    s_dout : out std_logic_vector(G_BURST_LEN * 16 - 1 downto 0);
+    s_ack  : out std_logic;
 
     SDRAM_A   : out std_logic_vector(11 downto 0);
     SDRAM_BA  : out std_logic_vector(1 downto 0);
@@ -84,16 +84,16 @@ begin
   (SDRAM_RAS, SDRAM_CAS, SDRAM_WE) <= SDRAM_CMD;
 
   G_BL1 : if G_BURST_LEN = 1 generate
-    adr_int <= adr(22 downto 1);
+    adr_int <= s_adr(22 downto 1);
   end generate;
   G_BL2 : if G_BURST_LEN = 2 generate
-    adr_int <= adr(22 downto 2) & "0";
+    adr_int <= s_adr(22 downto 2) & "0";
   end generate;
   G_BL4 : if G_BURST_LEN = 4 generate
-    adr_int <= adr(22 downto 3) & "00";
+    adr_int <= s_adr(22 downto 3) & "00";
   end generate;
   G_BL8 : if G_BURST_LEN = 8 generate
-    adr_int <= adr(22 downto 4) & "000";
+    adr_int <= s_adr(22 downto 4) & "000";
   end generate;
 
   PROC_FSM : process (clk)
@@ -106,7 +106,7 @@ begin
       --SDRAM_DQM <= (others => '1');
       SDRAM_DQ <= (others => 'Z');
 
-      ack <= '0';
+      s_ack <= '0';
 
       if reset = '1' then
         state   <= S_init;
@@ -156,12 +156,12 @@ begin
               -- Operation --
             when S_idle =>
               if ctr_ref > 0 then
-                if cyc = '1' and stb = '1' then
+                if s_cyc = '1' and s_stb = '1' then
                   SDRAM_CMD <= CMD_ACTIVE;
                   SDRAM_BA  <= adr_int(21 downto 20);
                   SDRAM_A   <= adr_int(19 downto 8);
                   ctr_tmr   <= t_RCD;
-                  if we = '1' then
+                  if s_we = '1' then
                     state <= S_write;
                   else
                     state <= S_read;
@@ -175,12 +175,13 @@ begin
 
             when S_write =>
               SDRAM_CMD           <= CMD_WRITE;
+              SDRAM_BA            <= adr_int(21 downto 20);
               SDRAM_A(10)         <= '0'; -- no AP
               SDRAM_A(7 downto 0) <= adr_int(7 downto 0);
-              SDRAM_DQ            <= din(15 downto 0);
-              SDRAM_DQM           <= not(sel(1 downto 0));
+              SDRAM_DQ            <= s_din(15 downto 0);
+              SDRAM_DQM           <= not(s_sel(1 downto 0));
               if G_BURST_LEN = 1 then
-                ack     <= '1';
+                s_ack   <= '1';
                 ctr_tmr <= t_WR;
                 state   <= S_precharge;
               else
@@ -191,17 +192,18 @@ begin
 
             when S_write_burst =>
               ctr_aux   <= ctr_aux + 1;
-              SDRAM_DQ  <= din(ctr_aux * 16 + 15 downto ctr_aux * 16);
-              SDRAM_DQM <= not(sel(ctr_aux * 2 + 1 downto ctr_aux * 2));
+              SDRAM_DQ  <= s_din(ctr_aux * 16 + 15 downto ctr_aux * 16);
+              SDRAM_DQM <= not(s_sel(ctr_aux * 2 + 1 downto ctr_aux * 2));
               ctr_tmr   <= 0;
               if ctr_aux = (G_BURST_LEN - 1) then
-                ack     <= '1';
+                s_ack   <= '1';
                 ctr_tmr <= t_WR;
                 state   <= S_precharge;
               end if;
 
             when S_read =>
               SDRAM_CMD           <= CMD_READ;
+              SDRAM_BA            <= adr_int(21 downto 20);
               SDRAM_A(10)         <= '0'; -- no AP
               SDRAM_A(7 downto 0) <= adr_int(7 downto 0);
               SDRAM_DQM           <= "00";
@@ -209,10 +211,10 @@ begin
               state               <= S_read_1;
 
             when S_read_1 =>
-              SDRAM_DQM         <= "00";
-              dout(15 downto 0) <= SDRAM_DQ;
+              SDRAM_DQM           <= "00";
+              s_dout(15 downto 0) <= SDRAM_DQ;
               if G_BURST_LEN = 1 then
-                ack   <= '1';
+                s_ack <= '1';
                 state <= S_precharge;
               else
                 ctr_tmr <= 0;
@@ -221,12 +223,12 @@ begin
               end if;
 
             when S_read_1_burst =>
-              ctr_aux                                     <= ctr_aux + 1;
-              SDRAM_DQM                                   <= "00";
-              dout(ctr_aux * 16 + 15 downto ctr_aux * 16) <= SDRAM_DQ;
-              ctr_tmr                                     <= 0;
+              ctr_aux                                       <= ctr_aux + 1;
+              SDRAM_DQM                                     <= "00";
+              s_dout(ctr_aux * 16 + 15 downto ctr_aux * 16) <= SDRAM_DQ;
+              ctr_tmr                                       <= 0;
               if ctr_aux = (G_BURST_LEN - 1) then
-                ack   <= '1';
+                s_ack <= '1';
                 state <= S_precharge;
               end if;
 

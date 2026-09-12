@@ -18,6 +18,12 @@ entity top is
     SDRAM_WE   : out std_logic;
     SDRAM_DQM  : out std_logic_vector(1 downto 0);
     SDRAM_DQ   : inout std_logic_vector(15 downto 0);
+    FLASH_CLK  : out std_logic;
+    FLASH_CS   : out std_logic;
+    FLASH_HOLD : out std_logic;
+    FLASH_WP   : out std_logic;
+    FLASH_DI   : out std_logic;
+    FLASH_DO   : in std_logic;
     FT2232H_RX : out std_logic;
     FT2232H_TX : in std_logic
   );
@@ -37,6 +43,17 @@ architecture rtl of top is
   signal locked    : std_logic;
   signal reset     : std_logic := '1';
   signal reset_ctr : natural   := 1000;
+
+  -- boot controller intf
+  signal cpu_reset    : std_logic;
+  signal wb_boot_adr  : std_logic_vector(31 downto 0);
+  signal wb_boot_din  : std_logic_vector(31 downto 0);
+  signal wb_boot_dout : std_logic_vector(31 downto 0);
+  signal wb_boot_we   : std_logic;
+  signal wb_boot_sel  : std_logic_vector(3 downto 0);
+  signal wb_boot_stb  : std_logic;
+  signal wb_boot_cyc  : std_logic;
+  signal wb_boot_ack  : std_logic;
 
   -- instruction memory intf
   signal wb_ibus_adr  : std_logic_vector(31 downto 0);
@@ -122,11 +139,18 @@ architecture rtl of top is
 
 begin
 
-  GEN_GPIO0 : for I in 0 to 7 generate
-    led(I) <= gpio0_o(I) when (gpio0_t(I) = '0') else
-    'Z';
-    gpio0_i(I) <= led(I);
-  end generate;
+  -- GEN_GPIO0 : for I in 0 to 7 generate
+  --   led(I) <= gpio0_o(I) when (gpio0_t(I) = '0') else
+  --   'Z';
+  --   gpio0_i(I) <= led(I);
+  -- end generate;
+
+  led(7)          <= reset;
+  led(6)          <= cpu_reset;
+  led(5)          <= wb_boot_cyc;
+  led(4)          <= wb_boot_stb;
+  led(3)          <= wb_boot_ack;
+  led(2 downto 0) <= wb_boot_adr(4 downto 2);
 
   U_PLL1 : pll1
   port map
@@ -152,12 +176,42 @@ begin
     end if;
   end process;
 
+  U_BOOT_CTL : entity work.boot_ctl
+    generic map(
+      FLASH_BASEADDR => x"000000",
+      SDRAM_BASEADDR => x"00000000",
+      SDRAM_HIGHADDR => x"007FFFFF" -- 8 MB
+    )
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+
+      cpu_reset => cpu_reset,
+
+      m_cyc  => wb_boot_cyc,
+      m_stb  => wb_boot_stb,
+      m_adr  => wb_boot_adr,
+      m_we   => wb_boot_we,
+      m_sel  => wb_boot_sel,
+      m_dout => wb_boot_dout,
+      m_din  => wb_boot_din,
+      m_ack  => wb_boot_ack,
+
+      FLASH_CLK  => FLASH_CLK,
+      FLASH_CS   => FLASH_CS,
+      FLASH_HOLD => FLASH_HOLD,
+      FLASH_WP   => FLASH_WP,
+      FLASH_DI   => FLASH_DI,
+      FLASH_DO   => FLASH_DO
+    );
+
   U_CPU : entity work.cpu
     generic map(G_RESET_VEC => x"00000000")
     port map
     (
       clk   => clk,
-      reset => reset,
+      reset => cpu_reset,
 
       -- instruction memory intf
       i_adr => wb_ibus_adr,
@@ -243,7 +297,7 @@ begin
     );
 
   U_WBMUX_MEM : entity work.wb_Nx1
-    generic map(N => 2, AW => 32, DW => 32)
+    generic map(N => 3, AW => 32, DW => 32)
     port map
     (
       clk   => clk,
@@ -251,20 +305,28 @@ begin
 
       s_cyc(0)  => wb_ibus_cyc,
       s_cyc(1)  => wb_d2m_cyc,
+      s_cyc(2)  => wb_boot_cyc,
       s_stb(0)  => wb_ibus_stb,
       s_stb(1)  => wb_d2m_stb,
+      s_stb(2)  => wb_boot_stb,
       s_adr(0)  => wb_ibus_adr,
       s_adr(1)  => wb_d2m_adr,
+      s_adr(2)  => wb_boot_adr,
       s_we(0)   => wb_ibus_we,
       s_we(1)   => wb_d2m_we,
+      s_we(2)   => wb_boot_we,
       s_sel(0)  => wb_ibus_sel,
       s_sel(1)  => wb_d2m_sel,
+      s_sel(2)  => wb_boot_sel,
       s_din(0)  => wb_ibus_dout,
       s_din(1)  => wb_d2m_dout,
+      s_din(2)  => wb_boot_dout,
       s_dout(0) => wb_ibus_din,
       s_dout(1) => wb_d2m_din,
+      s_dout(2) => wb_boot_din,
       s_ack(0)  => wb_ibus_ack,
       s_ack(1)  => wb_d2m_ack,
+      s_ack(2)  => wb_boot_ack,
 
       m_cyc  => wb_mem_cyc,
       m_stb  => wb_mem_stb,
@@ -276,24 +338,52 @@ begin
       m_ack  => wb_mem_ack
     );
 
-  U_MEM : entity work.wb_mem
-    generic map
-    (
-      G_AW        => 13,
-      G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif"
-    )
+  U_MEM : entity work.sdram_ctl
+    generic map(G_BURST_LEN => 2)
     port map
     (
-      clk    => clk,
+      clk   => clk,
+      reset => reset,
+
+      s_cyc  => wb_mem_cyc,
+      s_stb  => wb_mem_stb,
       s_adr  => wb_mem_adr,
-      s_din  => wb_mem_dout,
-      s_dout => wb_mem_din,
       s_we   => wb_mem_we,
       s_sel  => wb_mem_sel,
-      s_stb  => wb_mem_stb,
-      s_cyc  => wb_mem_cyc,
-      s_ack  => wb_mem_ack
+      s_din  => wb_mem_dout,
+      s_dout => wb_mem_din,
+      s_ack  => wb_mem_ack,
+
+      SDRAM_A   => SDRAM_A,
+      SDRAM_BA  => SDRAM_BA,
+      SDRAM_CLK => SDRAM_CLK,
+      SDRAM_CKE => SDRAM_CKE,
+      SDRAM_CAS => SDRAM_CAS,
+      SDRAM_CS  => SDRAM_CS,
+      SDRAM_RAS => SDRAM_RAS,
+      SDRAM_WE  => SDRAM_WE,
+      SDRAM_DQM => SDRAM_DQM,
+      SDRAM_DQ  => SDRAM_DQ
     );
+
+  -- U_MEM : entity work.wb_mem
+  --   generic map
+  --   (
+  --     G_AW        => 13,
+  --     G_INIT_FILE => "D:\\Files\\max1k\\max1k-cpu\\tb\\sw\\main.mif"
+  --   )
+  --   port map
+  --   (
+  --     clk    => clk,
+  --     s_adr  => wb_mem_adr,
+  --     s_din  => wb_mem_dout,
+  --     s_dout => wb_mem_din,
+  --     s_we   => wb_mem_we,
+  --     s_sel  => wb_mem_sel,
+  --     s_stb  => wb_mem_stb,
+  --     s_cyc  => wb_mem_cyc,
+  --     s_ack  => wb_mem_ack
+  --   );
 
   U_WBMUX_PERIPH : entity work.wb_1xN
     generic map(

@@ -2,8 +2,7 @@ ENTRY(reset_handler);
  
 MEMORY
 {
-	/* rom (rx) : ORIGIN = 0x08000000, LENGTH = 64K */
-	ram (rwx) : ORIGIN = 0x00000000, LENGTH = 32K
+	ram (rwx) : ORIGIN = 0x00000000, LENGTH = 8M
 }
  
 SECTIONS {

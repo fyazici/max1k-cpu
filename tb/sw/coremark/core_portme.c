@@ -126,20 +126,20 @@ ee_u32 default_num_contexts = 1;
 void portable_init(core_portable *p, int *argc, char *argv[])
 {
     HAL_uart_init(UART0_BASEADDR, 1000000);
-    ee_printf("[INIT]\n");
+    printf("[INIT]\n");
 
     (void)argc; // prevent unused warning
     (void)argv; // prevent unused warning
 
     if (sizeof(ee_ptr_int) != sizeof(ee_u8 *))
     {
-        ee_printf(
+        printf(
             "ERROR! Please define ee_ptr_int to a type that holds a "
             "pointer!\n");
     }
     if (sizeof(ee_u32) != 4)
     {
-        ee_printf("ERROR! Please define ee_u32 to a 32b unsigned type!\n");
+        printf("ERROR! Please define ee_u32 to a 32b unsigned type!\n");
     }
     p->portable_id = 1;
 }
@@ -151,8 +151,8 @@ void portable_fini(core_portable *p)
     p->portable_id = 0;
     uint32_t cycles = csr_read_mcycle();
     uint32_t instret = csr_read_minstret();
-    uint32_t cpi_int = cycles / instret;
-    ee_printf("[FINI] C: %lu I: %lu CPI: %lu\n", cycles, instret, cpi_int);
+    float cpi_int = (float)cycles / (float)instret;
+    printf("[FINI] C: %lu I: %lu CPI: %.3f\n", cycles, instret, cpi_int);
     while (1)
         ;
 }
