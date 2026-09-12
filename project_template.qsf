@@ -152,6 +152,7 @@ set_global_assignment -name EXTERNAL_FLASH_FALLBACK_ADDRESS 00000000
 set_global_assignment -name INTERNAL_FLASH_UPDATE_MODE "SINGLE COMP IMAGE WITH ERAM"
 set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
 set_global_assignment -name ALLOW_REGISTER_RETIMING ON
+set_global_assignment -name VHDL_FILE src/wb/wb_1xN.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_pkg.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_Nx1.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/regce.vhd -hdl_version VHDL_2008
@@ -162,11 +163,9 @@ set_global_assignment -name VHDL_FILE src/periph/wb_uart.vhd -hdl_version VHDL_2
 set_global_assignment -name VHDL_FILE src/periph/uart_tx.vhd
 set_global_assignment -name VHDL_FILE src/periph/uart_rx.vhd
 set_global_assignment -name QIP_FILE src/pll1.qip
-set_global_assignment -name VHDL_FILE src/wb/wb_mux_2to2.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/periph/wb_mem.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/periph/wb_gpio.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/wb/wb_regslice.vhd -hdl_version VHDL_2008
-set_global_assignment -name VHDL_FILE src/wb/wb_mux_1to2.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/regfile.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/lsu.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE src/cpu/immext.vhd -hdl_version VHDL_2008

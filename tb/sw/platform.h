@@ -11,8 +11,10 @@
 #undef errno
 extern int errno;
 
-#define GPIO0_BASEADDR ((void *)0x80000000)
-#define UART0_BASEADDR ((void *)0xC0000000)
+#define GPIO0_BASEADDR ((void *)0xA0000000)
+#define GPIO0_HIGHADDR ((void *)0xA000FFFF)
+#define UART0_BASEADDR ((void *)0xA0010000)
+#define UART0_HIGHADDR ((void *)0xA001FFFF)
 
 #define PERIPH_CLK_HZ (100 * 1000 * 1000)
 #define CPU_CYCLES_PER_US (PERIPH_CLK_HZ / 1000000)

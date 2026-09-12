@@ -202,13 +202,18 @@ begin
       m_ack  => wb_dbus_ack_r
     );
 
-  U_WBMUX_DBUS : entity work.wb_mux_1to2
+  U_WBMUX_DBUS : entity work.wb_1xN
+    generic map(
+      N  => 2,
+      AW => 32,
+      DW => 32,
+      BASEADDR => (0 => x"00000000", 1 => x"80000000"),
+      HIGHADDR => (0 => x"7FFFFFFF", 1 => x"FFFFFFFF")
+    )
     port map
     (
       clk   => clk,
       reset => reset,
-
-      sel => wb_dbus_adr_r(31),
 
       s_cyc  => wb_dbus_cyc_r,
       s_stb  => wb_dbus_stb_r,
@@ -219,25 +224,22 @@ begin
       s_dout => wb_dbus_din_r,
       s_ack  => wb_dbus_ack_r,
 
-      -- 0x0000_0000 2G Mem
-      m0_cyc  => wb_d2m_cyc,
-      m0_stb  => wb_d2m_stb,
-      m0_adr  => wb_d2m_adr,
-      m0_we   => wb_d2m_we,
-      m0_sel  => wb_d2m_sel,
-      m0_dout => wb_d2m_dout,
-      m0_din  => wb_d2m_din,
-      m0_ack  => wb_d2m_ack,
-
-      -- 0x8000_0000 2G Periph
-      m1_cyc  => wb_d2p_cyc,
-      m1_stb  => wb_d2p_stb,
-      m1_adr  => wb_d2p_adr,
-      m1_we   => wb_d2p_we,
-      m1_sel  => wb_d2p_sel,
-      m1_dout => wb_d2p_dout,
-      m1_din  => wb_d2p_din,
-      m1_ack  => wb_d2p_ack
+      m_cyc(0)  => wb_d2m_cyc,
+      m_cyc(1)  => wb_d2p_cyc,
+      m_stb(0)  => wb_d2m_stb,
+      m_stb(1)  => wb_d2p_stb,
+      m_adr(0)  => wb_d2m_adr,
+      m_adr(1)  => wb_d2p_adr,
+      m_we(0)   => wb_d2m_we,
+      m_we(1)   => wb_d2p_we,
+      m_sel(0)  => wb_d2m_sel,
+      m_sel(1)  => wb_d2p_sel,
+      m_dout(0) => wb_d2m_dout,
+      m_dout(1) => wb_d2p_dout,
+      m_din(0)  => wb_d2m_din,
+      m_din(1)  => wb_d2p_din,
+      m_ack(0)  => wb_d2m_ack,
+      m_ack(1)  => wb_d2p_ack
     );
 
   U_WBMUX_MEM : entity work.wb_Nx1
@@ -293,15 +295,19 @@ begin
       s_ack  => wb_mem_ack
     );
 
-  U_WBMUX_PERIPH : entity work.wb_mux_1to2
+  U_WBMUX_PERIPH : entity work.wb_1xN
+    generic map(
+      N  => 2,
+      AW => 32,
+      DW => 32,
+      BASEADDR => (0 => x"A0000000", 1 => x"A0010000"),
+      HIGHADDR => (0 => x"A000FFFF", 1 => x"A001FFFF")
+    )
     port map
     (
       clk   => clk,
       reset => reset,
 
-      sel => wb_d2p_adr(30),
-
-      -- 0x8000_0000 2G
       s_cyc  => wb_d2p_cyc,
       s_stb  => wb_d2p_stb,
       s_adr  => wb_d2p_adr,
@@ -311,25 +317,22 @@ begin
       s_dout => wb_d2p_din,
       s_ack  => wb_d2p_ack,
 
-      -- 0x8000_0000 1G
-      m0_cyc  => wb_gpio0_cyc,
-      m0_stb  => wb_gpio0_stb,
-      m0_adr  => wb_gpio0_adr,
-      m0_we   => wb_gpio0_we,
-      m0_sel  => wb_gpio0_sel,
-      m0_dout => wb_gpio0_dout,
-      m0_din  => wb_gpio0_din,
-      m0_ack  => wb_gpio0_ack,
-
-      -- 0xC000_0000 1G
-      m1_cyc  => wb_uart0_cyc,
-      m1_stb  => wb_uart0_stb,
-      m1_adr  => wb_uart0_adr,
-      m1_we   => wb_uart0_we,
-      m1_sel  => wb_uart0_sel,
-      m1_dout => wb_uart0_dout,
-      m1_din  => wb_uart0_din,
-      m1_ack  => wb_uart0_ack
+      m_cyc(0)  => wb_gpio0_cyc,
+      m_cyc(1)  => wb_uart0_cyc,
+      m_stb(0)  => wb_gpio0_stb,
+      m_stb(1)  => wb_uart0_stb,
+      m_adr(0)  => wb_gpio0_adr,
+      m_adr(1)  => wb_uart0_adr,
+      m_we(0)   => wb_gpio0_we,
+      m_we(1)   => wb_uart0_we,
+      m_sel(0)  => wb_gpio0_sel,
+      m_sel(1)  => wb_uart0_sel,
+      m_dout(0) => wb_gpio0_dout,
+      m_dout(1) => wb_uart0_dout,
+      m_din(0)  => wb_gpio0_din,
+      m_din(1)  => wb_uart0_din,
+      m_ack(0)  => wb_gpio0_ack,
+      m_ack(1)  => wb_uart0_ack
     );
 
   U_GPIO0 : entity work.wb_gpio
