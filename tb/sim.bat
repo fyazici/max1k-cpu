@@ -3,7 +3,9 @@ rem C:\Users\fyazici\scoop\apps\ghdl\current\lib\ghdl\vendors\compile-altera.ps1
 
 ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ ../src/cpu/*.vhd
 ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ ../src/wb/*.vhd
+ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ ../src/util/*.vhd
 ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ ../src/periph/*.vhd
-ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ tb_cpu.vhd ../src/top.vhd ../src/pll1.vhd
+ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ ../src/boot/*.vhd
+ghdl -i --std=08 -fsynopsys --workdir=work/ -P=altera/ tb_cpu.vhd ../src/*.vhd
 ghdl -m --std=08 -fsynopsys --workdir=work/ -P=altera/ --warn-no-hide tb_cpu
 ghdl -r --std=08 -fsynopsys --workdir=work/ -P=altera/ tb_cpu --ieee-asserts=disable --vcd=tb_cpu.vcd --stop-time=100us

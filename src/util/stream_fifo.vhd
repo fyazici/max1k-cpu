@@ -31,8 +31,8 @@ architecture rtl of stream_fifo is
   attribute ramstyle        : string;
   attribute ramstyle of mem : signal is G_RAMSTYLE & ", no_rw_check";
 
-  signal wptr : unsigned(G_AW downto 0);
-  signal rptr : unsigned(G_AW downto 0);
+  signal wptr : unsigned(G_AW downto 0) := (others => '0');
+  signal rptr : unsigned(G_AW downto 0) := (others => '0');
 
   signal ptr_eq : std_logic;
   signal full   : std_logic;
@@ -40,7 +40,6 @@ architecture rtl of stream_fifo is
 
   signal m_valid_int : std_logic;
   signal m_ready_int : std_logic;
-  signal m_data_int  : std_logic_vector(G_DW - 1 downto 0);
 
 begin
 
@@ -57,9 +56,13 @@ begin
   PROC_W : process (clk)
   begin
     if rising_edge(clk) then
-      if s_valid = '1' and s_ready = '1' then
-        wptr                                     <= wptr + 1;
-        mem(to_integer(wptr(G_AW - 1 downto 0))) <= s_data;
+      if reset = '1' then
+        wptr <= (others => '0');
+      else
+        if s_valid = '1' and s_ready = '1' then
+          wptr                                     <= wptr + 1;
+          mem(to_integer(wptr(G_AW - 1 downto 0))) <= s_data;
+        end if;
       end if;
     end if;
   end process;
@@ -67,12 +70,17 @@ begin
   PROC_R : process (clk)
   begin
     if rising_edge(clk) then
-      if m_ready_int = '1' then
-        if m_valid_int = '1' then
-          rptr <= rptr + 1;
+      if reset = '1' then
+        rptr    <= (others => '0');
+        m_valid <= '0';
+      else
+        if m_ready_int = '1' then
+          if m_valid_int = '1' then
+            rptr <= rptr + 1;
+          end if;
+          m_valid <= m_valid_int;
+          m_data  <= mem(to_integer(rptr(G_AW - 1 downto 0)));
         end if;
-        m_valid <= m_valid_int;
-        m_data  <= mem(to_integer(rptr(G_AW - 1 downto 0)));
       end if;
     end if;
   end process;

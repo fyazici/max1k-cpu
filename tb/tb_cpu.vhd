@@ -14,6 +14,7 @@ begin
   CLK12M <= not(CLK12M) after 41.667 ns;
 
   uut : entity work.top
+    generic map(G_SIM_MODE => TRUE)
     port map
     (
       CLK12M     => CLK12M,
@@ -29,6 +30,12 @@ begin
       SDRAM_WE   => open,
       SDRAM_DQM  => open,
       SDRAM_DQ   => open,
+      FLASH_CLK  => open,
+      FLASH_CS   => open,
+      FLASH_HOLD => open,
+      FLASH_WP   => open,
+      FLASH_DI   => open,
+      FLASH_DO   => '0',
       FT2232H_RX => open,
       FT2232H_TX => '1'
     );

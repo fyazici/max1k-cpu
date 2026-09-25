@@ -1,4 +1,38 @@
 ======================================================================
+2026-09-25: ICache: Enabled
+CoreMark Size    : 666
+Total ticks      : 1039655539
+Total time (secs): 10
+Iterations/Sec   : 20
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f
+Correct operation validated. See README.md for run and reporting rules.
+[FINI] C: 1040471295 I: 143661358 CPI: 7.243
+======================================================================
+2026-09-25: ICache: Disabled
+CoreMark Size    : 666
+Total ticks      : 2617705430
+Total time (secs): 26
+Iterations/Sec   : 7
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f
+Correct operation validated. See README.md for run and reporting rules.
+[FINI] C: 2618931797 I: 143635838 CPI: 18.233
+======================================================================
 2026-09-12: FLASH->SDRAM Boot. Execute from SDRAM. No cache. Stdlib.
 CoreMark Size    : 666
 Total ticks      : 2194868224

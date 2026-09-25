@@ -8,8 +8,8 @@ use altera_mf.altera_mf_components.all;
 
 entity wb_mem is
   generic (
-    G_AW : natural := 10;
-	 G_INIT_FILE : string := "UNUSED"
+    G_AW        : natural := 10;
+    G_INIT_FILE : string  := "UNUSED"
   );
   port (
     clk : in std_logic;
@@ -38,7 +38,7 @@ begin
     intended_device_family        => "MAX 10",
     lpm_hint                      => "ENABLE_RUNTIME_MOD=NO",
     lpm_type                      => "altsyncram",
-    numwords_a                    => 2**G_AW,
+    numwords_a                    => 2 ** G_AW,
     operation_mode                => "SINGLE_PORT",
     outdata_aclr_a                => "NONE",
     outdata_reg_a                 => "UNREGISTERED",
@@ -50,7 +50,7 @@ begin
   )
   port map
   (
-    address_a => s_adr((G_AW+2)-1 downto 2),
+    address_a => s_adr((G_AW + 2) - 1 downto 2),
     byteena_a => s_sel,
     clock0    => clk,
     data_a    => s_din,
@@ -63,7 +63,7 @@ begin
     if rising_edge(clk) then
       -- ack_r1 <= s_cyc and s_stb and not(s_ack);
       -- s_ack  <= ack_r1 and not(s_ack);
-		s_ack <= s_cyc and s_stb and not(s_ack);
+      s_ack <= s_cyc and s_stb and not(s_ack);
     end if;
   end process;
 

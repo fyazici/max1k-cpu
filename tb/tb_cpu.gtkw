@@ -1,0 +1,96 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Fri Sep 25 18:21:24 2026
+[*]
+[dumpfile] "D:\Files\max1k\max1k-cpu\tb\tb_cpu.vcd"
+[dumpfile_mtime] "Fri Sep 25 18:14:05 2026"
+[dumpfile_size] 25555163
+[savefile] "D:\Files\max1k\max1k-cpu\tb\tb_cpu.gtkw"
+[timestart] 10092000000
+[size] 1920 1017
+[pos] -61 -61
+*-28.000000 10471748000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_cpu.
+[treeopen] tb_cpu.uut.
+[sst_width] 250
+[signals_width] 222
+[sst_expanded] 1
+[sst_vpaned_height] 301
+@28
+tb_cpu.uut.wb_ibus_ack
+@22
+tb_cpu.uut.wb_ibus_adr[31:0]
+@28
+tb_cpu.uut.wb_ibus_cyc
+@22
+tb_cpu.uut.wb_ibus_din[31:0]
+tb_cpu.uut.wb_ibus_dout[31:0]
+tb_cpu.uut.wb_ibus_sel[3:0]
+@28
+tb_cpu.uut.wb_ibus_stb
+tb_cpu.uut.wb_ibus_we
+tb_cpu.uut.wb_icache_ack
+@22
+tb_cpu.uut.wb_icache_adr[31:0]
+@28
+tb_cpu.uut.wb_icache_cyc
+@22
+tb_cpu.uut.wb_icache_din[31:0]
+tb_cpu.uut.wb_icache_dout[31:0]
+tb_cpu.uut.wb_icache_sel[3:0]
+@28
+tb_cpu.uut.wb_icache_stb
+tb_cpu.uut.wb_icache_we
+@200
+-
+@22
+tb_cpu.uut.u_cpu.pc[31:0]
+tb_cpu.uut.u_cpu.instr[31:0]
+@28
+tb_cpu.uut.cpu_reset
+@29
+tb_cpu.uut.u_icache.clk
+@28
+tb_cpu.uut.u_icache.is_hit
+tb_cpu.uut.u_icache.m_ack
+@22
+tb_cpu.uut.u_icache.m_adr[31:0]
+@28
+tb_cpu.uut.u_icache.m_cyc
+@22
+tb_cpu.uut.u_icache.m_din[31:0]
+tb_cpu.uut.u_icache.m_dout[31:0]
+tb_cpu.uut.u_icache.m_sel[3:0]
+@28
+tb_cpu.uut.u_icache.m_stb
+tb_cpu.uut.u_icache.m_we
+@22
+tb_cpu.uut.u_icache.mem_adr[7:0]
+@28
+tb_cpu.uut.u_icache.mem_we
+tb_cpu.uut.u_icache.reset
+tb_cpu.uut.u_icache.s_ack
+@22
+tb_cpu.uut.u_icache.s_adr[31:0]
+@28
+tb_cpu.uut.u_icache.s_cyc
+@22
+tb_cpu.uut.u_icache.s_din[31:0]
+tb_cpu.uut.u_icache.s_dout[31:0]
+tb_cpu.uut.u_icache.s_sel[3:0]
+@28
+tb_cpu.uut.u_icache.s_stb
+tb_cpu.uut.u_icache.s_we
+@22
+tb_cpu.uut.u_icache.data_din[31:0]
+tb_cpu.uut.u_icache.data_sel[3:0]
+tb_cpu.uut.u_icache.data_dout[31:0]
+tb_cpu.uut.u_icache.tag_din[21:0]
+tb_cpu.uut.u_icache.tag_dout[21:0]
+@28
+tb_cpu.uut.u_icache.vld_din
+tb_cpu.uut.u_icache.vld_dout
+@22
+tb_cpu.uut.u_icache.vld_mem[255:0]
+[pattern_trace] 1
+[pattern_trace] 0
