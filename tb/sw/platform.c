@@ -50,6 +50,32 @@ char HAL_uart_getc(volatile struct HAL_Uart *spUart)
   return spUart->rxr;
 }
 
+void HAL_cache_set_mask(volatile struct HAL_Cache *spCache, uint32_t mask)
+{
+  spCache->mask = mask;
+}
+
+void HAL_cache_invalidate(volatile struct HAL_Cache *spCache)
+{
+  spCache->invalidate = 1;
+}
+
+void HAL_cache_clear_counters(volatile struct HAL_Cache *spCache)
+{
+  spCache->hit_ctr = 0;
+  spCache->miss_ctr = 0;
+}
+
+uint32_t HAL_cache_get_hit_ctr(volatile struct HAL_Cache *spCache)
+{
+  return spCache->hit_ctr;
+}
+
+uint32_t HAL_cache_get_miss_ctr(volatile struct HAL_Cache *spCache)
+{
+  return spCache->miss_ctr;
+}
+
 void outbyte(char c)
 {
   HAL_uart_putc(UART0_BASEADDR, c);

@@ -1,7 +1,7 @@
 ======================================================================
 2026-09-25: ICache: Enabled
 CoreMark Size    : 666
-Total ticks      : 1039655539
+Total ticks      : 1049096372
 Total time (secs): 10
 Iterations/Sec   : 20
 Iterations       : 200
@@ -14,7 +14,8 @@ seedcrc          : 0xe9f5
 [0]crcstate      : 0x8e3a
 [0]crcfinal      : 0x382f
 Correct operation validated. See README.md for run and reporting rules.
-[FINI] C: 1040471295 I: 143661358 CPI: 7.243
+[FINI] C: 1049906647 I: 143660966 CPI: 7.308
+[FINI] H: 141071616 M: 2616342 HitRate: 0.982
 ======================================================================
 2026-09-25: ICache: Disabled
 CoreMark Size    : 666

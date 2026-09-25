@@ -142,17 +142,29 @@ void portable_init(core_portable *p, int *argc, char *argv[])
         printf("ERROR! Please define ee_u32 to a 32b unsigned type!\n");
     }
     p->portable_id = 1;
+
+    HAL_cache_set_mask(ICACHE_BASEADDR, 0xFFFFFFFF);
+    HAL_cache_invalidate(ICACHE_BASEADDR);
+    HAL_cache_clear_counters(ICACHE_BASEADDR);
 }
 /* Function : portable_fini
         Target specific final code
 */
 void portable_fini(core_portable *p)
 {
+    HAL_cache_set_mask(ICACHE_BASEADDR, 0x00000000);
+
     p->portable_id = 0;
     uint32_t cycles = csr_read_mcycle();
     uint32_t instret = csr_read_minstret();
     float cpi_int = (float)cycles / (float)instret;
     printf("[FINI] C: %lu I: %lu CPI: %.3f\n", cycles, instret, cpi_int);
+
+    uint32_t hit_ctr = HAL_cache_get_hit_ctr(ICACHE_BASEADDR);
+    uint32_t miss_ctr = HAL_cache_get_miss_ctr(ICACHE_BASEADDR);
+    float hit_rate = (float)hit_ctr / ((float)hit_ctr + (float)miss_ctr);
+    printf("[FINI] H: %u M: %u HitRate: %.3f\n", hit_ctr, miss_ctr, hit_rate);
+
     while (1)
         ;
 }

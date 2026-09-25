@@ -15,6 +15,8 @@ extern int errno;
 #define GPIO0_HIGHADDR ((void *)0xA000FFFF)
 #define UART0_BASEADDR ((void *)0xA0010000)
 #define UART0_HIGHADDR ((void *)0xA001FFFF)
+#define ICACHE_BASEADDR ((void *)0xFFF00000)
+#define ICACHE_HIGHADDR ((void *)0xFFF0FFFF)
 
 #define PERIPH_CLK_HZ (100 * 1000 * 1000)
 #define CPU_CYCLES_PER_US (PERIPH_CLK_HZ / 1000000)
@@ -56,6 +58,20 @@ struct HAL_Gpio
   uint32_t idr;
   uint32_t odr;
 };
+
+struct HAL_Cache
+{
+  uint32_t mask;
+  uint32_t invalidate;
+  uint32_t hit_ctr;
+  uint32_t miss_ctr;
+};
+
+void HAL_cache_set_mask(volatile struct HAL_Cache *spCache, uint32_t mask);
+void HAL_cache_invalidate(volatile struct HAL_Cache *spCache);
+void HAL_cache_clear_counters(volatile struct HAL_Cache *spCache);
+uint32_t HAL_cache_get_hit_ctr(volatile struct HAL_Cache *spCache);
+uint32_t HAL_cache_get_miss_ctr(volatile struct HAL_Cache *spCache);
 
 void outbyte(char);
 
