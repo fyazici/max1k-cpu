@@ -3,6 +3,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+library altera_mf;
+use altera_mf.altera_mf_components.all;
+
 entity wb_cache is
   generic (
     G_NUM_WORDS : natural := 256;
@@ -46,21 +49,7 @@ architecture rtl of wb_cache is
   constant C_ADR_W : natural := integer(ceil(log2(real(G_NUM_WORDS))));
   constant C_TAG_W : natural := 32 - C_ADR_W - 2;
 
-  type t_mem is array (natural range <>) of std_logic_vector;
-  signal data_mem0 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
-  signal data_mem1 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
-  signal data_mem2 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
-  signal data_mem3 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
-  signal tag_mem   : t_mem(G_NUM_WORDS - 1 downto 0)(C_TAG_W - 1 downto 0) := (others => (others => '0'));
-  signal vld_mem   : std_logic_vector(G_NUM_WORDS - 1 downto 0)            := (others => '0');
-
-  attribute ramstyle              : string;
-  attribute ramstyle of data_mem0 : signal is G_RAMSTYLE & ", no_rw_check";
-  attribute ramstyle of data_mem1 : signal is G_RAMSTYLE & ", no_rw_check";
-  attribute ramstyle of data_mem2 : signal is G_RAMSTYLE & ", no_rw_check";
-  attribute ramstyle of data_mem3 : signal is G_RAMSTYLE & ", no_rw_check";
-  attribute ramstyle of tag_mem   : signal is G_RAMSTYLE & ", no_rw_check";
-  attribute ramstyle of vld_mem   : signal is "no_rw_check";
+  signal vld_mem : std_logic_vector(G_NUM_WORDS - 1 downto 0) := (others => '0');
 
   signal mem_adr : std_logic_vector(C_ADR_W - 1 downto 0);
   signal mem_we  : std_logic := '0';
@@ -155,6 +144,11 @@ begin
 
         tag_din <= s_adr(31 downto C_ADR_W + 2);
 
+        m_adr  <= s_adr;
+        m_we   <= s_we;
+        m_sel  <= s_sel;
+        m_dout <= s_din;
+
         case (state) is
           when S_idle =>
             if s_cyc = '1' and s_stb = '1' and s_ack = '0' then
@@ -220,11 +214,6 @@ begin
   is_hit <= '1' when (is_cacheable = '1' and vld_dout = '1' and tag_dout = tag_din) else
     '0';
 
-  m_adr  <= s_adr;
-  m_we   <= s_we;
-  m_sel  <= s_sel;
-  m_dout <= s_din;
-
   PROC_VLD_MEM : process (clk)
     variable v_adr : natural range 0 to G_NUM_WORDS - 1 := 0;
   begin
@@ -243,37 +232,58 @@ begin
     end if;
   end process;
 
-  PROC_TAG_MEM : process (clk)
-    variable v_adr : natural range 0 to G_NUM_WORDS - 1 := 0;
-  begin
-    if rising_edge(clk) then
-      v_adr := to_integer(unsigned(mem_adr));
-      if mem_we = '1' then
-        tag_mem(v_adr) <= tag_din;
-      end if;
-      tag_dout <= tag_mem(v_adr);
-    end if;
-  end process;
+  U_TAG_MEM : altsyncram
+  generic map(
+    clock_enable_input_a          => "BYPASS",
+    clock_enable_output_a         => "BYPASS",
+    intended_device_family        => "MAX 10",
+    lpm_hint                      => "ENABLE_RUNTIME_MOD=NO",
+    lpm_type                      => "altsyncram",
+    numwords_a                    => G_NUM_WORDS,
+    operation_mode                => "SINGLE_PORT",
+    outdata_aclr_a                => "NONE",
+    outdata_reg_a                 => "UNREGISTERED",
+    power_up_uninitialized        => "FALSE",
+    read_during_write_mode_port_a => "DONT_CARE",
+    widthad_a                     => C_ADR_W,
+    width_a                       => C_TAG_W,
+    width_byteena_a               => 1
+  )
+  port map
+  (
+    address_a => mem_adr,
+    clock0    => clk,
+    data_a    => tag_din,
+    wren_a    => mem_we,
+    q_a       => tag_dout
+  );
 
-  PROC_DATA_MEM : process (clk)
-    variable v_adr : natural range 0 to G_NUM_WORDS - 1 := 0;
-  begin
-    if rising_edge(clk) then
-      v_adr := to_integer(unsigned(mem_adr));
-      if mem_we = '1' and data_sel(0) = '1' then
-        data_mem0(v_adr) <= data_din(7 downto 0);
-      end if;
-      if mem_we = '1' and data_sel(1) = '1' then
-        data_mem1(v_adr) <= data_din(15 downto 8);
-      end if;
-      if mem_we = '1' and data_sel(2) = '1' then
-        data_mem2(v_adr) <= data_din(23 downto 16);
-      end if;
-      if mem_we = '1' and data_sel(3) = '1' then
-        data_mem3(v_adr) <= data_din(31 downto 24);
-      end if;
-      data_dout <= data_mem3(v_adr) & data_mem2(v_adr) & data_mem1(v_adr) & data_mem0(v_adr);
-    end if;
-  end process;
+  U_DATA_MEM : altsyncram
+  generic map(
+    byte_size                     => 8,
+    clock_enable_input_a          => "BYPASS",
+    clock_enable_output_a         => "BYPASS",
+    intended_device_family        => "MAX 10",
+    lpm_hint                      => "ENABLE_RUNTIME_MOD=NO",
+    lpm_type                      => "altsyncram",
+    numwords_a                    => G_NUM_WORDS,
+    operation_mode                => "SINGLE_PORT",
+    outdata_aclr_a                => "NONE",
+    outdata_reg_a                 => "UNREGISTERED",
+    power_up_uninitialized        => "FALSE",
+    read_during_write_mode_port_a => "DONT_CARE",
+    widthad_a                     => C_ADR_W,
+    width_a                       => 32,
+    width_byteena_a               => 4
+  )
+  port map
+  (
+    address_a => mem_adr,
+    byteena_a => data_sel,
+    clock0    => clk,
+    data_a    => data_din,
+    wren_a    => mem_we,
+    q_a       => data_dout
+  );
 
 end architecture;
