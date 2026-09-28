@@ -1,5 +1,26 @@
 ======================================================================
-2026-09-25: ICache: Enabled
+2026-09-28: ICache(256w) and DCache(256w) enabled
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 988177560
+Total time (secs): 9
+Iterations/Sec   : 22
+ERROR! Must execute for at least 10 secs for a valid result!
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f
+Errors detected
+[FINI] C: 988994588 I: 143655315 CPI: 6.884
+[FINI] I$ H: 139419702 M: 4234216 HitRate: 0.971
+[FINI] D$ H: 10627697 M: 389195 HitRate: 0.965
+======================================================================
+2026-09-25: ICache(512w): Enabled
 CoreMark Size    : 666
 Total ticks      : 1049096372
 Total time (secs): 10

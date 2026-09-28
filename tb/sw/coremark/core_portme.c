@@ -143,27 +143,41 @@ void portable_init(core_portable *p, int *argc, char *argv[])
     }
     p->portable_id = 1;
 
-    HAL_cache_set_mask(ICACHE_BASEADDR, 0xFFFFFFFF);
+    // mark lower 128MB (includes 0-8MB sdram) I$ cacheable
+    HAL_cache_set_mask(ICACHE_BASEADDR, 0x00000001);
     HAL_cache_invalidate(ICACHE_BASEADDR);
     HAL_cache_clear_counters(ICACHE_BASEADDR);
+
+    // mark lower 128MB (includes 0-8MB sdram) D$ cacheable
+    HAL_cache_set_mask(DCACHE_BASEADDR, 0x00000001);
+    HAL_cache_invalidate(DCACHE_BASEADDR);
+    HAL_cache_clear_counters(DCACHE_BASEADDR);
 }
 /* Function : portable_fini
         Target specific final code
 */
 void portable_fini(core_portable *p)
 {
-    HAL_cache_set_mask(ICACHE_BASEADDR, 0x00000000);
-
     p->portable_id = 0;
+
+    HAL_cache_set_mask(ICACHE_BASEADDR, 0x00000000);
+    HAL_cache_set_mask(DCACHE_BASEADDR, 0x00000000);
+
     uint32_t cycles = csr_read_mcycle();
     uint32_t instret = csr_read_minstret();
+    uint32_t hit_ctr_i = HAL_cache_get_hit_ctr(ICACHE_BASEADDR);
+    uint32_t miss_ctr_i = HAL_cache_get_miss_ctr(ICACHE_BASEADDR);
+    uint32_t hit_ctr_d = HAL_cache_get_hit_ctr(DCACHE_BASEADDR);
+    uint32_t miss_ctr_d = HAL_cache_get_miss_ctr(DCACHE_BASEADDR);
+
     float cpi_int = (float)cycles / (float)instret;
     printf("[FINI] C: %lu I: %lu CPI: %.3f\n", cycles, instret, cpi_int);
 
-    uint32_t hit_ctr = HAL_cache_get_hit_ctr(ICACHE_BASEADDR);
-    uint32_t miss_ctr = HAL_cache_get_miss_ctr(ICACHE_BASEADDR);
-    float hit_rate = (float)hit_ctr / ((float)hit_ctr + (float)miss_ctr);
-    printf("[FINI] H: %u M: %u HitRate: %.3f\n", hit_ctr, miss_ctr, hit_rate);
+    float hit_rate_i = (float)hit_ctr_i / ((float)hit_ctr_i + (float)miss_ctr_i);
+    printf("[FINI] I$ H: %u M: %u HitRate: %.3f\n", hit_ctr_i, miss_ctr_i, hit_rate_i);
+
+    float hit_rate_d = (float)hit_ctr_d / ((float)hit_ctr_d + (float)miss_ctr_d);
+    printf("[FINI] D$ H: %u M: %u HitRate: %.3f\n", hit_ctr_d, miss_ctr_d, hit_rate_d);
 
     while (1)
         ;

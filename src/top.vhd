@@ -97,6 +97,15 @@ architecture rtl of top is
   signal wb_dbus_cyc_r  : std_logic;
   signal wb_dbus_ack_r  : std_logic;
 
+  signal wb_dcache_adr  : std_logic_vector(31 downto 0);
+  signal wb_dcache_din  : std_logic_vector(31 downto 0);
+  signal wb_dcache_dout : std_logic_vector(31 downto 0);
+  signal wb_dcache_we   : std_logic;
+  signal wb_dcache_sel  : std_logic_vector(3 downto 0);
+  signal wb_dcache_stb  : std_logic;
+  signal wb_dcache_cyc  : std_logic;
+  signal wb_dcache_ack  : std_logic;
+
   signal wb_d2m_adr  : std_logic_vector(31 downto 0);
   signal wb_d2m_din  : std_logic_vector(31 downto 0);
   signal wb_d2m_dout : std_logic_vector(31 downto 0);
@@ -154,6 +163,16 @@ architecture rtl of top is
   signal wb_icache_csr_stb  : std_logic;
   signal wb_icache_csr_cyc  : std_logic;
   signal wb_icache_csr_ack  : std_logic;
+
+  -- dcache csr intf
+  signal wb_dcache_csr_adr  : std_logic_vector(31 downto 0);
+  signal wb_dcache_csr_din  : std_logic_vector(31 downto 0);
+  signal wb_dcache_csr_dout : std_logic_vector(31 downto 0);
+  signal wb_dcache_csr_we   : std_logic;
+  signal wb_dcache_csr_sel  : std_logic_vector(3 downto 0);
+  signal wb_dcache_csr_stb  : std_logic;
+  signal wb_dcache_csr_cyc  : std_logic;
+  signal wb_dcache_csr_ack  : std_logic;
 
   -- gpio
   signal gpio0_i : std_logic_vector(31 downto 0) := (others => '0');
@@ -225,8 +244,33 @@ begin
       d_ack  => wb_dbus_ack
     );
 
+  U_WBRS_DBUS : entity work.wb_regslice
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+
+      s_cyc  => wb_dbus_cyc,
+      s_stb  => wb_dbus_stb,
+      s_adr  => wb_dbus_adr,
+      s_we   => wb_dbus_we,
+      s_sel  => wb_dbus_sel,
+      s_din  => wb_dbus_dout,
+      s_dout => wb_dbus_din,
+      s_ack  => wb_dbus_ack,
+
+      m_cyc  => wb_dbus_cyc_r,
+      m_stb  => wb_dbus_stb_r,
+      m_adr  => wb_dbus_adr_r,
+      m_we   => wb_dbus_we_r,
+      m_sel  => wb_dbus_sel_r,
+      m_dout => wb_dbus_dout_r,
+      m_din  => wb_dbus_din_r,
+      m_ack  => wb_dbus_ack_r
+    );
+
   U_ICACHE : entity work.wb_cache
-    generic map(G_NUM_WORDS => 512, G_RAMSTYLE => "m9k")
+    generic map(G_NUM_WORDS => 256, G_RAMSTYLE => "m9k")
     port map
     (
       clk   => clk,
@@ -260,29 +304,39 @@ begin
       m_ack  => wb_icache_ack
     );
 
-  U_WBRS_D2P : entity work.wb_regslice
+  U_DCACHE : entity work.wb_cache
+    generic map(G_NUM_WORDS => 256, G_RAMSTYLE => "m9k")
     port map
     (
       clk   => clk,
       reset => reset,
 
-      s_cyc  => wb_dbus_cyc,
-      s_stb  => wb_dbus_stb,
-      s_adr  => wb_dbus_adr,
-      s_we   => wb_dbus_we,
-      s_sel  => wb_dbus_sel,
-      s_din  => wb_dbus_dout,
-      s_dout => wb_dbus_din,
-      s_ack  => wb_dbus_ack,
+      s_csr_cyc  => wb_dcache_csr_cyc,
+      s_csr_stb  => wb_dcache_csr_stb,
+      s_csr_adr  => wb_dcache_csr_adr,
+      s_csr_we   => wb_dcache_csr_we,
+      s_csr_sel  => wb_dcache_csr_sel,
+      s_csr_din  => wb_dcache_csr_dout,
+      s_csr_dout => wb_dcache_csr_din,
+      s_csr_ack  => wb_dcache_csr_ack,
 
-      m_cyc  => wb_dbus_cyc_r,
-      m_stb  => wb_dbus_stb_r,
-      m_adr  => wb_dbus_adr_r,
-      m_we   => wb_dbus_we_r,
-      m_sel  => wb_dbus_sel_r,
-      m_dout => wb_dbus_dout_r,
-      m_din  => wb_dbus_din_r,
-      m_ack  => wb_dbus_ack_r
+      s_cyc  => wb_dbus_cyc_r,
+      s_stb  => wb_dbus_stb_r,
+      s_adr  => wb_dbus_adr_r,
+      s_we   => wb_dbus_we_r,
+      s_sel  => wb_dbus_sel_r,
+      s_din  => wb_dbus_dout_r,
+      s_dout => wb_dbus_din_r,
+      s_ack  => wb_dbus_ack_r,
+
+      m_cyc  => wb_dcache_cyc,
+      m_stb  => wb_dcache_stb,
+      m_adr  => wb_dcache_adr,
+      m_we   => wb_dcache_we,
+      m_sel  => wb_dcache_sel,
+      m_dout => wb_dcache_dout,
+      m_din  => wb_dcache_din,
+      m_ack  => wb_dcache_ack
     );
 
   U_WBMUX_DBUS : entity work.wb_1xN
@@ -298,14 +352,14 @@ begin
       clk   => clk,
       reset => reset,
 
-      s_cyc  => wb_dbus_cyc_r,
-      s_stb  => wb_dbus_stb_r,
-      s_adr  => wb_dbus_adr_r,
-      s_we   => wb_dbus_we_r,
-      s_sel  => wb_dbus_sel_r,
-      s_din  => wb_dbus_dout_r,
-      s_dout => wb_dbus_din_r,
-      s_ack  => wb_dbus_ack_r,
+      s_cyc  => wb_dcache_cyc,
+      s_stb  => wb_dcache_stb,
+      s_adr  => wb_dcache_adr,
+      s_we   => wb_dcache_we,
+      s_sel  => wb_dcache_sel,
+      s_din  => wb_dcache_dout,
+      s_dout => wb_dcache_din,
+      s_ack  => wb_dcache_ack,
 
       m_cyc(0)  => wb_d2m_cyc,
       m_cyc(1)  => wb_d2p_cyc,
@@ -458,11 +512,11 @@ begin
 
   U_WBMUX_PERIPH : entity work.wb_1xN
     generic map(
-      N  => 3,
+      N  => 4,
       AW => 32,
       DW => 32,
-      BASEADDR => (0 => x"A0000000", 1 => x"A0010000", 2 => x"FFF00000"),
-      HIGHADDR => (0 => x"A000FFFF", 1 => x"A001FFFF", 2 => x"FFF0FFFF")
+      BASEADDR => (0 => x"A0000000", 1 => x"A0010000", 2 => x"FFF00000", 3 => x"FFF10000"),
+      HIGHADDR => (0 => x"A000FFFF", 1 => x"A001FFFF", 2 => x"FFF0FFFF", 3 => x"FFF1FFFF")
     )
     port map
     (
@@ -481,27 +535,35 @@ begin
       m_cyc(0)  => wb_gpio0_cyc,
       m_cyc(1)  => wb_uart0_cyc,
       m_cyc(2)  => wb_icache_csr_cyc,
+      m_cyc(3)  => wb_dcache_csr_cyc,
       m_stb(0)  => wb_gpio0_stb,
       m_stb(1)  => wb_uart0_stb,
       m_stb(2)  => wb_icache_csr_stb,
+      m_stb(3)  => wb_dcache_csr_stb,
       m_adr(0)  => wb_gpio0_adr,
       m_adr(1)  => wb_uart0_adr,
       m_adr(2)  => wb_icache_csr_adr,
+      m_adr(3)  => wb_dcache_csr_adr,
       m_we(0)   => wb_gpio0_we,
       m_we(1)   => wb_uart0_we,
       m_we(2)   => wb_icache_csr_we,
+      m_we(3)   => wb_dcache_csr_we,
       m_sel(0)  => wb_gpio0_sel,
       m_sel(1)  => wb_uart0_sel,
       m_sel(2)  => wb_icache_csr_sel,
+      m_sel(3)  => wb_dcache_csr_sel,
       m_dout(0) => wb_gpio0_dout,
       m_dout(1) => wb_uart0_dout,
       m_dout(2) => wb_icache_csr_dout,
+      m_dout(3) => wb_dcache_csr_dout,
       m_din(0)  => wb_gpio0_din,
       m_din(1)  => wb_uart0_din,
       m_din(2)  => wb_icache_csr_din,
+      m_din(3)  => wb_dcache_csr_din,
       m_ack(0)  => wb_gpio0_ack,
       m_ack(1)  => wb_uart0_ack,
-      m_ack(2)  => wb_icache_csr_ack
+      m_ack(2)  => wb_icache_csr_ack,
+      m_ack(3)  => wb_dcache_csr_ack
     );
 
   U_GPIO0 : entity work.wb_gpio

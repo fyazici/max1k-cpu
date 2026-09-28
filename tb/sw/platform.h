@@ -17,6 +17,8 @@ extern int errno;
 #define UART0_HIGHADDR ((void *)0xA001FFFF)
 #define ICACHE_BASEADDR ((void *)0xFFF00000)
 #define ICACHE_HIGHADDR ((void *)0xFFF0FFFF)
+#define DCACHE_BASEADDR ((void *)0xFFF10000)
+#define DCACHE_HIGHADDR ((void *)0xFFF1FFFF)
 
 #define PERIPH_CLK_HZ (100 * 1000 * 1000)
 #define CPU_CYCLES_PER_US (PERIPH_CLK_HZ / 1000000)

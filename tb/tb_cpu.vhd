@@ -40,4 +40,34 @@ begin
       FT2232H_TX => '1'
     );
 
+  process
+    variable v_ctr : natural := 0;
+  begin
+    --<< signal .tb_cpu.uut.U_DCACHE.cache_mask : std_logic_vector(31 downto 0) >> <= force x"00000000";
+    loop
+      report "tic toc";
+      wait for 100 us;
+    end loop;
+  end process;
+
+  U_WBLOG_DBUS : entity work.wb_logger
+    generic map(
+      G_ID       => "DBUS",
+      G_FILENAME => "dbus_dcache=1_inv.csv"
+    )
+    port map
+    (
+      clk   => << signal .tb_cpu.uut.clk   : std_logic >>,
+      reset => << signal .tb_cpu.uut.clk : std_logic >>,
+
+      s_cyc  => << signal .tb_cpu.uut.wb_dbus_cyc  : std_logic >>,
+      s_stb  => << signal .tb_cpu.uut.wb_dbus_stb  : std_logic >>,
+      s_adr  => << signal .tb_cpu.uut.wb_dbus_adr  : std_logic_vector(31 downto 0) >>,
+      s_we   => << signal .tb_cpu.uut.wb_dbus_we    : std_logic >>,
+      s_sel  => << signal .tb_cpu.uut.wb_dbus_sel  : std_logic_vector(3 downto 0) >>,
+      s_din  => << signal .tb_cpu.uut.wb_dbus_dout : std_logic_vector(31 downto 0) >>,
+      s_dout => << signal .tb_cpu.uut.wb_dbus_din : std_logic_vector(31 downto 0) >>,
+      s_ack  => << signal .tb_cpu.uut.wb_dbus_ack  : std_logic >>
+    );
+
 end architecture;

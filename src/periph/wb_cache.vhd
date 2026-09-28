@@ -47,12 +47,12 @@ architecture rtl of wb_cache is
   constant C_TAG_W : natural := 32 - C_ADR_W - 2;
 
   type t_mem is array (natural range <>) of std_logic_vector;
-  signal data_mem0 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0);
-  signal data_mem1 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0);
-  signal data_mem2 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0);
-  signal data_mem3 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0);
-  signal tag_mem   : t_mem(G_NUM_WORDS - 1 downto 0)(C_TAG_W - 1 downto 0);
-  signal vld_mem   : std_logic_vector(G_NUM_WORDS - 1 downto 0);
+  signal data_mem0 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
+  signal data_mem1 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
+  signal data_mem2 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
+  signal data_mem3 : t_mem(G_NUM_WORDS - 1 downto 0)(7 downto 0)           := (others => (others => '0'));
+  signal tag_mem   : t_mem(G_NUM_WORDS - 1 downto 0)(C_TAG_W - 1 downto 0) := (others => (others => '0'));
+  signal vld_mem   : std_logic_vector(G_NUM_WORDS - 1 downto 0)            := (others => '0');
 
   attribute ramstyle              : string;
   attribute ramstyle of data_mem0 : signal is G_RAMSTYLE & ", no_rw_check";
@@ -160,11 +160,6 @@ begin
             if s_cyc = '1' and s_stb = '1' and s_ack = '0' then
               if s_we = '1' then
                 -- write through
-                mem_we   <= is_cacheable;
-                data_sel <= s_sel;
-                data_din <= s_din;
-                vld_din  <= '1';
-
                 m_cyc <= '1';
                 m_stb <= '1';
                 state <= S_write;
@@ -175,6 +170,13 @@ begin
 
           when S_write =>
             if m_ack = '1' then
+              if is_hit = '1' then
+                mem_we   <= '1';
+                data_sel <= s_sel;
+                data_din <= s_din;
+                vld_din  <= '1';
+              end if;
+
               m_cyc <= '0';
               m_stb <= '0';
               s_ack <= '1';
@@ -229,14 +231,15 @@ begin
     if rising_edge(clk) then
       -- must reset only valid mem
       if reset = '1' or cache_invalidate = '1' then
-        vld_mem <= (others => '0');
+        vld_mem  <= (others => '0');
+        vld_dout <= '0';
+      else
+        v_adr := to_integer(unsigned(mem_adr));
+        if mem_we = '1' then
+          vld_mem(v_adr) <= vld_din;
+        end if;
+        vld_dout <= vld_mem(v_adr);
       end if;
-
-      v_adr := to_integer(unsigned(mem_adr));
-      if mem_we = '1' then
-        vld_mem(v_adr) <= vld_din;
-      end if;
-      vld_dout <= vld_mem(v_adr);
     end if;
   end process;
 
