@@ -1,4 +1,25 @@
 ======================================================================
+2026-09-30: Cache write ack optimization
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 970362767
+Total time (secs): 9
+Iterations/Sec   : 22
+ERROR! Must execute for at least 10 secs for a valid result!
+Iterations       : 200
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x382f
+Errors detected
+[FINI] C: 971166494 I: 143655392 CPI: 6.760
+[FINI] I$ H: 139419779 M: 4234216 HitRate: 0.971
+[FINI] D$ H: 10627697 M: 389218 HitRate: 0.965
+======================================================================
 2026-09-28: ICache(256w) and DCache(256w) enabled
 2K performance run parameters for coremark.
 CoreMark Size    : 666

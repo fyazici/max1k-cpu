@@ -67,7 +67,7 @@ architecture rtl of wb_cache is
   signal is_cacheable : std_logic;
   signal is_hit       : std_logic;
 
-  type t_state is (S_idle, S_write, S_check, S_read);
+  type t_state is (S_idle, S_write, S_write_ack, S_check, S_read);
   signal state : t_state := S_idle;
 
   -- csr
@@ -144,36 +144,45 @@ begin
 
         tag_din <= s_adr(31 downto C_ADR_W + 2);
 
-        m_adr  <= s_adr;
-        m_we   <= s_we;
-        m_sel  <= s_sel;
-        m_dout <= s_din;
-
         case (state) is
           when S_idle =>
             if s_cyc = '1' and s_stb = '1' and s_ack = '0' then
               if s_we = '1' then
                 -- write through
-                m_cyc <= '1';
-                m_stb <= '1';
-                state <= S_write;
+                m_cyc  <= '1';
+                m_stb  <= '1';
+                m_adr  <= s_adr;
+                m_we   <= s_we;
+                m_sel  <= s_sel;
+                m_dout <= s_din;
+                state  <= S_write;
               else
                 state <= S_check;
               end if;
             end if;
 
           when S_write =>
-            if m_ack = '1' then
-              if is_hit = '1' then
-                mem_we   <= '1';
-                data_sel <= s_sel;
-                data_din <= s_din;
-                vld_din  <= '1';
-              end if;
+            s_ack <= '1';
 
+            if is_hit = '1' then
+              mem_we   <= '1';
+              data_sel <= s_sel;
+              data_din <= s_din;
+              vld_din  <= '1';
+            end if;
+
+            if m_ack = '1' then
               m_cyc <= '0';
               m_stb <= '0';
-              s_ack <= '1';
+              state <= S_idle;
+            else
+              state <= S_write_ack;
+            end if;
+
+          when S_write_ack =>
+            if m_ack = '1' then
+              m_cyc <= '0';
+              m_stb <= '0';
               state <= S_idle;
             end if;
 
@@ -184,9 +193,13 @@ begin
               state  <= S_idle;
             else
               -- miss: read and allocate
-              m_cyc <= '1';
-              m_stb <= '1';
-              state <= S_read;
+              m_cyc  <= '1';
+              m_stb  <= '1';
+              m_adr  <= s_adr;
+              m_we   <= s_we;
+              m_sel  <= s_sel;
+              m_dout <= s_din;
+              state  <= S_read;
             end if;
 
           when S_read =>
