@@ -13,3 +13,5 @@ tb/work
 *_dump.S
 *.bin
 *.size
+*.o
+tb/*.csv

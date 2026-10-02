@@ -1,0 +1,103 @@
+#ifndef _PLATFORM_H_
+#define _PLATFORM_H_
+
+#include <stdint.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/times.h>
+
+#include <errno.h>
+#undef errno
+extern int errno;
+
+#define GPIO0_BASEADDR ((void *)0xA0000000)
+#define GPIO0_HIGHADDR ((void *)0xA000FFFF)
+#define UART0_BASEADDR ((void *)0xA0010000)
+#define UART0_HIGHADDR ((void *)0xA001FFFF)
+#define ICACHE_BASEADDR ((void *)0xFFF00000)
+#define ICACHE_HIGHADDR ((void *)0xFFF0FFFF)
+#define DCACHE_BASEADDR ((void *)0xFFF10000)
+#define DCACHE_HIGHADDR ((void *)0xFFF1FFFF)
+
+#define PERIPH_CLK_HZ (100 * 1000 * 1000)
+#define CPU_CYCLES_PER_US (PERIPH_CLK_HZ / 1000000)
+
+#define READ_CSR(csr_name) ({ \
+  uint32_t __tmp;             \
+  __asm__ __volatile__(       \
+      "csrr %0, " #csr_name   \
+      : "=r"(__tmp)           \
+      :                       \
+      : "memory");            \
+  __tmp;                      \
+})
+
+uint64_t csr_read_mcycle(void);
+uint64_t csr_read_minstret(void);
+
+struct HAL_Uart
+{
+  uint32_t bauddiv;
+  struct
+  {
+    uint8_t tx_ready : 1;
+    uint8_t rx_valid : 1;
+    uint32_t _reserved : 30;
+  } status;
+  uint32_t txr;
+  uint32_t rxr;
+};
+
+int HAL_uart_init(volatile struct HAL_Uart *spUart, const int baudrate);
+void HAL_uart_putc(volatile struct HAL_Uart *spUart, char c);
+char HAL_uart_getc(volatile struct HAL_Uart *spUart);
+
+struct HAL_Gpio
+{
+  uint32_t dir;
+  uint32_t _reserved;
+  uint32_t idr;
+  uint32_t odr;
+};
+
+struct HAL_Cache
+{
+  uint32_t mask;
+  uint32_t invalidate;
+  uint32_t hit_ctr;
+  uint32_t miss_ctr;
+};
+
+void HAL_cache_set_mask(volatile struct HAL_Cache *spCache, uint32_t mask);
+void HAL_cache_invalidate(volatile struct HAL_Cache *spCache);
+void HAL_cache_clear_counters(volatile struct HAL_Cache *spCache);
+uint32_t HAL_cache_get_hit_ctr(volatile struct HAL_Cache *spCache);
+uint32_t HAL_cache_get_miss_ctr(volatile struct HAL_Cache *spCache);
+
+void outbyte(char);
+
+int _close(int file);
+int _execve(char *name, char **argv, char **env);
+int _fork(void);
+int _fstat(int file, struct stat *st);
+int _getpid(void);
+int _isatty(int file);
+int _kill(int pid, int sig);
+int _link(char *old, char *new);
+int _lseek(int file, int ptr, int dir);
+int _open(const char *name, int flags, int mode);
+int _read(int file, char *ptr, int len);
+caddr_t _sbrk(int incr);
+int _stat(char *file, struct stat *st);
+int _times(struct tms *buf);
+int _unlink(char *name);
+int _wait(int *status);
+int _write(int file, char *ptr, int len);
+
+void usleep(uint32_t us);
+
+/* Needed for DOOM */
+int access(const char *_Filename, int _AccessMode);
+
+#endif /* _PLATFORM_H_ */
