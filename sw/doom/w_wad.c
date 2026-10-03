@@ -338,7 +338,15 @@ int W_CheckNumForName(char *name)
     lumpinfo_t *lump_p;
 
     // make the name into two integers for easy compares
-    strncpy(name8.s, name, 8);
+    // strncpy(name8.s, name, 8);
+    // FIXME: weird bug with strncpy _8TLITE6 ??
+    memset(name8.s, 0, 9);
+    for (int i = 0; i < 8; i++)
+    {
+        if (name[i] == 0)
+            break;
+        name8.s[i] = name[i];
+    }
 
     // in case the name was a fill 8 chars
     name8.s[8] = 0;

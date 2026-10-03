@@ -174,6 +174,22 @@ architecture rtl of top is
   signal wb_dcache_csr_cyc  : std_logic;
   signal wb_dcache_csr_ack  : std_logic;
 
+  -- flash
+  signal flash_spi_cyc  : std_logic;
+  signal flash_spi_stb  : std_logic;
+  signal flash_spi_din  : std_logic_vector(7 downto 0);
+  signal flash_spi_dout : std_logic_vector(7 downto 0);
+  signal flash_spi_ack  : std_logic;
+
+  signal wb_flash_cyc  : std_logic;
+  signal wb_flash_stb  : std_logic;
+  signal wb_flash_adr  : std_logic_vector(31 downto 0);
+  signal wb_flash_we   : std_logic;
+  signal wb_flash_sel  : std_logic_vector(3 downto 0);
+  signal wb_flash_din  : std_logic_vector(31 downto 0);
+  signal wb_flash_dout : std_logic_vector(31 downto 0);
+  signal wb_flash_ack  : std_logic;
+
   -- gpio
   signal gpio0_i : std_logic_vector(31 downto 0) := (others => '0');
   signal gpio0_o : std_logic_vector(31 downto 0);
@@ -181,18 +197,18 @@ architecture rtl of top is
 
 begin
 
-  -- GEN_GPIO0 : for I in 0 to 7 generate
-  --   led(I) <= gpio0_o(I) when (gpio0_t(I) = '0') else
-  --   'Z';
-  --   gpio0_i(I) <= led(I);
-  -- end generate;
+  GEN_GPIO0 : for I in 0 to 7 generate
+    led(I) <= gpio0_o(I) when (gpio0_t(I) = '0') else
+    'Z';
+    gpio0_i(I) <= led(I);
+  end generate;
 
-  led(7)          <= reset;
-  led(6)          <= cpu_reset;
-  led(5)          <= wb_boot_cyc;
-  led(4)          <= wb_boot_stb;
-  led(3)          <= wb_boot_ack;
-  led(2 downto 0) <= wb_boot_adr(4 downto 2);
+  -- led(7)          <= reset;
+  -- led(6)          <= cpu_reset;
+  -- led(5)          <= wb_boot_cyc;
+  -- led(4)          <= wb_boot_stb;
+  -- led(3)          <= wb_boot_ack;
+  -- led(2 downto 0) <= wb_boot_adr(4 downto 2);
 
   U_PLL1 : pll1
   port map
@@ -444,6 +460,12 @@ begin
         m_din  => wb_boot_din,
         m_ack  => wb_boot_ack,
 
+        spi_cyc_ext  => flash_spi_cyc,
+        spi_stb_ext  => flash_spi_stb,
+        spi_din_ext  => flash_spi_din,
+        spi_dout_ext => flash_spi_dout,
+        spi_ack_ext  => flash_spi_ack,
+
         FLASH_CLK  => FLASH_CLK,
         FLASH_CS   => FLASH_CS,
         FLASH_HOLD => FLASH_HOLD,
@@ -479,6 +501,28 @@ begin
         SDRAM_DQM => SDRAM_DQM,
         SDRAM_DQ  => SDRAM_DQ
       );
+
+    U_WB_FLASH : entity work.wb_flash
+      port map
+      (
+        clk   => clk,
+        reset => reset,
+
+        s_wb_cyc  => wb_flash_cyc,
+        s_wb_stb  => wb_flash_stb,
+        s_wb_adr  => wb_flash_adr,
+        s_wb_we   => wb_flash_we,
+        s_wb_sel  => wb_flash_sel,
+        s_wb_din  => wb_flash_dout,
+        s_wb_dout => wb_flash_din,
+        s_wb_ack  => wb_flash_ack,
+
+        spi_cyc  => flash_spi_cyc,
+        spi_stb  => flash_spi_stb,
+        spi_din  => flash_spi_din,
+        spi_dout => flash_spi_dout,
+        spi_ack  => flash_spi_ack
+      );
   end generate;
 
   GEN_BRAM : if G_SIM_MODE = TRUE generate
@@ -512,11 +556,11 @@ begin
 
   U_WBMUX_PERIPH : entity work.wb_1xN
     generic map(
-      N  => 4,
+      N  => 5,
       AW => 32,
       DW => 32,
-      BASEADDR => (0 => x"A0000000", 1 => x"A0010000", 2 => x"FFF00000", 3 => x"FFF10000"),
-      HIGHADDR => (0 => x"A000FFFF", 1 => x"A001FFFF", 2 => x"FFF0FFFF", 3 => x"FFF1FFFF")
+      BASEADDR => (0 => x"80000000", 1 => x"A0000000", 2 => x"A0010000", 3 => x"FFF00000", 4 => x"FFF10000"),
+      HIGHADDR => (0 => x"807FFFFF", 1 => x"A000FFFF", 2 => x"A001FFFF", 3 => x"FFF0FFFF", 4 => x"FFF1FFFF")
     )
     port map
     (
@@ -532,38 +576,53 @@ begin
       s_dout => wb_d2p_din,
       s_ack  => wb_d2p_ack,
 
-      m_cyc(0)  => wb_gpio0_cyc,
-      m_cyc(1)  => wb_uart0_cyc,
-      m_cyc(2)  => wb_icache_csr_cyc,
-      m_cyc(3)  => wb_dcache_csr_cyc,
-      m_stb(0)  => wb_gpio0_stb,
-      m_stb(1)  => wb_uart0_stb,
-      m_stb(2)  => wb_icache_csr_stb,
-      m_stb(3)  => wb_dcache_csr_stb,
-      m_adr(0)  => wb_gpio0_adr,
-      m_adr(1)  => wb_uart0_adr,
-      m_adr(2)  => wb_icache_csr_adr,
-      m_adr(3)  => wb_dcache_csr_adr,
-      m_we(0)   => wb_gpio0_we,
-      m_we(1)   => wb_uart0_we,
-      m_we(2)   => wb_icache_csr_we,
-      m_we(3)   => wb_dcache_csr_we,
-      m_sel(0)  => wb_gpio0_sel,
-      m_sel(1)  => wb_uart0_sel,
-      m_sel(2)  => wb_icache_csr_sel,
-      m_sel(3)  => wb_dcache_csr_sel,
-      m_dout(0) => wb_gpio0_dout,
-      m_dout(1) => wb_uart0_dout,
-      m_dout(2) => wb_icache_csr_dout,
-      m_dout(3) => wb_dcache_csr_dout,
-      m_din(0)  => wb_gpio0_din,
-      m_din(1)  => wb_uart0_din,
-      m_din(2)  => wb_icache_csr_din,
-      m_din(3)  => wb_dcache_csr_din,
-      m_ack(0)  => wb_gpio0_ack,
-      m_ack(1)  => wb_uart0_ack,
-      m_ack(2)  => wb_icache_csr_ack,
-      m_ack(3)  => wb_dcache_csr_ack
+      m_cyc(0) => wb_flash_cyc,
+      m_cyc(1) => wb_gpio0_cyc,
+      m_cyc(2) => wb_uart0_cyc,
+      m_cyc(3) => wb_icache_csr_cyc,
+      m_cyc(4) => wb_dcache_csr_cyc,
+
+      m_stb(0) => wb_flash_stb,
+      m_stb(1) => wb_gpio0_stb,
+      m_stb(2) => wb_uart0_stb,
+      m_stb(3) => wb_icache_csr_stb,
+      m_stb(4) => wb_dcache_csr_stb,
+
+      m_adr(0) => wb_flash_adr,
+      m_adr(1) => wb_gpio0_adr,
+      m_adr(2) => wb_uart0_adr,
+      m_adr(3) => wb_icache_csr_adr,
+      m_adr(4) => wb_dcache_csr_adr,
+
+      m_we(0) => wb_flash_we,
+      m_we(1) => wb_gpio0_we,
+      m_we(2) => wb_uart0_we,
+      m_we(3) => wb_icache_csr_we,
+      m_we(4) => wb_dcache_csr_we,
+
+      m_sel(0) => wb_flash_sel,
+      m_sel(1) => wb_gpio0_sel,
+      m_sel(2) => wb_uart0_sel,
+      m_sel(3) => wb_icache_csr_sel,
+      m_sel(4) => wb_dcache_csr_sel,
+
+      m_dout(0) => wb_flash_dout,
+      m_dout(1) => wb_gpio0_dout,
+      m_dout(2) => wb_uart0_dout,
+      m_dout(3) => wb_icache_csr_dout,
+      m_dout(4) => wb_dcache_csr_dout,
+
+      m_din(0) => wb_flash_din,
+      m_din(1) => wb_gpio0_din,
+      m_din(2) => wb_uart0_din,
+      m_din(3) => wb_icache_csr_din,
+      m_din(4) => wb_dcache_csr_din,
+
+      m_ack(0) => wb_flash_ack,
+      m_ack(1) => wb_gpio0_ack,
+      m_ack(2) => wb_uart0_ack,
+      m_ack(3) => wb_icache_csr_ack,
+      m_ack(4) => wb_dcache_csr_ack
     );
 
   U_GPIO0 : entity work.wb_gpio

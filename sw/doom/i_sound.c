@@ -612,7 +612,7 @@ void I_UpdateSound(void)
 void I_SubmitSound(void)
 {
   // Write it to DSP device.
-  write(audio_fd, mixbuffer, SAMPLECOUNT * BUFMUL);
+  // write(audio_fd, mixbuffer, SAMPLECOUNT * BUFMUL);
 }
 
 void I_UpdateSoundParams(int handle,
@@ -731,7 +731,7 @@ void I_HandleSoundTimer(int ignore)
   {
     // See I_SubmitSound().
     // Write it to DSP device.
-    write(audio_fd, mixbuffer, SAMPLECOUNT * BUFMUL);
+    // write(audio_fd, mixbuffer, SAMPLECOUNT * BUFMUL);
 
     // Reset flag counter.
     flag = 0;

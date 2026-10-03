@@ -31,28 +31,40 @@ static const char
 
 #include <platform.h>
 
+volatile struct HAL_Gpio *gspGpio0 = (void *)GPIO0_BASEADDR;
+
 int main()
 {
-  myargc = 0;
-  myargv = 0;
+  myargc = 3;
+  myargv = (char **)malloc(3 * sizeof(void *));
+  myargv[0] = "riscv_doom";
+  myargv[1] = "-episode";
+  myargv[2] = "1";
 
-  HAL_uart_init(UART0_BASEADDR, 1000000);
-  printf("[PLATFORM] Let there be light...\n");
+  gspGpio0->dir = 0;
+  gspGpio0->odr = 0x01;
 
-  // mark lower 128MB (includes 0-8MB sdram) I$ cacheable
+  HAL_uart_init(UART0_BASEADDR, 6000000);
+  printf("[PLT] Let there be light...\n");
+
+  // mark sdram I$ cacheable
   HAL_cache_set_mask(ICACHE_BASEADDR, 0x00000001);
   HAL_cache_invalidate(ICACHE_BASEADDR);
   HAL_cache_clear_counters(ICACHE_BASEADDR);
-  printf("[PLATFORM] I$ configured.\n");
+  printf("[PLT] I$ configured.\n");
 
-  // mark lower 128MB (includes 0-8MB sdram) D$ cacheable
-  HAL_cache_set_mask(DCACHE_BASEADDR, 0x00000001);
+  // mark sdram and flash D$ cacheable
+  HAL_cache_set_mask(DCACHE_BASEADDR, 0x00010001);
   HAL_cache_invalidate(DCACHE_BASEADDR);
   HAL_cache_clear_counters(DCACHE_BASEADDR);
-  printf("[PLATFORM] D$ configured.\n");
+  printf("[PLT] D$ configured.\n");
 
-  printf("[PLATFORM] Calling D_DoomMain()...\n");
+  printf("[PLT] Calling D_DoomMain()...\n");
+
+  setDebugLevel(0);
   D_DoomMain();
 
+  while (1)
+    ;
   return 0;
 }

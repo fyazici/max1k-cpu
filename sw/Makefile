@@ -12,13 +12,13 @@ CFLAGS  += -std=c99
 CFLAGS  += -march=rv32i_zicsr -mabi=ilp32
 CFLAGS  += -fno-common -ffunction-sections -fdata-sections 
 CFLAGS  += -I./platform -I./doom
-CFLAGS  += -Os
-CFLAGS  += -DNORMALUNIX
+CFLAGS  += -O3
+CFLAGS  += -DNORMALUNIX -DSYSCALL_DBG
 
 LDFLAGS += --static -nostartfiles 
 LDFLAGS += -Tplatform/lscript.ld
 LDFLAGS += -march=rv32i_zicsr -mabi=ilp32
-LDFLAGS += -Wl,-Map=$(*).map -Wl,--cref
+# LDFLAGS += -Wl,-Map=$(*).map -Wl,--cref
 LDFLAGS += -Wl,--gc-sections
 LDFLAGS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 

@@ -77,6 +77,8 @@ uint32_t HAL_cache_get_miss_ctr(volatile struct HAL_Cache *spCache);
 
 void outbyte(char);
 
+void setDebugLevel(char lvl);
+
 int _close(int file);
 int _execve(char *name, char **argv, char **env);
 int _fork(void);

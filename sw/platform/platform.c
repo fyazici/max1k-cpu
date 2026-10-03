@@ -1,7 +1,10 @@
 #include <platform.h>
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 /*
  * CSR utils
@@ -93,94 +96,187 @@ void usleep(uint32_t us)
     ;
 }
 
+/* pre */
+#define DOOM1WAD_BASE ((void *)(0x80000000 + 2 * 1024 * 1024)) // periph base + file offset in flash 2M
+#define DOOM1WAD_END ((void *)(DOOM1WAD_BASE + 4196020));      // periph base + file offset in flash 2M
+char *doom1wad_ptr = DOOM1WAD_BASE;
+
+char dbgLevel = 0;
+
+void setDebugLevel(char lvl)
+{
+  dbgLevel = lvl;
+}
+
+void dbgPrintf(char lvl, char *fmt, ...)
+{
+  if (lvl <= dbgLevel)
+  {
+    va_list args;
+    va_start(args, fmt);
+    printf("[DBG]: ");
+    vprintf(fmt, args);
+    va_end(args);
+    fflush(stdout);
+  }
+}
+
 /*
  * NEWLIB stuff
  */
 int _close(int file)
 {
-  (void)file;
-  return -1;
+  int r = -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _close(file=%d) = %d\n", file, r);
+#endif
+
+  return r;
 }
 
 int _execve(char *name, char **argv, char **env)
 {
-  (void)name;
-  (void)argv;
-  (void)env;
   errno = ENOMEM;
-  return -1;
+  int r = -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _execve(name=%s, argv=%zu, env=%zu) = %d\n", name, (uintptr_t)argv, (uintptr_t)env, r);
+#endif
+
+  return r;
 }
 
 int _fork(void)
 {
   errno = EAGAIN;
-  return -1;
+  int r = -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _fork*() = %d\n", r);
+#endif
+
+  return r;
 }
 
-__attribute__((used)) int _fstat(int file, struct stat *st)
+int _fstat(int file, struct stat *st)
 {
-  (void)file;
+  int r = 0;
   st->st_mode = S_IFCHR;
+
+#if SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _fstat(file=%d, st=%zu) = %d\n", file, (uintptr_t)st, r);
+#endif
+
   return 0;
 }
 
 int _getpid(void)
 {
-  return 1;
+  int r = 1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _getpid() = %d\n", r);
+#endif
+
+  return r;
 }
 
-__attribute__((used)) int _isatty(int file)
+int _isatty(int file)
 {
-  (void)file;
-  return 1;
+  int r = 1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _isatty(file=%d) = %d\n", file, r);
+#endif
+
+  return r;
 }
 
 int _kill(int pid, int sig)
 {
-  (void)pid;
-  (void)sig;
+  int r = -1;
   errno = EINVAL;
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _kill(pid=%d, sig=%d) = %d\n", pid, sig, r);
+#endif
+
+  return r;
 }
 
 int _link(char *old, char *new)
 {
-  (void)old;
-  (void)new;
+  int r = -1;
   errno = EMLINK;
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _link(old=%zu, new=%zu) = %d\n", (uintptr_t)old, (uintptr_t)new, r);
+#endif
+
+  return r;
 }
 
 int _lseek(int file, int ptr, int dir)
 {
-  (void)file;
-  (void)ptr;
-  (void)dir;
-  return 0;
+  int r = -1;
+
+  if (file == 1000)
+  {
+    switch (dir)
+    {
+    case SEEK_SET:
+      doom1wad_ptr = DOOM1WAD_BASE + ptr;
+      break;
+    case SEEK_CUR:
+      doom1wad_ptr += ptr;
+      break;
+    case SEEK_END:
+      doom1wad_ptr = DOOM1WAD_END + ptr;
+      break;
+    default:
+      break;
+    }
+    r = doom1wad_ptr - (char *)DOOM1WAD_BASE;
+  }
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _lseek(file=%d, ptr=%d, dir=%d) = %d\n", file, ptr, dir, r);
+#endif
+
+  return r;
 }
 
 int _open(const char *name, int flags, int mode)
 {
-  (void)name;
-  (void)flags;
-  (void)mode;
-
-  printf("[PLATFORM] _open(%s, %d, %d)\n", name, flags, mode);
+  int r = -1;
   if (strstr(name, "doom1.wad"))
   {
-    return 0;
+    r = 1000;
   }
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _open(name=%s, flags=%d, mode=%d) = %d\n", name, flags, mode, r);
+#endif
+
+  return r;
 }
 
 int _read(int file, char *ptr, int len)
 {
-  (void)file;
-  (void)ptr;
-  (void)len;
-  printf("[PLATFORM] _read(%d, %zu, %d)\n", file, (uintptr_t)ptr, len);
-  // TODO: read the actual file
-  return 0;
+  int r = 0;
+  if (file == 1000)
+  {
+    memcpy(ptr, doom1wad_ptr, len);
+    doom1wad_ptr += len;
+    r = len;
+  }
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _read(file=%d, ptr=%zu, len=%d) = %d\n", file, (uintptr_t)ptr, len, r);
+#endif
+
+  return r;
 }
 
 caddr_t _sbrk(int incr)
@@ -188,6 +284,7 @@ caddr_t _sbrk(int incr)
   extern char end; /* Defined by the linker */
   static char *heap_end;
   char *prev_heap_end;
+  caddr_t r;
 
   if (heap_end == 0)
   {
@@ -195,62 +292,112 @@ caddr_t _sbrk(int incr)
   }
   prev_heap_end = heap_end;
 
-  heap_end += incr;
-  return (caddr_t)prev_heap_end;
+  uint32_t sp;
+  __asm__ __volatile__("mv %0, sp" : "=r"(sp));
+  if (heap_end + incr > sp)
+  {
+    errno = ENOMEM;
+    r = (caddr_t)-1;
+  }
+  else
+  {
+    heap_end += incr;
+    r = (caddr_t)prev_heap_end;
+  }
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _sbrk(incr=%d) = %d\n", incr, r);
+#endif
+
+  return r;
 }
 
 int _stat(char *file, struct stat *st)
 {
-  (void)file;
+  int r = 0;
   st->st_mode = S_IFCHR;
-  return 0;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _stat(file=%s, st=%zu) = %d\n", file, (uintptr_t)st, r);
+#endif
+
+  return r;
 }
 
 int _times(struct tms *buf)
 {
-  (void)buf;
-  return -1;
+  int r = -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _times(buf=%zu) = %d\n", (uintptr_t)buf, r);
+#endif
+
+  return r;
 }
 
 int _unlink(char *name)
 {
-  (void)name;
+  int r = -1;
   errno = ENOENT;
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _unlink(name=%s) = %d\n", name, r);
+#endif
+
+  return r;
 }
 
 int _wait(int *status)
 {
-  (void)status;
+  int r = -1;
   errno = ECHILD;
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] _wait(status=%zu) = %d\n", (uintptr_t)status, r);
+#endif
+
+  return r;
 }
 
 int _write(int file, char *ptr, int len)
 {
-  (void)file;
-  (void)ptr;
-  (void)len;
-
-  for (int i = 0; i < len; i++)
+  if ((file == STDOUT_FILENO) || (file == STDERR_FILENO))
   {
-    outbyte(*ptr++);
+    for (int i = 0; i < len; i++)
+    {
+      outbyte(*ptr++);
+    }
+    return len;
   }
-  return len;
+  return -1;
 }
 
 /* Needed for DOOM */
 int access(const char *_Filename, int _AccessMode)
 {
-  (void)_Filename;
-  (void)_AccessMode;
-
-  printf("[PLATFORM] access(%s, %d)\n", _Filename, _AccessMode);
+  int r = -1;
 
   if ((_AccessMode == 4 /* R_OK */) && strstr(_Filename, "doom1.wad"))
   {
     // NOTE: respond for doom1.wad
-    return 0;
+    r = 0;
   }
-  return -1;
+
+#ifdef SYSCALL_DBG
+  dbgPrintf(7, "[PLT] access(_Filename=%s, _AccessMode=%d) = %d\n", _Filename, _AccessMode, r);
+#endif
+
+  return r;
+}
+
+int _gettimeofday(struct timeval *tv, void *tzvp)
+{
+  if (tv != NULL)
+  {
+    long usecs = csr_read_mcycle() / (PERIPH_CLK_HZ / 1000000);
+
+    tv->tv_sec = usecs / 1000000;
+    tv->tv_usec = usecs % 1000000;
+  }
+  return 0;
 }
