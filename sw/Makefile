@@ -13,7 +13,7 @@ CFLAGS  += -march=rv32i_zicsr -mabi=ilp32
 CFLAGS  += -fno-common -ffunction-sections -fdata-sections 
 CFLAGS  += -I./platform -I./doom
 CFLAGS  += -O3
-CFLAGS  += -DNORMALUNIX -DSYSCALL_DBG
+CFLAGS  += -DNORMALUNIX -DXTERM_VIDEO
 
 LDFLAGS += --static -nostartfiles 
 LDFLAGS += -Tplatform/lscript.ld

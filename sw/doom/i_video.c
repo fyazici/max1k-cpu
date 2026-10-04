@@ -41,6 +41,8 @@ static const char
 
 #include "doomdef.h"
 
+#include <platform.h>
+
 void I_ShutdownGraphics(void)
 {
 }
@@ -102,15 +104,20 @@ void I_UpdateNoBlit(void)
 {
 }
 
-char myPalette[256];
+char myPalette[256 * 3];
 
 //
 // I_FinishUpdate
 //
 void I_FinishUpdate(void)
 {
-#if 0
-	char buf[12 * 160 + 1];
+	static int frame_ctr = 0;
+	frame_ctr++;
+
+	((volatile struct HAL_Gpio *)GPIO0_BASEADDR)->odr = frame_ctr;
+
+#ifdef XTERM_VIDEO
+	char buf[4096];
 
 	printf("\033[H");
 	for (int y = 0; y < 200; y += 2)
@@ -121,17 +128,18 @@ void I_FinishUpdate(void)
 		for (int x = 0; x < 320; x += 2)
 		{
 			char c = screens[0][y * 320 + x];
-			ptr += sprintf(ptr, "\033[48;5;%dm ", myPalette[c]);
+			int r = myPalette[3 * c + 0];
+			int g = myPalette[3 * c + 1];
+			int b = myPalette[3 * c + 2];
+			ptr += sprintf(ptr, "\033[48;2;%d;%d;%dm ", r, g, b);
 		}
 
 		puts(buf);
 	}
 #else
-	static int frame_ctr = 0;
 	static uint64_t last_cyc = 0;
 	static uint64_t last_ins = 0;
 
-	frame_ctr++;
 	uint64_t cycles = csr_read_mcycle();
 	if ((cycles - last_cyc) > PERIPH_CLK_HZ) // every 1 sec
 	{
@@ -173,17 +181,7 @@ void I_ReadScreen(byte *scr)
 //
 void I_SetPalette(byte *palette)
 {
-	for (int i = 0; i < 256; i++)
-	{
-		int r = palette[i * 3 + 0]; // rgb
-		int g = palette[i * 3 + 1]; // rgb
-		int b = palette[i * 3 + 2]; // rgb
-		int r6 = (r * 5) / 255;
-		int g6 = (g * 5) / 255;
-		int b6 = (b * 5) / 255;
-		int xterm_index = 16 + (36 * r6) + (6 * g6) + b6;
-		myPalette[i] = xterm_index;
-	}
+	memcpy(myPalette, palette, sizeof(myPalette));
 }
 
 void I_InitGraphics(void)

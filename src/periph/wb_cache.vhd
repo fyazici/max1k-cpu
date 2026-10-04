@@ -225,24 +225,6 @@ begin
   is_hit <= '1' when (is_cacheable = '1' and vld_dout = '1' and tag_dout = tag_din) else
     '0';
 
-  PROC_VLD_MEM : process (clk)
-    variable v_adr : natural range 0 to G_NUM_WORDS - 1 := 0;
-  begin
-    if rising_edge(clk) then
-      -- must reset only valid mem
-      if reset = '1' or cache_invalidate = '1' then
-        vld_mem  <= (others => '0');
-        vld_dout <= '0';
-      else
-        v_adr := to_integer(unsigned(mem_adr));
-        if mem_we = '1' then
-          vld_mem(v_adr) <= vld_din;
-        end if;
-        vld_dout <= vld_mem(v_adr);
-      end if;
-    end if;
-  end process;
-
   U_TAG_MEM : altsyncram
   generic map(
     clock_enable_input_a          => "BYPASS",
@@ -257,16 +239,18 @@ begin
     power_up_uninitialized        => "FALSE",
     read_during_write_mode_port_a => "DONT_CARE",
     widthad_a                     => C_ADR_W,
-    width_a                       => C_TAG_W,
+    width_a                       => C_TAG_W + 1,
     width_byteena_a               => 1
   )
   port map
   (
-    address_a => mem_adr,
-    clock0    => clk,
-    data_a    => tag_din,
-    wren_a    => mem_we,
-    q_a       => tag_dout
+    address_a                    => mem_adr,
+    clock0                       => clk,
+    data_a(C_TAG_W - 1 downto 0) => tag_din,
+    data_a(C_TAG_W)              => vld_din,
+    wren_a                       => mem_we,
+    q_a(C_TAG_W - 1 downto 0)    => tag_dout,
+    q_a(C_TAG_W)                 => vld_dout
   );
 
   U_DATA_MEM : altsyncram

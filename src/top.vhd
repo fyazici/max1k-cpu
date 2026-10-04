@@ -286,7 +286,7 @@ begin
     );
 
   U_ICACHE : entity work.wb_cache
-    generic map(G_NUM_WORDS => 256, G_RAMSTYLE => "m9k")
+    generic map(G_NUM_WORDS => 1024, G_RAMSTYLE => "m9k")
     port map
     (
       clk   => clk,
@@ -321,7 +321,7 @@ begin
     );
 
   U_DCACHE : entity work.wb_cache
-    generic map(G_NUM_WORDS => 256, G_RAMSTYLE => "m9k")
+    generic map(G_NUM_WORDS => 1024, G_RAMSTYLE => "m9k")
     port map
     (
       clk   => clk,
