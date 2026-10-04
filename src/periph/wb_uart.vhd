@@ -4,6 +4,9 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 entity wb_uart is
+  generic (
+    G_FIFO_DEPTH : natural range 8 to 256 := 8
+  );
   port (
     clk   : in std_logic;
     reset : in std_logic;
@@ -24,6 +27,8 @@ end entity wb_uart;
 
 architecture rtl of wb_uart is
 
+  constant C_FIFO_AW : natural := integer(ceil(log2(real(G_FIFO_DEPTH))));
+
   signal baud_div : std_logic_vector(15 downto 0);
 
   signal rx_valid : std_logic;
@@ -43,6 +48,8 @@ architecture rtl of wb_uart is
   signal tx_data_f  : std_logic_vector(7 downto 0);
 
 begin
+
+  assert (2 ** C_FIFO_AW = G_FIFO_DEPTH) report "FIFO depth must be a power of two" severity error;
 
   PROC_REG : process (clk)
   begin
@@ -110,8 +117,8 @@ begin
   U_RX_FIFO : entity work.stream_fifo
     generic map(
       G_DW       => 8,
-      G_AW       => 3,
-      G_RAMSTYLE => "logic"
+      G_AW       => C_FIFO_AW,
+      G_RAMSTYLE => "auto"
     )
     port map
     (
@@ -132,8 +139,8 @@ begin
   U_TX_FIFO : entity work.stream_fifo
     generic map(
       G_DW       => 8,
-      G_AW       => 3,
-      G_RAMSTYLE => "logic"
+      G_AW       => C_FIFO_AW,
+      G_RAMSTYLE => "auto"
     )
     port map
     (

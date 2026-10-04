@@ -102,35 +102,62 @@ void I_UpdateNoBlit(void)
 {
 }
 
-char myPalette[256 * 3];
+char myPalette[256];
 
 //
 // I_FinishUpdate
 //
 void I_FinishUpdate(void)
 {
+#if 0
+	char buf[12 * 160 + 1];
+
 	printf("\033[H");
 	for (int y = 0; y < 200; y += 2)
 	{
+		memset(buf, 0, sizeof(buf));
+		char *ptr = buf;
+
 		for (int x = 0; x < 320; x += 2)
 		{
 			char c = screens[0][y * 320 + x];
-			int r = myPalette[c * 3 + 0]; // rgb
-			int g = myPalette[c * 3 + 1]; // rgb
-			int b = myPalette[c * 3 + 2]; // rgb
-			// 1. Scale each channel from 0-255 down to 0-5
-			int r6 = (r * 5) / 255;
-			int g6 = (g * 5) / 255;
-			int b6 = (b * 5) / 255;
-
-			// 2. Map into the 16-231 block of the Xterm color palette
-			int xterm_index = 16 + (36 * r6) + (6 * g6) + b6;
-
-			// TODO: xterm colors
-			printf("\033[48;5;%dm ", xterm_index);
+			ptr += sprintf(ptr, "\033[48;5;%dm ", myPalette[c]);
 		}
-		printf("\n");
+
+		puts(buf);
 	}
+#else
+	static int frame_ctr = 0;
+	static uint64_t last_cyc = 0;
+	static uint64_t last_ins = 0;
+
+	frame_ctr++;
+	uint64_t cycles = csr_read_mcycle();
+	if ((cycles - last_cyc) > PERIPH_CLK_HZ) // every 1 sec
+	{
+		uint64_t instret = csr_read_minstret();
+		uint64_t c_diff = cycles - last_cyc;
+		uint64_t i_diff = instret - last_ins;
+		last_cyc = cycles;
+		last_ins = instret;
+
+		uint32_t hit_ctr_i = HAL_cache_get_hit_ctr(ICACHE_BASEADDR);
+		uint32_t miss_ctr_i = HAL_cache_get_miss_ctr(ICACHE_BASEADDR);
+		uint32_t hit_ctr_d = HAL_cache_get_hit_ctr(DCACHE_BASEADDR);
+		uint32_t miss_ctr_d = HAL_cache_get_miss_ctr(DCACHE_BASEADDR);
+
+		printf("[PLT] FPS=%d\n", frame_ctr);
+
+		float cpi_int = (float)c_diff / (float)i_diff;
+		printf("[PLT] C: %llu I: %llu CPI: %.3f\n", c_diff, i_diff, cpi_int);
+		float hit_rate_i = (float)hit_ctr_i / ((float)hit_ctr_i + (float)miss_ctr_i);
+		printf("[PLT] I$ H: %u M: %u HitRate: %.3f\n", hit_ctr_i, miss_ctr_i, hit_rate_i);
+		float hit_rate_d = (float)hit_ctr_d / ((float)hit_ctr_d + (float)miss_ctr_d);
+		printf("[PLT] D$ H: %u M: %u HitRate: %.3f\n", hit_ctr_d, miss_ctr_d, hit_rate_d);
+
+		frame_ctr = 0;
+	}
+#endif
 }
 
 //
@@ -146,7 +173,17 @@ void I_ReadScreen(byte *scr)
 //
 void I_SetPalette(byte *palette)
 {
-	memcpy(myPalette, palette, 256 * 3);
+	for (int i = 0; i < 256; i++)
+	{
+		int r = palette[i * 3 + 0]; // rgb
+		int g = palette[i * 3 + 1]; // rgb
+		int b = palette[i * 3 + 2]; // rgb
+		int r6 = (r * 5) / 255;
+		int g6 = (g * 5) / 255;
+		int b6 = (b * 5) / 255;
+		int xterm_index = 16 + (36 * r6) + (6 * g6) + b6;
+		myPalette[i] = xterm_index;
+	}
 }
 
 void I_InitGraphics(void)

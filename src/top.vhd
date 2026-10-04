@@ -646,6 +646,7 @@ begin
     );
 
   U_UART0 : entity work.wb_uart
+    generic map(G_FIFO_DEPTH => 256)
     port map
     (
       clk   => clk,
