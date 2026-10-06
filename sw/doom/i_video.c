@@ -52,38 +52,6 @@ void I_ShutdownGraphics(void)
 //
 void I_StartFrame(void)
 {
-	/*
-	static int frame_ctr = 0;
-	static uint64_t last_cyc = 0;
-	static uint64_t last_ins = 0;
-
-	frame_ctr++;
-	uint64_t cycles = csr_read_mcycle();
-	if ((cycles - last_cyc) > PERIPH_CLK_HZ) // every 1 sec
-	{
-		uint64_t instret = csr_read_minstret();
-		uint64_t c_diff = cycles - last_cyc;
-		uint64_t i_diff = instret - last_ins;
-		last_cyc = cycles;
-		last_ins = instret;
-
-		uint32_t hit_ctr_i = HAL_cache_get_hit_ctr(ICACHE_BASEADDR);
-		uint32_t miss_ctr_i = HAL_cache_get_miss_ctr(ICACHE_BASEADDR);
-		uint32_t hit_ctr_d = HAL_cache_get_hit_ctr(DCACHE_BASEADDR);
-		uint32_t miss_ctr_d = HAL_cache_get_miss_ctr(DCACHE_BASEADDR);
-
-		printf("[PLT] FPS=%d\n", frame_ctr);
-
-		float cpi_int = (float)c_diff / (float)i_diff;
-		printf("[PLT] C: %llu I: %llu CPI: %.3f\n", c_diff, i_diff, cpi_int);
-		float hit_rate_i = (float)hit_ctr_i / ((float)hit_ctr_i + (float)miss_ctr_i);
-		printf("[PLT] I$ H: %u M: %u HitRate: %.3f\n", hit_ctr_i, miss_ctr_i, hit_rate_i);
-		float hit_rate_d = (float)hit_ctr_d / ((float)hit_ctr_d + (float)miss_ctr_d);
-		printf("[PLT] D$ H: %u M: %u HitRate: %.3f\n", hit_ctr_d, miss_ctr_d, hit_rate_d);
-
-		frame_ctr = 0;
-	}
-	*/
 }
 
 void I_GetEvent(void)
@@ -188,4 +156,7 @@ void I_InitGraphics(void)
 {
 	// TODO: pass this to VGA DMA controller
 	screens[0] = (unsigned char *)malloc(SCREENWIDTH * SCREENHEIGHT);
+
+	// set up terminal
+	printf("\033[8;101;160t");
 }

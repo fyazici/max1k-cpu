@@ -67,3 +67,53 @@ begin
     end case;
   end process;
 end architecture;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
+
+entity mux8 is
+  generic (
+    G_DW : natural := 32
+  );
+  port (
+    sel : in std_logic_vector(2 downto 0);
+    d0  : in std_logic_vector(G_DW - 1 downto 0);
+    d1  : in std_logic_vector(G_DW - 1 downto 0);
+    d2  : in std_logic_vector(G_DW - 1 downto 0);
+    d3  : in std_logic_vector(G_DW - 1 downto 0);
+    d4  : in std_logic_vector(G_DW - 1 downto 0);
+    d5  : in std_logic_vector(G_DW - 1 downto 0);
+    d6  : in std_logic_vector(G_DW - 1 downto 0);
+    d7  : in std_logic_vector(G_DW - 1 downto 0);
+    q   : out std_logic_vector(G_DW - 1 downto 0)
+  );
+end entity mux8;
+
+architecture rtl of mux8 is
+begin
+  PROC_COMB : process (all)
+  begin
+    case (sel) is
+      when "000" =>
+        q <= d0;
+      when "001" =>
+        q <= d1;
+      when "010" =>
+        q <= d2;
+      when "011" =>
+        q <= d3;
+      when "100" =>
+        q <= d4;
+      when "101" =>
+        q <= d5;
+      when "110" =>
+        q <= d6;
+      when "111" =>
+        q <= d7;
+      when others =>
+        null;
+    end case;
+  end process;
+end architecture;

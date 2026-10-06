@@ -9,16 +9,16 @@ OBJCOPY := $(PREFIX)-objcopy
 OBJDUMP := $(PREFIX)-objdump
 
 CFLAGS  += -std=c99
-CFLAGS  += -march=rv32i_zicsr -mabi=ilp32
+CFLAGS  += -march=rv32im_zicsr -mabi=ilp32
 CFLAGS  += -fno-common -ffunction-sections -fdata-sections 
 CFLAGS  += -I./platform -I./doom
-CFLAGS  += -O3
+CFLAGS  += -O2
 CFLAGS  += -DNORMALUNIX -DXTERM_VIDEO
 
 LDFLAGS += --static -nostartfiles 
 LDFLAGS += -Tplatform/lscript.ld
-LDFLAGS += -march=rv32i_zicsr -mabi=ilp32
-# LDFLAGS += -Wl,-Map=$(*).map -Wl,--cref
+LDFLAGS += -march=rv32im_zicsr -mabi=ilp32
+LDFLAGS += -Wl,-Map=$(TARGET).map -Wl,--cref
 LDFLAGS += -Wl,--gc-sections
 LDFLAGS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 

@@ -1,4 +1,24 @@
 ======================================================================
+2026-10-06: M extension (MUL and DIV instructions)
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 1041655401
+Total time (secs): 10
+Iterations/Sec   : 50
+Iterations       : 500
+Compiler version : GCC16.1.0
+Compiler flags   : -O2
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0xa14c
+Correct operation validated. See README.md for run and reporting rules.
+[FINI] C: 1042224090 I: 142412980 CPI: 7.318
+[FINI] I$ H: 140609379 M: 1802287 HitRate: 0.987
+[FINI] D$ H: 27351709 M: 9908 HitRate: 1.000
+======================================================================
 2026-09-30: Cache write ack optimization
 2K performance run parameters for coremark.
 CoreMark Size    : 666

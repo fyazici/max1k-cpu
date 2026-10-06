@@ -6,8 +6,6 @@
 
 #include <platform.h>
 
-#include <printf/printf.h>
-
 volatile struct HAL_Gpio *spGpio0 = GPIO0_BASEADDR;
 
 #define ROR8(x) (((x >> 1) | (x << 7)) & 0xFF)
@@ -18,7 +16,7 @@ void perf_report(void);
 
 int main(void)
 {
-  HAL_uart_init(UART0_BASEADDR, 115200);
+  HAL_uart_init(UART0_BASEADDR, 1000000);
 
   printf("BOOT\n\r");
 
@@ -26,7 +24,7 @@ int main(void)
   spGpio0->odr = 0xF0E0C080;
 
   perf_report();
-  uint32_t limit = 1000000;
+  uint32_t limit = 1000;
   uint32_t r = longest_collatz_sequence(limit);
   perf_report();
   printf("Longest collatz sequence seed under %d is %d\n\r", (int)limit, (int)r);
@@ -50,9 +48,4 @@ void perf_report()
   unsigned int cpi_10x = (10 * mcycle) / minstret;
   unsigned int cpi_frac = cpi_10x - 10 * cpi_int;
   printf("[PERF_REPORT] => MCYCLE: %llu MINSTRET: %llu CPI: %u.%u\n\r", mcycle, minstret, cpi_int, cpi_frac);
-}
-
-void putchar_(char c)
-{
-  outbyte(c);
 }

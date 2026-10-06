@@ -62,7 +62,7 @@ architecture rtl of cpu is
   signal alu_z_r   : std_logic_vector(31 downto 0);
   signal alu_adr   : std_logic_vector(31 downto 0);
 
-  signal rd_src : std_logic_vector(1 downto 0);
+  signal rd_src : std_logic_vector(2 downto 0);
 
   signal lsu_ldout   : std_logic_vector(31 downto 0);
   signal lsu_size    : std_logic_vector(1 downto 0);
@@ -87,9 +87,19 @@ architecture rtl of cpu is
   );
   signal state : t_state := S_fetch_decode;
 
+  signal is_execute : std_logic;
+
   signal stall   : std_logic;
   signal i_stall : std_logic;
   signal d_stall : std_logic;
+
+  signal alu_active : std_logic;
+  signal alu_stall  : std_logic;
+
+  signal muldiv_active : std_logic;
+  signal muldiv_op     : std_logic_vector(2 downto 0);
+  signal muldiv_stall  : std_logic;
+  signal muldiv_dout   : std_logic_vector(31 downto 0);
 
   -- CSRs
   signal mcycle    : std_logic_vector(31 downto 0) := (others => '0');
@@ -119,24 +129,27 @@ begin
   U_DECODE : entity work.decode
     port map
     (
-      instr       => instr,
-      pc_src      => pc_src,
-      b_ovr       => b_ovr,
-      rd_sel      => rd_sel,
-      rs1_sel     => rs1_sel,
-      rs2_sel     => rs2_sel,
-      imm_sel     => imm_sel,
-      alu_op      => alu_op,
-      alu_xsrc    => alu_xsrc,
-      alu_ysrc    => alu_ysrc,
-      alu_shsrc   => alu_shsrc,
-      rd_src      => rd_src,
-      lsu_size    => lsu_size,
-      lsu_signext => lsu_signext,
-      mem_mask    => mem_mask,
-      mem_we      => d_we,
-      wb_mask     => wb_mask,
-      csr_src     => csr_src
+      instr         => instr,
+      pc_src        => pc_src,
+      b_ovr         => b_ovr,
+      rd_sel        => rd_sel,
+      rs1_sel       => rs1_sel,
+      rs2_sel       => rs2_sel,
+      imm_sel       => imm_sel,
+      alu_op        => alu_op,
+      alu_xsrc      => alu_xsrc,
+      alu_ysrc      => alu_ysrc,
+      alu_shsrc     => alu_shsrc,
+      rd_src        => rd_src,
+      lsu_size      => lsu_size,
+      lsu_signext   => lsu_signext,
+      mem_mask      => mem_mask,
+      mem_we        => d_we,
+      wb_mask       => wb_mask,
+      alu_active    => alu_active,
+      muldiv_active => muldiv_active,
+      muldiv_op     => muldiv_op,
+      csr_src       => csr_src
     );
 
   U_IMMEXT : entity work.immext
@@ -158,7 +171,7 @@ begin
       q    => imm_dout_r
     );
 
-  U_RDMUX : entity work.mux4
+  U_RDMUX : entity work.mux8
     generic map(G_DW => 32)
     port map
     (
@@ -166,7 +179,11 @@ begin
       d0  => alu_z_r, -- RDSRC_ALU
       d1  => pc_plus_4, -- RDSRC_PCp4
       d2  => ldout_latch, -- RDSRC_MEM
-      d3  => csr_dout,
+      d3  => csr_dout, -- RDSRC_CSR
+      d4  => muldiv_dout, -- RDSRC_MULDIV
+      d5 => (others => 'X'),
+      d6 => (others => 'X'),
+      d7 => (others => 'X'),
       q   => rd_din
     );
 
@@ -265,6 +282,9 @@ begin
   U_ALU : entity work.alu
     port map
     (
+      clk   => clk,
+      valid => is_execute and alu_active,
+      stall => alu_stall,
       op    => alu_op,
       shamt => alu_shamt,
       x     => alu_x,
@@ -281,6 +301,20 @@ begin
       sclr => '0',
       d    => alu_z,
       q    => alu_z_r
+    );
+
+  U_MULDIV : entity work.muldiv
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+      valid => is_execute and muldiv_active,
+      stall => muldiv_stall,
+
+      op => muldiv_op,
+      x  => rs1_dout_r,
+      y  => rs2_dout_r,
+      z  => muldiv_dout
     );
 
   alu_adr <= std_logic_vector(signed(rs1_dout_r) + signed(imm_dout_r));
@@ -377,7 +411,10 @@ begin
     end if;
   end process;
 
-  stall   <= i_stall or d_stall;
+  is_execute <= '1' when (state = S_execute) else
+    '0';
+
+  stall   <= i_stall or d_stall or alu_stall or muldiv_stall;
   i_stall <= i_cyc and not(i_ack);
   d_stall <= d_cyc and not(d_ack);
 

@@ -53,7 +53,7 @@ begin
   U_WBLOG_DBUS : entity work.wb_logger
     generic map(
       G_ID       => "DBUS",
-      G_FILENAME => "dbus_dcache=1_inv.csv"
+      G_FILENAME => "dbus.csv"
     )
     port map
     (
@@ -68,6 +68,26 @@ begin
       s_din  => << signal .tb_cpu.uut.wb_dbus_dout : std_logic_vector(31 downto 0) >>,
       s_dout => << signal .tb_cpu.uut.wb_dbus_din : std_logic_vector(31 downto 0) >>,
       s_ack  => << signal .tb_cpu.uut.wb_dbus_ack  : std_logic >>
+    );
+
+  U_WBLOG_IBUS : entity work.wb_logger
+    generic map(
+      G_ID       => "IBUS",
+      G_FILENAME => "ibus.csv"
+    )
+    port map
+    (
+      clk   => << signal .tb_cpu.uut.clk   : std_logic >>,
+      reset => << signal .tb_cpu.uut.clk : std_logic >>,
+
+      s_cyc  => << signal .tb_cpu.uut.wb_ibus_cyc  : std_logic >>,
+      s_stb  => << signal .tb_cpu.uut.wb_ibus_stb  : std_logic >>,
+      s_adr  => << signal .tb_cpu.uut.wb_ibus_adr  : std_logic_vector(31 downto 0) >>,
+      s_we   => << signal .tb_cpu.uut.wb_ibus_we    : std_logic >>,
+      s_sel  => << signal .tb_cpu.uut.wb_ibus_sel  : std_logic_vector(3 downto 0) >>,
+      s_din  => << signal .tb_cpu.uut.wb_ibus_dout : std_logic_vector(31 downto 0) >>,
+      s_dout => << signal .tb_cpu.uut.wb_ibus_din : std_logic_vector(31 downto 0) >>,
+      s_ack  => << signal .tb_cpu.uut.wb_ibus_ack  : std_logic >>
     );
 
 end architecture;

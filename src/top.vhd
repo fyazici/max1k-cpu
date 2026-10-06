@@ -134,6 +134,15 @@ architecture rtl of top is
   signal wb_mem_cyc  : std_logic;
   signal wb_mem_ack  : std_logic;
 
+  signal wb_mem_adr_r1  : std_logic_vector(31 downto 0);
+  signal wb_mem_din_r1  : std_logic_vector(31 downto 0);
+  signal wb_mem_dout_r1 : std_logic_vector(31 downto 0);
+  signal wb_mem_we_r1   : std_logic;
+  signal wb_mem_sel_r1  : std_logic_vector(3 downto 0);
+  signal wb_mem_stb_r1  : std_logic;
+  signal wb_mem_cyc_r1  : std_logic;
+  signal wb_mem_ack_r1  : std_logic;
+
   -- gpio intf
   signal wb_gpio0_adr  : std_logic_vector(31 downto 0);
   signal wb_gpio0_din  : std_logic_vector(31 downto 0);
@@ -437,6 +446,31 @@ begin
       m_ack  => wb_mem_ack
     );
 
+  U_WBRS_MEM : entity work.wb_regslice
+    port map
+    (
+      clk   => clk,
+      reset => reset,
+
+      s_cyc  => wb_mem_cyc,
+      s_stb  => wb_mem_stb,
+      s_adr  => wb_mem_adr,
+      s_we   => wb_mem_we,
+      s_sel  => wb_mem_sel,
+      s_din  => wb_mem_dout,
+      s_dout => wb_mem_din,
+      s_ack  => wb_mem_ack,
+
+      m_cyc  => wb_mem_cyc_r1,
+      m_stb  => wb_mem_stb_r1,
+      m_adr  => wb_mem_adr_r1,
+      m_we   => wb_mem_we_r1,
+      m_sel  => wb_mem_sel_r1,
+      m_dout => wb_mem_dout_r1,
+      m_din  => wb_mem_din_r1,
+      m_ack  => wb_mem_ack_r1
+    );
+
   GEN_SDRAM : if G_SIM_MODE = FALSE generate
     U_BOOT_CTL : entity work.boot_ctl
       generic map(
@@ -481,14 +515,14 @@ begin
         clk   => clk,
         reset => reset,
 
-        s_cyc  => wb_mem_cyc,
-        s_stb  => wb_mem_stb,
-        s_adr  => wb_mem_adr,
-        s_we   => wb_mem_we,
-        s_sel  => wb_mem_sel,
-        s_din  => wb_mem_dout,
-        s_dout => wb_mem_din,
-        s_ack  => wb_mem_ack,
+        s_cyc  => wb_mem_cyc_r1,
+        s_stb  => wb_mem_stb_r1,
+        s_adr  => wb_mem_adr_r1,
+        s_we   => wb_mem_we_r1,
+        s_sel  => wb_mem_sel_r1,
+        s_din  => wb_mem_dout_r1,
+        s_dout => wb_mem_din_r1,
+        s_ack  => wb_mem_ack_r1,
 
         SDRAM_A   => SDRAM_A,
         SDRAM_BA  => SDRAM_BA,
@@ -543,14 +577,14 @@ begin
       port map
       (
         clk    => clk,
-        s_adr  => wb_mem_adr,
-        s_din  => wb_mem_dout,
-        s_dout => wb_mem_din,
-        s_we   => wb_mem_we,
-        s_sel  => wb_mem_sel,
-        s_stb  => wb_mem_stb,
-        s_cyc  => wb_mem_cyc,
-        s_ack  => wb_mem_ack
+        s_adr  => wb_mem_adr_r1,
+        s_din  => wb_mem_dout_r1,
+        s_dout => wb_mem_din_r1,
+        s_we   => wb_mem_we_r1,
+        s_sel  => wb_mem_sel_r1,
+        s_stb  => wb_mem_stb_r1,
+        s_cyc  => wb_mem_cyc_r1,
+        s_ack  => wb_mem_ack_r1
       );
   end generate;
 
@@ -646,7 +680,7 @@ begin
     );
 
   U_UART0 : entity work.wb_uart
-    generic map(G_FIFO_DEPTH => 256)
+    generic map(G_FIFO_DEPTH => 16)
     port map
     (
       clk   => clk,

@@ -1,4 +1,4 @@
-OBJS = startup.o  platform.o coremark/core_portme.o coremark/cvt.o coremark/core_util.o coremark/core_list_join.o coremark/core_state.o coremark/core_matrix.o coremark/core_main.o
+OBJS = startup.o platform.o coremark/core_portme.o coremark/cvt.o coremark/core_util.o coremark/core_list_join.o coremark/core_state.o coremark/core_matrix.o coremark/core_main.o
 
 # Our output name
 BINARY = core_main
@@ -7,7 +7,7 @@ LDSCRIPT = lscript.ld
 
 # Target-specific flags
 FP_FLAGS    ?= 
-ARCH_FLAGS   = -march=rv32i_zicsr -mabi=ilp32 $(FP_FLAGS)
+ARCH_FLAGS   = -march=rv32im_zicsr -mabi=ilp32 $(FP_FLAGS)
 
 # Compiler configuration
 PREFIX      ?= riscv32-unknown-elf
@@ -45,14 +45,7 @@ TGT_LDFLAGS     += -Wl,-Map=$(*).map -Wl,--cref
 TGT_LDFLAGS     += -Wl,--gc-sections
 
 # Used libraries
-# DEFS        += -DPRINTF_INCLUDE_CONFIG_H=0 
-# DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_SOFT=0 
-# DEFS        += -DPRINTF_ALIAS_STANDARD_FUNCTION_NAMES_HARD=0
-# DEFS        += -DPRINTF_SUPPORT_MSVC_STYLE_INTEGER_SPECIFIERS=0
-# DEFS        += -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0
-# DEFS        += -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0
-# DEFS        += -DPRINTF_SUPPORT_WRITEBACK_SPECIFIER=0
-DEFS        += -DCORE_DEBUG=0 -DPERFORMANCE_RUN=1 -DITERATIONS=200
+DEFS        += -DCORE_DEBUG=0 -DPERFORMANCE_RUN=1 -DITERATIONS=500
 LDFLAGS     +=
 LDLIBS      += 
 LDLIBS      += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group

@@ -64,6 +64,9 @@ architecture rtl of wb_cache is
   signal vld_din  : std_logic;
   signal vld_dout : std_logic;
 
+  signal vtag_din  : std_logic_vector(C_TAG_W downto 0);
+  signal vtag_dout : std_logic_vector(C_TAG_W downto 0);
+
   signal is_cacheable : std_logic;
   signal is_hit       : std_logic;
 
@@ -244,14 +247,18 @@ begin
   )
   port map
   (
-    address_a                    => mem_adr,
-    clock0                       => clk,
-    data_a(C_TAG_W - 1 downto 0) => tag_din,
-    data_a(C_TAG_W)              => vld_din,
-    wren_a                       => mem_we,
-    q_a(C_TAG_W - 1 downto 0)    => tag_dout,
-    q_a(C_TAG_W)                 => vld_dout
+    address_a => mem_adr,
+    clock0    => clk,
+    data_a    => vtag_din,
+    wren_a    => mem_we,
+    q_a       => vtag_dout
   );
+
+  vtag_din(C_TAG_W - 1 downto 0) <= tag_din;
+  vtag_din(C_TAG_W)              <= vld_din;
+  
+  tag_dout <= vtag_dout(C_TAG_W - 1 downto 0);
+  vld_dout <= vtag_dout(C_TAG_W);
 
   U_DATA_MEM : altsyncram
   generic map(

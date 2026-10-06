@@ -31,10 +31,11 @@ package cpu_pkg is
   constant ISEL_U : std_logic_vector(2 downto 0) := "011"; -- U-type
   constant ISEL_J : std_logic_vector(2 downto 0) := "100"; -- J-type
 
-  constant RDSRC_ALU  : std_logic_vector(1 downto 0) := "00";
-  constant RDSRC_PCp4 : std_logic_vector(1 downto 0) := "01";
-  constant RDSRC_MEM  : std_logic_vector(1 downto 0) := "10";
-  constant RDSRC_CSR  : std_logic_vector(1 downto 0) := "11";
+  constant RDSRC_ALU    : std_logic_vector(2 downto 0) := "000";
+  constant RDSRC_PCp4   : std_logic_vector(2 downto 0) := "001";
+  constant RDSRC_MEM    : std_logic_vector(2 downto 0) := "010";
+  constant RDSRC_CSR    : std_logic_vector(2 downto 0) := "011";
+  constant RDSRC_MULDIV : std_logic_vector(2 downto 0) := "100";
 
   constant CSRSRC_MCYCLE    : std_logic_vector(1 downto 0) := "00";
   constant CSRSRC_MCYCLEH   : std_logic_vector(1 downto 0) := "01";
@@ -55,4 +56,13 @@ package cpu_pkg is
   constant ALUOP_SRA  : std_logic_vector(3 downto 0) := "1011";
   constant ALUOP_OR   : std_logic_vector(3 downto 0) := "1100";
   constant ALUOP_AND  : std_logic_vector(3 downto 0) := "1110";
+
+  constant MULDIVOP_MUL    : std_logic_vector(2 downto 0) := "000";
+  constant MULDIVOP_MULH   : std_logic_vector(2 downto 0) := "001";
+  constant MULDIVOP_MULHSU : std_logic_vector(2 downto 0) := "010";
+  constant MULDIVOP_MULHU  : std_logic_vector(2 downto 0) := "011";
+  constant MULDIVOP_DIV    : std_logic_vector(2 downto 0) := "100";
+  constant MULDIVOP_DIVU   : std_logic_vector(2 downto 0) := "101";
+  constant MULDIVOP_REM    : std_logic_vector(2 downto 0) := "110";
+  constant MULDIVOP_REMU   : std_logic_vector(2 downto 0) := "111";
 end package;

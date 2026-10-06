@@ -7,6 +7,9 @@ use work.cpu_pkg.all;
 
 entity alu is
   port (
+    clk   : in std_logic;
+    valid : in std_logic;
+    stall : out std_logic;
     op    : in std_logic_vector(3 downto 0);
     shamt : in std_logic_vector(4 downto 0);
     x     : in std_logic_vector(31 downto 0);
@@ -18,6 +21,9 @@ end entity alu;
 architecture rtl of alu is
 
 begin
+
+  -- combinational ALU, no stall
+  stall <= '0';
 
   PROC_SEQ : process (all)
   begin
