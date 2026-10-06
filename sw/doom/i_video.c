@@ -122,7 +122,7 @@ void I_FinishUpdate(void)
 		uint32_t hit_ctr_d = HAL_cache_get_hit_ctr(DCACHE_BASEADDR);
 		uint32_t miss_ctr_d = HAL_cache_get_miss_ctr(DCACHE_BASEADDR);
 
-		printf("[PLT] FPS=%d\n", frame_ctr);
+		printf("[PLT] FPS=%.3f\n", (float)frame_ctr / ((float)c_diff / PERIPH_CLK_HZ));
 
 		float cpi_int = (float)c_diff / (float)i_diff;
 		printf("[PLT] C: %llu I: %llu CPI: %.3f\n", c_diff, i_diff, cpi_int);

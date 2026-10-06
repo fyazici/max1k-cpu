@@ -12,7 +12,7 @@ CFLAGS  += -std=c99
 CFLAGS  += -march=rv32im_zicsr -mabi=ilp32
 CFLAGS  += -fno-common -ffunction-sections -fdata-sections 
 CFLAGS  += -I./platform -I./doom
-CFLAGS  += -O2
+CFLAGS  += -O3
 CFLAGS  += -DNORMALUNIX -DXTERM_VIDEO
 
 LDFLAGS += --static -nostartfiles 
